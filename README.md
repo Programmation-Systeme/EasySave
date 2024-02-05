@@ -38,9 +38,9 @@ your branch name would be: GCD-#1.
 
 When launching a pull request, demonstrate it with a team member. If validated, close the associated issue and squash your code.
 
-## Contributeur ✨
+## Contributor 
 
-Personnes ayant participé a ce projet
+Individuals who have contributed to this project
 
 <table >
   <td align="center">
