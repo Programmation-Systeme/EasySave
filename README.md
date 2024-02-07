@@ -16,8 +16,8 @@
 ## CONVENTION FOR BRANCH NAMING:
 
 To set your branch name, follow this example:
-If working on issue #1, "new button," and your name is CHATARD Gaetan ([Trigramme](https://www.google.com/search?q=trigramme+nom&client=firefox-b-d&sca_esv=5f32bda464ccee7b&sxsrf=ACQVn08sxup9UukyPAabRtHKzU9Euip5wg%3A1707144596359&ei=lPXAZYTHFbagkdUPgtqIyAE&ved=0ahUKEwiE4fuZuZSEAxU2UKQEHQItAhkQ4dUDCA8&uact=5&oq=trigramme+nom&gs_lp=Egxnd3Mtd2l6LXNlcnAiDXRyaWdyYW1tZSBub20yBRAAGIAEMgUQABiABDIGEAAYFhgeMggQABgWGB4YDzIIEAAYFhgeGA9IvRVQ2wRYzRBwAHgFkAEAmAFhoAHmAqoBATS4AQPIAQD4AQL4AQHCAgQQABhHwgIPEAAYgAQYFBiHAhhGGPkBwgIKEAAYgAQYFBiHAsICJhAAGIAEGBQYhwIYRhj5ARiXBRiMBRjdBBhGGPQDGPUDGPYD2AEB4gMEGAAgQYgGAZAGCLoGBggBEAEYEw&sclient=gws-wiz-serp)),
-your branch name would be: GCD-#1.
+If working on issue #1, "new button," and your name is CHATARD Gaetan,
+your branch name would be: Gaetan-#1.
 
 ## HOW TO CREATE A BRANCH:
 
