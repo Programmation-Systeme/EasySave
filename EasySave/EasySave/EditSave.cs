@@ -8,32 +8,32 @@ namespace EasySave
 {
     internal class EditSave
     {
+        /// <summary>
+        /// Creates a new save file.
+        /// </summary>
+        /// <param name="sourceFile">The file chosen by the user to be saved.</param>
+        /// <param name="destinationDirectory">The directory where the data will be saved.</param>
+
         public static void Create(string sourceFile, string destinationDirectory)
         {
-            // SourceFile is the file that choose the user to be saved
-            // DestinationDirectory is the directory where we save our data
-            
+            // Generate formatted date-time string for unique identifier
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-            Console.WriteLine("DATE: " + formattedDateTime);
-            // Guid.NewGuid().ToString("N")
             
-            // We create a dynamic name for our file
+            // TO KNOW FOR LATER, ID GENERATION: Guid.NewGuid().ToString("N")
+            // Form a dynamic path for the file
             string pathWithId = Path.Combine(destinationDirectory, System.IO.Path.ChangeExtension(Path.GetFileName(sourceFile), null) + "-" + formattedDateTime);
-            Console.WriteLine("PATH WITH ID" + pathWithId);
-            // We check if a file already exists
+            
+            // Check if the directory already exists
             bool directoryExists = Directory.Exists(pathWithId);
 
-            Console.WriteLine("Already exist: " + directoryExists);
-
             // TODO: destinationFile HAVE TO BE SAVED IN THE DB
+            // Form the destination file path
             string destinationFile = Path.Combine(pathWithId, Path.GetFileName(sourceFile));
-
-            Console.WriteLine("FINAL DEST" + destinationFile);
-            // We create firstly a new directory on the storage and then we save the file of the user on this directoy with copy
             try
             {
                 if (directoryExists == false)
                 {
+                    // Create a new directory and copy the file
                     System.IO.Directory.CreateDirectory(pathWithId);
                     System.IO.File.Copy(sourceFile, destinationFile);
                     Console.WriteLine("File copied successfully.");
@@ -49,20 +49,24 @@ namespace EasySave
             }
         }
 
+        /// <summary>
+        /// Deletes a specified file.
+        /// </summary>
+        /// <param name="destinationFile">The file to be deleted.</param>
         public static void Delete(string destinationFile)
         {
-            // Destination file is the file that we want to delete
+            // Check if the file exists
             bool fileExists = File.Exists(destinationFile);
 
-            // We get the path of the current directory where the file is located
+            // Get the directory path of the file
             string directoryPath = Path.GetDirectoryName(destinationFile);
             Console.WriteLine("directoryPath: " + directoryPath);
 
             try
             {
-                // We delete the file file and then the directory
                 if (fileExists == true && Path.Exists(directoryPath))
                 {
+                    // Delete the file and its containing directory
                     File.Delete(destinationFile);
                     Directory.Delete(directoryPath);
                     Console.WriteLine("File deleted successfully.");
@@ -78,11 +82,14 @@ namespace EasySave
             }
         }
 
+        /// <summary>
+        /// Updates an existing file with a new one.
+        /// </summary>
+        /// <param name="sourceFile">The file chosen by the user.</param>
+        /// <param name="destinationFile">The file to be updated.</param>
         public static void Update(string sourceFile, string destinationFile)
         {
-            // SourceFile is the file that choose the user
-            // Destination file is the file that we are going to update with the new sourceFile
-
+            // Check if the destination file exists
             bool fileExists = File.Exists(destinationFile);
             string directoryPath = Path.GetDirectoryName(destinationFile);
             Console.WriteLine("directoryPath: " + directoryPath);
@@ -93,6 +100,7 @@ namespace EasySave
             {
                 if (fileExists == true && Path.Exists(directoryPath))
                 {
+                    // Delete the old file and copy the new one
                     File.Delete(destinationFile);
                     System.IO.File.Copy(sourceFile, destinationFile);
 
