@@ -9,7 +9,9 @@ namespace EasySave
     internal class Model
     {
         private Data[] _datas;
-
+        /// <summary>
+        /// Entry point of the model
+        /// </summary>
         public Model()
         {
             _datas = new Data[5];

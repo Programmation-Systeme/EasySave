@@ -11,7 +11,9 @@ namespace EasySave
         private Model _model;
 
         private Log _log;
-         
+         /// <summary>
+         /// Entry point of the log
+         /// </summary>
         public ViewModel()
         {
             _model = new Model();
