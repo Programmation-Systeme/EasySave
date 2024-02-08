@@ -15,15 +15,15 @@ namespace EasySave
         /// </summary>
         /// <param name="sourceFile">The file chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the data will be saved.</param>
-        public static bool Create(string sourceFile, string destinationDirectory)
+        public static string Create(string sourceFile, string destinationDirectory)
         {
             // Generate formatted date-time string for unique identifier
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-            
+
             // TO KNOW FOR LATER, ID GENERATION: Guid.NewGuid().ToString("N")
             // Form a dynamic path for the file
             string pathWithId = Path.Combine(destinationDirectory, System.IO.Path.ChangeExtension(Path.GetFileName(sourceFile), null) + "-" + formattedDateTime);
-            
+
             // Check if the directory already exists
             bool directoryExists = Directory.Exists(pathWithId);
             bool sourceFileExists = File.Exists(sourceFile);
@@ -40,22 +40,18 @@ namespace EasySave
                     // Create a new directory and copy the file
                     System.IO.Directory.CreateDirectory(pathWithId);
                     System.IO.File.Copy(sourceFile, destinationFile);
-                    Console.WriteLine("File copied successfully.");
-                    return true;
+                    return destinationFile;
                 }
                 else
                 {
-                    Console.WriteLine("Already exist");
-                    return false;
+                    return null;
                 }
             }
             catch (IOException iox)
             {
-                Console.WriteLine("Error: " + iox.Message);
-                return false;
+                return null;
             }
         }
-
         /// <summary>
         /// Deletes a specified file and return true when deleted.
         /// </summary>
@@ -67,7 +63,6 @@ namespace EasySave
 
             // Get the directory path of the file
             string directoryPath = Path.GetDirectoryName(destinationFile);
-            Console.WriteLine("directoryPath: " + directoryPath);
 
             try
             {
@@ -77,18 +72,15 @@ namespace EasySave
                     // Delete the file and its containing directory
                     File.Delete(destinationFile);
                     Directory.Delete(directoryPath);
-                    Console.WriteLine("File deleted successfully.");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("File do not exist");
                     return false;
                 }
             }
             catch (IOException iox)
             {
-                Console.WriteLine("Error: " + iox.Message);
                 return false;
             }
         }
@@ -113,18 +105,16 @@ namespace EasySave
                     // Delete the old file and copy the new one
                     File.Delete(destinationFile);
                     System.IO.File.Copy(sourceFile, destinationFile);
-                    Console.WriteLine("File updated successfully.");
+
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("File do not exist");
                     return false;
                 }
             }
             catch (IOException iox)
             {
-                Console.WriteLine("Error: " + iox.Message);
                 return false;
             }
         }
