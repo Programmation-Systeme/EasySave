@@ -13,8 +13,7 @@ namespace EasySave
         /// </summary>
         /// <param name="sourceFile">The file chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the data will be saved.</param>
-
-        public static void Create(string sourceFile, string destinationDirectory)
+        public static bool Create(string sourceFile, string destinationDirectory)
         {
             // Generate formatted date-time string for unique identifier
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
@@ -37,15 +36,18 @@ namespace EasySave
                     System.IO.Directory.CreateDirectory(pathWithId);
                     System.IO.File.Copy(sourceFile, destinationFile);
                     Console.WriteLine("File copied successfully.");
+                    return true;
                 }
                 else
                 {
                     Console.WriteLine("Already exist");
+                    return false;
                 }
             }
             catch (IOException iox)
             {
                 Console.WriteLine("Error: " + iox.Message);
+                return false;
             }
         }
 
@@ -53,7 +55,7 @@ namespace EasySave
         /// Deletes a specified file.
         /// </summary>
         /// <param name="destinationFile">The file to be deleted.</param>
-        public static void Delete(string destinationFile)
+        public static bool Delete(string destinationFile)
         {
             // Check if the file exists
             bool fileExists = File.Exists(destinationFile);
@@ -70,15 +72,18 @@ namespace EasySave
                     File.Delete(destinationFile);
                     Directory.Delete(directoryPath);
                     Console.WriteLine("File deleted successfully.");
+                    return true;
                 }
                 else
                 {
                     Console.WriteLine("File do not exist");
+                    return false;
                 }
             }
             catch (IOException iox)
             {
                 Console.WriteLine("Error: " + iox.Message);
+                return false;
             }
         }
 
@@ -87,13 +92,11 @@ namespace EasySave
         /// </summary>
         /// <param name="sourceFile">The file chosen by the user.</param>
         /// <param name="destinationFile">The file to be updated.</param>
-        public static void Update(string sourceFile, string destinationFile)
+        public static bool Update(string sourceFile, string destinationFile)
         {
             // Check if the destination file exists
             bool fileExists = File.Exists(destinationFile);
             string directoryPath = Path.GetDirectoryName(destinationFile);
-            Console.WriteLine("directoryPath: " + directoryPath);
-
             string path = Path.Combine(directoryPath, System.IO.Path.ChangeExtension(Path.GetFileName(sourceFile), null));
 
             try
@@ -103,17 +106,19 @@ namespace EasySave
                     // Delete the old file and copy the new one
                     File.Delete(destinationFile);
                     System.IO.File.Copy(sourceFile, destinationFile);
-
                     Console.WriteLine("File updated successfully.");
+                    return true;
                 }
                 else
                 {
                     Console.WriteLine("File do not exist");
+                    return false;
                 }
             }
             catch (IOException iox)
             {
                 Console.WriteLine("Error: " + iox.Message);
+                return false;
             }
         }
     }
