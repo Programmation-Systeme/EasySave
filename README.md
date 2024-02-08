@@ -6,12 +6,28 @@
 - Add meaningful comments to enhance code reliability and help the next developer understand the code.
 - Avoid putting words directly in the code for translation; use XML TRANSLATION.
 - When adding a new feature, include corresponding tests.
-- Don't work directly in the main branch / create yours 
+- Don't work directly in the main branch / create yours
 - Before merging your feature branch, coordinate with a co-worker for code review.
 
 ## ISSUE WORKING:
 
 - When starting work on an issue, assign it to yourself and close it when your pull request is validated.
+
+## CONVENTION FOR COMMITS NAMING:
+
+When making commits to your repository, follow this convention for clear and organized commit messages:
+
+- Feature Addition: Use the prefix FEAT: followed by the corresponding issue number and a brief description of the feature added.
+  Example: FEAT: #5 "Add new user authentication feature"
+
+- Code Improvement: Utilize the prefix QA: for commits related to code quality assurance or general code improvements. Again, include the issue number and a brief description.
+  Example: QA: #5 "Optimize database query for improved performance"
+
+- Bug Fixing: Begin with FIX: followed by the issue number and a concise explanation of the bug fix.
+  Example: FIX: #5 "Resolve null pointer exception in user registration"
+
+- Code Refactoring: Preface with REFACTO: followed by the issue number and a clear summary of the refactoring changes.
+  Example: REFACTO: #5 "Simplify authentication logic for better maintainability"
 
 ## CONVENTION FOR BRANCH NAMING:
 
@@ -22,23 +38,31 @@ your branch name would be: Gaetan-#1.
 ## HOW TO CREATE A BRANCH:
 
 1. Switch to the develop branch:
+
    ```bash
-   
+
    git switch develop
+   ```
+
 2. Update your code:
+
    ```bash
-   
+
    git pull
-4. Create your branch:
+   ```
+
+3. Create your branch:
+
    ```bash
-   
+
    git checkout -b <YOUR BRANCH NAME>
+   ```
 
 ## PULL REQUEST:
 
 When launching a pull request, demonstrate it with a team member. If validated, close the associated issue and squash your code.
 
-## Contributor 
+## CONTRIBUTORS
 
 Individuals who have contributed to this project
 
