@@ -135,6 +135,9 @@
   <data name="EmptySlot" xml:space="preserve">
     <value>Vide</value>
   </data>
+  <data name="ErrorCreationFile" xml:space="preserve">
+    <value>Erreur lors de la création du fichier</value>
+  </data>
   <data name="ErrorSelectedSlotsEmptyNonEmpty" xml:space="preserve">
     <value>Erreur: Un ou plusieurs emplacements sélectionnés sont vides ou non-vides.</value>
   </data>

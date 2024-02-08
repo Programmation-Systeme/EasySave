@@ -72,7 +72,6 @@ namespace EasySave
     static void ChooseSlot()
     {
         DisplayAvailableSlots();
-            //Console.WriteLine("Choose save slots (e.g., 1;2;3) or 'q' to Quit:");
             Console.WriteLine(Properties.ts.ChooseSaveSlots);
             string input = Console.ReadLine();
         if (input.ToLower() == "q")
@@ -90,7 +89,6 @@ namespace EasySave
         }
         else
         {
-            //Console.WriteLine("Error: One or more selected slots are empty or non-empty.");
             Console.WriteLine(Properties.ts.ErrorSelectedSlotsEmptyNonEmpty);
             }
     }
@@ -102,17 +100,15 @@ namespace EasySave
     {
         foreach (int choice in choices)
         {
-                //Console.WriteLine($"Choose current source file for Slot {choice}: ");
                 Console.WriteLine(string.Format(Properties.ts.ChooseSlotSourceFile, choice));
                 string sourceFile = Console.ReadLine();
-            //Console.WriteLine($"Destination file path for Slot {choice}: ");
             Console.WriteLine(string.Format(Properties.ts.ChooseSlotDestination, choice));
                 string destinationDirectory = Console.ReadLine();
 
                 string destinationFile = EditSave.Create(sourceFile, destinationDirectory);
                 if(destinationFile == null ) 
                 {
-                    Console.WriteLine("Error in creation of file");
+                    Console.WriteLine(Properties.ts.ErrorCreationFile);
                 }
                 else
                 {
@@ -142,9 +138,7 @@ namespace EasySave
         /// <param name="choices"></param>
     static void ProcessNonEmptySlots(List<int> choices)
     {
-        //Console.WriteLine("1 : Save ");
         Console.WriteLine(Properties.ts.OptionSave);
-            //Console.WriteLine("2 : Delete ");
             Console.WriteLine(Properties.ts.OptionDelete);
             string result = Console.ReadLine();
         switch (result)
@@ -158,7 +152,6 @@ namespace EasySave
                 DeleteSelectedSlots(choices);
                 break;
             default:
-                //Console.WriteLine("Invalid input! Please enter '1' to Save or '2' to Delete.");
                 Console.WriteLine(Properties.ts.InvalidInputSaveDelete);
                     break;
         }
@@ -171,7 +164,6 @@ namespace EasySave
     {
         foreach (int choice in choices)
         {
-            //Console.WriteLine($"Saving Slot {choice}");
             Console.WriteLine(string.Format(Properties.ts.SavingSlot, choice));
             Console.WriteLine(datas[choice - 1].SourceFilePath);
             Console.WriteLine(datas[choice - 1].TargetFilePath);
@@ -189,7 +181,6 @@ namespace EasySave
     {
         foreach (int choice in choices)
         {
-            //Console.WriteLine($"Deleting Slot {choice}");
             Console.WriteLine(string.Format(Properties.ts.DeletingSlot, choice));
 
                 EditSave.Delete(datas[choice - 1].TargetFilePath);
@@ -211,13 +202,11 @@ namespace EasySave
         /// </summary>
     static void DisplayAvailableSlots()
     {
-        //Console.WriteLine("Available save slots:");
         Console.WriteLine(Properties.ts.DisplayAvailableSaveSlots);
             for (int i = 0; i < datas.Length; i++)
         {
             if (datas[i] == null)
             {
-                //Console.WriteLine($"{i + 1}: Empty");
                 Console.WriteLine($"{i + 1}: {Properties.ts.EmptySlot}");
                 }
             else

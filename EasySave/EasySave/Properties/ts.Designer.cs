@@ -115,6 +115,15 @@ namespace EasySave.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error in creation of file.
+        /// </summary>
+        internal static string ErrorCreationFile {
+            get {
+                return ResourceManager.GetString("ErrorCreationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Error: One or more selected slots are empty or non-empty..
         /// </summary>
         internal static string ErrorSelectedSlotsEmptyNonEmpty {

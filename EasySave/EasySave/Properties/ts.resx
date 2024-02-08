@@ -135,6 +135,9 @@
   <data name="EmptySlot" xml:space="preserve">
     <value>Empty</value>
   </data>
+  <data name="ErrorCreationFile" xml:space="preserve">
+    <value>Error in creation of file</value>
+  </data>
   <data name="ErrorSelectedSlotsEmptyNonEmpty" xml:space="preserve">
     <value>Error: One or more selected slots are empty or non-empty.</value>
   </data>
