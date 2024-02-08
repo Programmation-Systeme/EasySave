@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -113,13 +114,26 @@ namespace EasySave
                 {
                     Console.WriteLine("Error in creation of file");
                 }
-                else 
-                { 
-                    datas[choice - 1] = new Data($"Item{choice}", sourceFile, destinationDirectory); 
+                else
+                {
+                    var saveData1 = new Data
+                    {
+                        Name = Path.GetFileName(sourceFile),
+                        SourceFilePath = sourceFile,
+                        TargetFilePath = destinationDirectory,
+                        State = "ACTIVE",
+                        TotalFilesToCopy = 3300,
+                        TotalFilesSize = 1240312777,
+                        NbFilesLeftToDo = 3274,
+                        Progression = 0
+                    };
+                    datas[choice - 1] = saveData1;
+                    Data.Serialize(datas);
+                    viewModel.Log.Indexes = choices;
+                    viewModel.Log.AddLog();
                 }
             }
-            viewModel.Log.Indexes = choices;
-            viewModel.Log.AddLog();
+       
         }
 
         /// <summary>
@@ -159,6 +173,9 @@ namespace EasySave
         {
             //Console.WriteLine($"Saving Slot {choice}");
             Console.WriteLine(string.Format(Properties.ts.SavingSlot, choice));
+                EditSave.Update(datas[choice - 1].SourceFilePath, datas[choice - 1].TargetFilePath);
+                Data.Serialize(datas);
+
             }
     }
         /// <summary>
@@ -171,8 +188,11 @@ namespace EasySave
         {
             //Console.WriteLine($"Deleting Slot {choice}");
             Console.WriteLine(string.Format(Properties.ts.DeletingSlot, choice));
+
+                EditSave.Delete(datas[choice - 1].TargetFilePath);
                 datas[choice - 1] = null;
-        }
+                Data.Serialize(datas);
+            }
     }
         /// <summary>
         /// Return True if the slot is empty
@@ -199,7 +219,7 @@ namespace EasySave
                 }
             else
             {
-                Console.WriteLine($"{i + 1}: {datas[i].FileName}");
+                Console.WriteLine($"{i + 1}: {datas[i].Name}");
             }
         }
         }

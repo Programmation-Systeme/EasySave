@@ -32,9 +32,9 @@ namespace EasySave
         {
             for (int i = 0; i < _indexes.Count; i++) 
             {
-                string NameFile = _model.Datas[_indexes[i]-1].FileName;
-                string SourcePath = _model.Datas[_indexes[i]-1].CurrentSourceFile;
-                string DestinationPath = _model.Datas[_indexes[i] - 1].DestinationFile;
+                string NameFile = _model.Datas[_indexes[i]-1].Name;
+                string SourcePath = _model.Datas[_indexes[i]-1].SourceFilePath;
+                string DestinationPath = _model.Datas[_indexes[i] - 1].TargetFilePath;
                 FileInfo fiSource = new FileInfo(SourcePath);
                 long fileSize = fiSource.Length;
                 //long fileSize = 25;
