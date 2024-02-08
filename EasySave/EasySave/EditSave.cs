@@ -10,6 +10,8 @@ namespace EasySave
     {
         /// <summary>
         /// Creates a new save file and return true when saved.
+        /// Creates a dedicated folder for each saved file, ensuring a structured organizational, preventing data overwrite, facilitating file identification, 
+        /// and enhancing data integrity and traceability. 
         /// </summary>
         /// <param name="sourceFile">The file chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the data will be saved.</param>
@@ -28,7 +30,7 @@ namespace EasySave
             bool destinationDirectoryExists = Directory.Exists(destinationDirectory);
 
             // TODO: destinationFile HAVE TO BE SAVED IN THE DB
-            // Form the destination file path
+            /// For each save file, a corresponding folder is created to neatly organize and store the file.
             string destinationFile = Path.Combine(pathWithId, Path.GetFileName(sourceFile));
             try
             {
