@@ -109,8 +109,8 @@ namespace EasySave
             Console.WriteLine(string.Format(Properties.ts.ChooseSlotDestination, choice));
                 string destinationDirectory = Console.ReadLine();
 
-                bool error = !EditSave.Create(sourceFile, destinationDirectory);
-                if(error) 
+                string destinationFile = EditSave.Create(sourceFile, destinationDirectory);
+                if(destinationFile == null ) 
                 {
                     Console.WriteLine("Error in creation of file");
                 }
@@ -120,7 +120,7 @@ namespace EasySave
                     {
                         Name = Path.GetFileName(sourceFile),
                         SourceFilePath = sourceFile,
-                        TargetFilePath = destinationDirectory,
+                        TargetFilePath = destinationFile,
                         State = "ACTIVE",
                         TotalFilesToCopy = 3300,
                         TotalFilesSize = 1240312777,
@@ -173,8 +173,11 @@ namespace EasySave
         {
             //Console.WriteLine($"Saving Slot {choice}");
             Console.WriteLine(string.Format(Properties.ts.SavingSlot, choice));
-                EditSave.Update(datas[choice - 1].SourceFilePath, datas[choice - 1].TargetFilePath);
-                Data.Serialize(datas);
+            Console.WriteLine(datas[choice - 1].SourceFilePath);
+            Console.WriteLine(datas[choice - 1].TargetFilePath);
+            EditSave.Update(datas[choice - 1].SourceFilePath, datas[choice - 1].TargetFilePath);
+
+            Data.Serialize(datas);
 
             }
     }
