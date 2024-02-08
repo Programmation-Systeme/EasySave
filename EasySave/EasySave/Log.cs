@@ -16,7 +16,7 @@ namespace EasySave
         private float _fileTransferTime;
         internal List<int> Indexes { get => _indexes; set => _indexes = value; }
 
-        private string JsonPath = "D:\\CESI\\ProgSys\\Projet\\Code\\EasySave\\EasySave\\EasySave\\Json\\Logs.json";
+        private string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Json/Logs.json");
         /// <summary>
         /// Entry point of the log class
         /// </summary>
