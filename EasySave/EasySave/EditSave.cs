@@ -32,6 +32,7 @@ namespace EasySave
             string destinationFile = Path.Combine(pathWithId, Path.GetFileName(sourceFile));
             try
             {
+                // We ensure that the future directory we're creating is feasible and verify that files and the destination directory are defined.
                 if (directoryExists == false && sourceFileExists && destinationDirectoryExists)
                 {
                     // Create a new directory and copy the file
@@ -68,6 +69,7 @@ namespace EasySave
 
             try
             {
+                // We check if file and directory exist
                 if (fileExists == true && Path.Exists(directoryPath))
                 {
                     // Delete the file and its containing directory
@@ -103,6 +105,7 @@ namespace EasySave
 
             try
             {
+                // We check if file and directory exist
                 if (fileExists == true && Path.Exists(directoryPath))
                 {
                     // Delete the old file and copy the new one
