@@ -42,7 +42,29 @@ namespace EasySave
             }
         }
 
+        public static void Delete(string destinationFile)
+        {
+            bool fileExists = File.Exists(destinationFile);
+            string directoryPath = Path.GetDirectoryName(destinationFile);
+            Console.WriteLine("directoryPath: " + directoryPath);
 
-
+            try
+            {
+                if (fileExists == true && Path.Exists(directoryPath))
+                {
+                    File.Delete(destinationFile);
+                    Directory.Delete(directoryPath);
+                    Console.WriteLine("File deleted successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("File do not exist");
+                }
+            }
+            catch (IOException iox)
+            {
+                Console.WriteLine("Error: " + iox.Message);
+            }
+        }
     }
 }
