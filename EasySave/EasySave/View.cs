@@ -93,8 +93,20 @@ namespace EasySave
                 string sourceFile = Console.ReadLine();
             //Console.WriteLine($"Destination file path for Slot {choice}: ");
             Console.WriteLine(string.Format(Properties.ts.ChooseSlotDestination, choice));
-                string destinationFile = Console.ReadLine();
-            datas[choice - 1] = new Data($"Item{choice}", sourceFile, destinationFile);
+                string destinationDirectory = Console.ReadLine();
+
+                bool error = !EditSave.Create(sourceFile, destinationDirectory);
+                if(error) 
+                {
+                    Console.WriteLine("Error in creation of file");
+                }
+                else 
+                { 
+                    datas[choice - 1] = new Data($"Item{choice}", sourceFile, destinationDirectory); 
+                }
+
+           
+
         }
     }
 
