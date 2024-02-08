@@ -14,7 +14,11 @@ namespace EasySave
     private static ViewModel viewModel;
     private static Data[] datas;
     private static bool exitRequested = false;
-
+    
+        /// <summary>
+        /// Entry point of the app
+        /// </summary>
+        /// <param name="args"></param>
     static void Main(string[] args)
     {
             //By default, the selected language is english
@@ -28,6 +32,9 @@ namespace EasySave
         }
     }
 
+/// <summary>
+/// Display and set up the languages
+/// </summary>
     static void ChooseLanguages()
     {
         bool continueInput = true;
@@ -58,6 +65,9 @@ namespace EasySave
         }
     }
 
+        /// <summary>
+        /// Allow the user to choose a slot
+        /// </summary>
     static void ChooseSlot()
     {
         DisplayAvailableSlots();
@@ -83,7 +93,10 @@ namespace EasySave
             Console.WriteLine(Properties.ts.ErrorSelectedSlotsEmptyNonEmpty);
             }
     }
-
+        /// <summary>
+        /// If the user choose an empty slot, create a new save with the entered information 
+        /// </summary>
+        /// <param name="choices"></param>
     static void ProcessEmptySlots(List<int> choices)
     {
         foreach (int choice in choices)
@@ -109,6 +122,10 @@ namespace EasySave
             viewModel.Log.AddLog();
         }
 
+        /// <summary>
+        /// If the user choose a non Empty save, save or delete it
+        /// </summary>
+        /// <param name="choices"></param>
     static void ProcessNonEmptySlots(List<int> choices)
     {
         //Console.WriteLine("1 : Save ");
@@ -132,7 +149,10 @@ namespace EasySave
                     break;
         }
     }
-
+        /// <summary>
+        /// Save the slot
+        /// </summary>
+        /// <param name="choices"></param>
     static void SaveSelectedSlots(List<int> choices)
     {
         foreach (int choice in choices)
@@ -141,7 +161,10 @@ namespace EasySave
             Console.WriteLine(string.Format(Properties.ts.SavingSlot, choice));
             }
     }
-
+        /// <summary>
+        /// Delet the slot 
+        /// </summary>
+        /// <param name="choices"></param>
     static void DeleteSelectedSlots(List<int> choices)
     {
         foreach (int choice in choices)
@@ -151,12 +174,18 @@ namespace EasySave
                 datas[choice - 1] = null;
         }
     }
-
+        /// <summary>
+        /// Return True if the slot is empty
+        /// </summary>
+        /// <param name="choice"> The chosen slot </param>
+        /// <returns></returns>
     static bool IsEmpty(int choice)
     {
         return datas[choice] == null;
     }
-
+        /// <summary>
+        /// Display the avaiable slots
+        /// </summary>
     static void DisplayAvailableSlots()
     {
         //Console.WriteLine("Available save slots:");

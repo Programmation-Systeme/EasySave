@@ -17,11 +17,17 @@ namespace EasySave
         internal List<int> Indexes { get => _indexes; set => _indexes = value; }
 
         private string JsonPath = "D:\\CESI\\ProgSys\\Projet\\Code\\EasySave\\EasySave\\EasySave\\Json\\Logs.json";
-
+        /// <summary>
+        /// Entry point of the log class
+        /// </summary>
+        /// <param name="model"></param>
         internal Log(Model model) {
             _model = model;
         }
 
+        /// <summary>
+        /// Write in the log when save
+        /// </summary>
         public void AddLog()
         {
             for (int i = 0; i < _indexes.Count; i++) 
