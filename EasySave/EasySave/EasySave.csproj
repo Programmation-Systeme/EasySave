@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Json\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+   
+  <ItemGroup>
     <Compile Update="Properties\ts.fr.Designer.cs">
       <DependentUpon>ts.fr.resx</DependentUpon>
       <DesignTime>True</DesignTime>
