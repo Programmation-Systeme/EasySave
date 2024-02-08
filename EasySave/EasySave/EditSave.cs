@@ -9,7 +9,7 @@ namespace EasySave
     internal class EditSave
     {
         /// <summary>
-        /// Creates a new save file.
+        /// Creates a new save file and return true when saved.
         /// </summary>
         /// <param name="sourceFile">The file chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the data will be saved.</param>
@@ -24,13 +24,16 @@ namespace EasySave
             
             // Check if the directory already exists
             bool directoryExists = Directory.Exists(pathWithId);
+            bool sourceFileExists = File.Exists(sourceFile);
+            bool destinationDirectoryExists = Directory.Exists(destinationDirectory);
 
             // TODO: destinationFile HAVE TO BE SAVED IN THE DB
             // Form the destination file path
             string destinationFile = Path.Combine(pathWithId, Path.GetFileName(sourceFile));
             try
             {
-                if (directoryExists == false)
+                // We ensure that the future directory we're creating is feasible and verify that files and the destination directory are defined.
+                if (directoryExists == false && sourceFileExists && destinationDirectoryExists)
                 {
                     // Create a new directory and copy the file
                     System.IO.Directory.CreateDirectory(pathWithId);
@@ -52,7 +55,7 @@ namespace EasySave
         }
 
         /// <summary>
-        /// Deletes a specified file.
+        /// Deletes a specified file and return true when deleted.
         /// </summary>
         /// <param name="destinationFile">The file to be deleted.</param>
         public static bool Delete(string destinationFile)
@@ -66,6 +69,7 @@ namespace EasySave
 
             try
             {
+                // We check if file and directory exist
                 if (fileExists == true && Path.Exists(directoryPath))
                 {
                     // Delete the file and its containing directory
@@ -88,7 +92,7 @@ namespace EasySave
         }
 
         /// <summary>
-        /// Updates an existing file with a new one.
+        /// Updates an existing file with a new one and return true when updated.
         /// </summary>
         /// <param name="sourceFile">The file chosen by the user.</param>
         /// <param name="destinationFile">The file to be updated.</param>
@@ -101,6 +105,7 @@ namespace EasySave
 
             try
             {
+                // We check if file and directory exist
                 if (fileExists == true && Path.Exists(directoryPath))
                 {
                     // Delete the old file and copy the new one
