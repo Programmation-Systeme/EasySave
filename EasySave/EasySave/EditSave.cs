@@ -10,7 +10,8 @@ namespace EasySave
     {
         /// <summary>
         /// Creates a new save file and return true when saved.
-        /// To know for each save file we create a folder where we place the file 
+        /// Creates a dedicated folder for each saved file, ensuring a structured organizational, preventing data overwrite, facilitating file identification, 
+        /// and enhancing data integrity and traceability. 
         /// </summary>
         /// <param name="sourceFile">The file chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the data will be saved.</param>
