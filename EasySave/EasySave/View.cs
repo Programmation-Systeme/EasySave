@@ -85,8 +85,10 @@ namespace EasySave
             Console.WriteLine($"Destination file path for Slot {choice}: ");
             string destinationFile = Console.ReadLine();
             datas[choice - 1] = new Data($"Item{choice}", sourceFile, destinationFile);
+            }
+            viewModel.Log.Indexes = choices;
+            viewModel.Log.AddLog();
         }
-    }
 
     static void ProcessNonEmptySlots(List<int> choices)
     {
@@ -97,6 +99,8 @@ namespace EasySave
         {
             case "1":
                 SaveSelectedSlots(choices);
+                viewModel.Log.Indexes = choices;
+                viewModel.Log.AddLog();
                 break;
             case "2":
                 DeleteSelectedSlots(choices);

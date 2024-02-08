@@ -14,9 +14,9 @@ namespace EasySave
         {
             _datas = new Data[5];
             // Initialize data slots (for the moment)
-            _datas[0] = new Data("Item1");
-            _datas[1] = new Data("Item2");
-            _datas[3] = new Data("Item4");
+            _datas[0] = new Data("Item1", "source1", "destination1");
+            _datas[1] = new Data("Item2", "source2", "destination2");
+            _datas[3] = new Data("Item4", "source4", "destination4");
         }
 
         internal Data[] Datas { get => _datas; set => _datas = value; }
