@@ -4,6 +4,20 @@
 
 https://github.com/Programmation-Systeme/EasySave/assets/96482486/8ef5e62f-f34d-4d47-aec7-31de5c281448
 
+## Test Convention Guidelines
+- Use descriptive names for test methods.
+- Follow a consistent naming convention (camel case) for test methods (e.g., `saveFile_WhenFileHasBeenSaved_ReturnsTrue`).
+ 
+## Run Unit TESTS:
+1. PRESS Test.
+
+<img src="https://github.com/Programmation-Systeme/EasySave/assets/96482486/a05990ea-6398-4495-b144-bb8d3239c3d0" alt="image" style="width:500px;height:50px;">
+
+3. THEN Test Explorer.
+4. Finally, click on Run All Tests in the view.
+   
+<img src="https://github.com/Programmation-Systeme/EasySave/assets/96482486/5a728c06-c145-4bb5-9b35-ac4a0d328d60" alt="image" style="width:500px;height:300px;">
+
 ## CODE RULES:
 
 - All variables must be in English; functions and classes should also be in English.
