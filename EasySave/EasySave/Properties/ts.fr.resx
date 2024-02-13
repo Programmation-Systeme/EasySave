@@ -124,7 +124,7 @@
     <value>Chemin de destination pour l'emplacement {0}:</value>
   </data>
   <data name="ChooseSlotSourceFile" xml:space="preserve">
-    <value>Choisir le fichier source pour l'emplacement {0}:</value>
+    <value>Choisir le dossier source pour l'emplacement {0}:</value>
   </data>
   <data name="DeletingSlot" xml:space="preserve">
     <value>Suppression de l'emplacement {0}</value>

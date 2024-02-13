@@ -101,11 +101,11 @@ namespace EasySave
         foreach (int choice in choices)
         {
                 Console.WriteLine(string.Format(Properties.ts.ChooseSlotSourceFile, choice));
-                string sourceFile = Console.ReadLine();
-            Console.WriteLine(string.Format(Properties.ts.ChooseSlotDestination, choice));
+                string sourceDirectory = Console.ReadLine();
+                Console.WriteLine(string.Format(Properties.ts.ChooseSlotDestination, choice));
                 string destinationDirectory = Console.ReadLine();
 
-                string destinationFile = EditSave.Create(sourceFile, destinationDirectory);
+                string destinationFile = EditSave.Create(sourceDirectory, destinationDirectory);
                 if(destinationFile == null ) 
                 {
                     Console.WriteLine(Properties.ts.ErrorCreationFile);
@@ -114,8 +114,8 @@ namespace EasySave
                 {
                     var saveData1 = new Data
                     {
-                        Name = Path.GetFileName(sourceFile),
-                        SourceFilePath = sourceFile,
+                        Name = Path.GetFileName(sourceDirectory),
+                        SourceFilePath = sourceDirectory,
                         TargetFilePath = destinationFile,
                         State = "ACTIVE",
                         TotalFilesToCopy = 3300,
