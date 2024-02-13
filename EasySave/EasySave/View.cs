@@ -125,8 +125,7 @@ namespace EasySave
                     };
                     datas[choice - 1] = saveData1;
                     Data.Serialize(datas);
-                    viewModel.Log.Indexes = choices;
-                    viewModel.Log.AddLog();
+                    viewModel.Log.AddLog(choices);
                 }
             }
        
@@ -145,8 +144,7 @@ namespace EasySave
         {
             case "1":
                 SaveSelectedSlots(choices);
-                viewModel.Log.Indexes = choices;
-                viewModel.Log.AddLog();
+                viewModel.Log.AddLog(choices);
                 break;
             case "2":
                 DeleteSelectedSlots(choices);

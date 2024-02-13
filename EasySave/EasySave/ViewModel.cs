@@ -10,18 +10,18 @@ namespace EasySave
     {
         private Model _model;
 
-        private Log _log;
+        private ILog _log;
          /// <summary>
          /// Entry point of the log
          /// </summary>
         public ViewModel()
         {
             _model = new Model();
-            _log = new Log(_model);
+            _log = new JsonLog(_model);
         }
 
         internal Model Model { get => _model; set => _model = value; }
 
-        internal Log Log { get => _log; set => _log = value; }
+        internal ILog Log { get => _log; set => _log = value; }
     }
 }
