@@ -8,7 +8,22 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Home">
 
-    <Grid>
-        
+    <Grid MaxHeight="500">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Easy Save" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="0,30"/>
+
+        <ScrollViewer Grid.Row="1" Margin="100,0,100,0">
+            <ListBox Name="ItemSelected" SelectionMode="Extended"/>
+        </ScrollViewer>
+
+        <!-- Boutons en bas -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
+            <Button Content="Supprimer" Margin="5"/>
+            <Button Content="Exécuter" Margin="5"/>
+        </StackPanel>
     </Grid>
 </Page>

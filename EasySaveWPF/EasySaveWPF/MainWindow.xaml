@@ -6,7 +6,26 @@
         xmlns:local="clr-namespace:EasySaveWPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <StackPanel>
 
-    </Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top"  Background="LightGray">
+                <MenuItem Header="Home" Click="MenuItem_Home_Click"></MenuItem>
+                <MenuItem Header="Créer" Click="MenuItem_Create_Click"></MenuItem>
+                <MenuItem Header="Option">
+
+                    <MenuItem Header="Langue">
+                        <MenuItem Header="Francais" />
+                        <MenuItem Header="Anglais" />
+                    </MenuItem>
+                    <MenuItem Header="Format des langues">
+                        <MenuItem Header="XML" />
+                        <MenuItem Header="JSON" />
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+
+    </StackPanel>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,32 @@ namespace EasySaveWPF
         public Create()
         {
             InitializeComponent();
+            //folderBrowserDialog = new FolderBrowserDialog();
+        }
+        private void btnOpenFiles_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                foreach (string filePath in openFileDialog.FileNames)
+                    lbFiles.Items.Add(filePath);
+            }
+        }
+        private void btnOpenFiles_Click2(object sender, RoutedEventArgs e)
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.Multiselect = true;
+
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                foreach (string filePath in openFolderDialog.FolderNames)
+                    lbFiles2.Items.Add(filePath);
+            }
+
         }
     }
 }

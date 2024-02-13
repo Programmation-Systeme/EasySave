@@ -8,7 +8,34 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Create">
 
-    <Grid>
-        
+    <Grid MaxHeight="500">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Choisisez des sauvgardes" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Margin="0,30"/>
+
+        <!-- Selection chemain source -->
+        <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <Button Name="btnOpenFile" Click="btnOpenFiles_Click">Open files</Button>
+            </WrapPanel>
+            <ListBox Name="lbFiles" BorderThickness="0"/>
+        </StackPanel>
+
+        <!-- Selection chemain destination -->
+        <StackPanel Orientation="Vertical" Grid.Row="2" HorizontalAlignment="Center">
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <Button Name="btnOpenFile2" Click="btnOpenFiles_Click2">Open files</Button>
+            </WrapPanel>
+            <ListBox Name="lbFiles2" BorderThickness="0"/>
+        </StackPanel>
+
+        <!-- Boutons en bas -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
+            <Button Content="Ajouter" Margin="5"/>
+        </StackPanel>
     </Grid>
 </Page>
