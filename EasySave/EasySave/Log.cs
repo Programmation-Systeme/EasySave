@@ -35,8 +35,8 @@ namespace EasySave
                 string NameFile = _model.Datas[_indexes[i]-1].Name;
                 string SourcePath = _model.Datas[_indexes[i]-1].SourceFilePath;
                 string DestinationPath = _model.Datas[_indexes[i] - 1].TargetFilePath;
-                FileInfo fiSource = new FileInfo(SourcePath);
-                long fileSize = fiSource.Length;
+                DirectoryInfo diSource = new DirectoryInfo(SourcePath);
+                long DirectorySize = CalculateDirectorySize(diSource);
                 //long fileSize = 25;
                 _fileTransferTime = 256;
 
@@ -47,7 +47,7 @@ namespace EasySave
                     Name = NameFile,
                     FileSource = SourcePath,
                     FileDestination = DestinationPath,
-                    FileSize = fileSize,
+                    FileSize = DirectorySize,
                     FileTransferTime = _fileTransferTime,
                     Date = date
                 };
@@ -67,6 +67,26 @@ namespace EasySave
                     Console.WriteLine("Pas trouvé le JSON");
                 }
             }
+        }
+
+        static long CalculateDirectorySize(DirectoryInfo directory)
+        {
+            long size = 0;
+            FileInfo[] files = directory.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                size += file.Length;
+            }
+
+            DirectoryInfo[] subDirectories = directory.GetDirectories();
+
+            foreach (DirectoryInfo subDirectory in subDirectories)
+            {
+                size += CalculateDirectorySize(subDirectory);
+            }
+
+            return size;
         }
     }
 }

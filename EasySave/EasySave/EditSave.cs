@@ -1,77 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace EasySave
 {
     internal class EditSave
     {
         /// <summary>
-        /// Creates a new save file and return true when saved.
-        /// Creates a dedicated folder for each saved file, ensuring a structured organizational, preventing data overwrite, facilitating file identification, 
+        /// Creates a new save folder and returns routes when saved.
+        /// Creates a dedicated folder for each saved folder, ensuring a structured organizational, preventing data overwrite, facilitating folder identification, 
         /// and enhancing data integrity and traceability. 
         /// </summary>
-        /// <param name="sourceFile">The file chosen by the user to be saved.</param>
-        /// <param name="destinationDirectory">The directory where the data will be saved.</param>
-        public static string Create(string sourceFile, string destinationDirectory)
+        /// <param name="sourceFolder">The folder chosen by the user to be saved.</param>
+        /// <param name="destinationDirectory">The directory where the folder will be saved.</param>
+        public static string Create(string sourceFolder, string destinationDirectory)
         {
             // Generate formatted date-time string for unique identifier
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
 
-            // TO KNOW FOR LATER, ID GENERATION: Guid.NewGuid().ToString("N")
-            // Form a dynamic path for the file
-            string pathWithId = Path.Combine(destinationDirectory, System.IO.Path.ChangeExtension(Path.GetFileName(sourceFile), null) + "-" + formattedDateTime);
+            // Form a dynamic path for the folder
+            string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
 
-            // Check if the directory already exists
-            bool directoryExists = Directory.Exists(pathWithId);
-            bool sourceFileExists = File.Exists(sourceFile);
+            // Check if the destination directory already exists
             bool destinationDirectoryExists = Directory.Exists(destinationDirectory);
+            if (!destinationDirectoryExists)
+                return null;
 
-            // TODO: destinationFile HAVE TO BE SAVED IN THE DB
-            /// For each save file, a corresponding folder is created to neatly organize and store the file.
-            string destinationFile = Path.Combine(pathWithId, Path.GetFileName(sourceFile));
             try
             {
-                // We ensure that the future directory we're creating is feasible and verify that files and the destination directory are defined.
-                if (directoryExists == false && sourceFileExists && destinationDirectoryExists)
-                {
-                    // Create a new directory and copy the file
-                    System.IO.Directory.CreateDirectory(pathWithId);
-                    System.IO.File.Copy(sourceFile, destinationFile);
-                    return destinationFile;
-                }
-                else
-                {
-                    return null;
-                }
+                // Create the new directory
+                Directory.CreateDirectory(pathWithId);
+
+                // Copy the entire source folder to the destination
+                Update(sourceFolder, pathWithId);
+
+                return pathWithId;
             }
-            catch (IOException iox)
+            catch (Exception ex)
             {
+                Console.WriteLine("Error occurred: " + ex.Message);
                 return null;
             }
         }
-        /// <summary>
-        /// Deletes a specified file and return true when deleted.
-        /// </summary>
-        /// <param name="destinationFile">The file to be deleted.</param>
-        public static bool Delete(string destinationFile)
-        {
-            // Check if the file exists
-            bool fileExists = File.Exists(destinationFile);
 
-            // Get the directory path of the file
-            string directoryPath = Path.GetDirectoryName(destinationFile);
+        /// <summary>
+        /// Deletes a specified folder and returns true when deleted.
+        /// </summary>
+        /// <param name="destinationFolder">The folder to be deleted.</param>
+        public static bool Delete(string destinationFolder)
+        {
+            // Check if the folder exists
+            bool folderExists = Directory.Exists(destinationFolder);
 
             try
             {
-                // We check if file and directory exist
-                if (fileExists == true && Path.Exists(directoryPath))
+                // Delete the folder if it exists
+                if (folderExists)
                 {
-                    // Delete the file and its containing directory
-                    File.Delete(destinationFile);
-                    Directory.Delete(directoryPath);
+                    Directory.Delete(destinationFolder, true);
                     return true;
                 }
                 else
@@ -79,43 +64,44 @@ namespace EasySave
                     return false;
                 }
             }
-            catch (IOException iox)
+            catch (Exception ex)
             {
+                Console.WriteLine("Error occurred: " + ex.Message);
                 return false;
             }
         }
 
         /// <summary>
-        /// Updates an existing file with a new one and return true when updated.
+        /// Copies the entire contents of a directory to another directory.
         /// </summary>
-        /// <param name="sourceFile">The file chosen by the user.</param>
-        /// <param name="destinationFile">The file to be updated.</param>
-        public static bool Update(string sourceFile, string destinationFile)
+        /// <param name="sourceDir">The source directory to copy from.</param>
+        /// <param name="destDir">The destination directory to copy to.</param>
+        public static void Update(string sourceDir, string destDir)
         {
-            // Check if the destination file exists
-            bool fileExists = File.Exists(destinationFile);
-            string directoryPath = Path.GetDirectoryName(destinationFile);
-            string path = Path.Combine(directoryPath, System.IO.Path.ChangeExtension(Path.GetFileName(sourceFile), null));
+            // Get the subdirectories for the specified directory
+            DirectoryInfo dir = new DirectoryInfo(sourceDir);
 
-            try
+            if (!dir.Exists)
+                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDir);
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it
+            if (!Directory.Exists(destDir))
+                Directory.CreateDirectory(destDir);
+
+            // Get the files in the directory and copy them to the new location
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
             {
-                // We check if file and directory exist
-                if (fileExists == true && Path.Exists(directoryPath))
-                {
-                    // Delete the old file and copy the new one
-                    File.Delete(destinationFile);
-                    System.IO.File.Copy(sourceFile, destinationFile);
-
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                string tempPath = Path.Combine(destDir, file.Name);
+                file.CopyTo(tempPath, false);
             }
-            catch (IOException iox)
+
+            // Copy subdirectories and their contents to the new location
+            foreach (DirectoryInfo subdir in dirs)
             {
-                return false;
+                string tempPath = Path.Combine(destDir, subdir.Name);
+                Update(subdir.FullName, tempPath);
             }
         }
     }

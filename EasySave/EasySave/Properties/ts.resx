@@ -121,10 +121,10 @@
     <value>Choose save slots (e.g., 1;2;3) or 'q' to Quit:</value>
   </data>
   <data name="ChooseSlotDestination" xml:space="preserve">
-    <value>Destination file path for Slot {0}:</value>
+    <value>Destination directory path for Slot {0}:</value>
   </data>
   <data name="ChooseSlotSourceFile" xml:space="preserve">
-    <value>Choose current source file for Slot {0}:</value>
+    <value>Choose current directory for Slot {0}:</value>
   </data>
   <data name="DeletingSlot" xml:space="preserve">
     <value>Deleting Slot {0}</value>
