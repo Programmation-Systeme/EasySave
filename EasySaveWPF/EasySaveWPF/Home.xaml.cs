@@ -23,6 +23,50 @@ namespace EasySaveWPF
         public Home()
         {
             InitializeComponent();
+            PopulateListBox();
+        }
+        private void MenuItem_Open_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigateServices?.Navigate(new Ouvrir());
+        }
+        private void PopulateListBox()
+        {
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
+            ItemSelected.Items.Add("Item 1");
+            ItemSelected.Items.Add("Item 2");
+            ItemSelected.Items.Add("Item 3");
         }
     }
 }

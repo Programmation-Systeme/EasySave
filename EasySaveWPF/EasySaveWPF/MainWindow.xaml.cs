@@ -19,6 +19,16 @@ namespace EasySaveWPF
         public MainWindow()
         {
             InitializeComponent();
+
+            MainFrame.Navigate(new Home());
+        }
+        private void MenuItem_Home_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Home());
+        }
+        private void MenuItem_Create_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Create());
         }
     }
 }
