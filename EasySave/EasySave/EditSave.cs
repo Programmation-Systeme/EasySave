@@ -77,58 +77,69 @@ namespace EasySave
         /// </summary>
         /// <param name="sourceDir">The source directory to copy from.</param>
         /// <param name="destDir">The destination directory to copy to.</param>
-        public static void Update(string sourceDir, string destDir)
+        public static bool Update(string sourceDir, string destDir)
         {
-            // Get the subdirectories for the specified directory
-            DirectoryInfo sourceDirInfo = new DirectoryInfo(sourceDir);
-
-            if (!sourceDirInfo.Exists)
-                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDir);
-
-            DirectoryInfo[] sourceSubDirs = sourceDirInfo.GetDirectories();
-            // If the destination directory doesn't exist, create it
-            if (!Directory.Exists(destDir))
-                Directory.CreateDirectory(destDir);
-
-            // Get the files in the source directory
-            FileInfo[] sourceFiles = sourceDirInfo.GetFiles();
-            foreach (FileInfo sourceFile in sourceFiles)
+            try
             {
-                string destFilePath = Path.Combine(destDir, sourceFile.Name);
+                // Get the subdirectories for the specified directory
+                DirectoryInfo sourceDirInfo = new DirectoryInfo(sourceDir);
 
-                // Check if the corresponding file exists in the destination directory
-                if (File.Exists(destFilePath))
+                if (!sourceDirInfo.Exists)
+                    throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDir);
+
+                DirectoryInfo[] sourceSubDirs = sourceDirInfo.GetDirectories();
+                // If the destination directory doesn't exist, create it
+                if (!Directory.Exists(destDir))
+                    Directory.CreateDirectory(destDir);
+
+                // Get the files in the source directory
+                FileInfo[] sourceFiles = sourceDirInfo.GetFiles();
+                foreach (FileInfo sourceFile in sourceFiles)
                 {
-                    // Check if the source file is deleted
-                    if (!File.Exists(sourceFile.FullName))
+                    string destFilePath = Path.Combine(destDir, sourceFile.Name);
+
+                    // Check if the corresponding file exists in the destination directory
+                    if (File.Exists(destFilePath))
                     {
-                        // If the source file is deleted, delete the corresponding file in the destination directory
-                        File.Delete(destFilePath);
-                        continue; // Move to the next file
+                        // Check if the source file is deleted
+                        if (!File.Exists(sourceFile.FullName))
+                        {
+                            // If the source file is deleted, delete the corresponding file in the destination directory
+                            File.Delete(destFilePath);
+                            continue; // Move to the next file
+                        }
+
+                        // Compare metadata (last write time) of source and destination files
+                        DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
+                        DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
+
+                        // If the metadata differs, update the destination file with the source file
+                        if (sourceLastWriteTime != destLastWriteTime)
+                        {
+                            sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
+                        }
                     }
-
-                    // Compare metadata (last write time) of source and destination files
-                    DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
-                    DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
-
-                    // If the metadata differs, update the destination file with the source file
-                    if (sourceLastWriteTime != destLastWriteTime)
+                    else
                     {
-                        sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
+                        // Destination file doesn't exist, just copy the source file
+                        sourceFile.CopyTo(destFilePath);
                     }
                 }
-                else
-                {
-                    // Destination file doesn't exist, just copy the source file
-                    sourceFile.CopyTo(destFilePath);
-                }
-            }
 
-            // Update subdirectories and their contents recursively
-            foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
+                // Update subdirectories and their contents recursively
+                foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
+                {
+                    string destSubDirPath = Path.Combine(destDir, sourceSubDir.Name);
+                    Update(sourceSubDir.FullName, destSubDirPath);
+                }
+
+                return true;
+            }    
+            catch (Exception ex)
             {
-                string destSubDirPath = Path.Combine(destDir, sourceSubDir.Name);
-                Update(sourceSubDir.FullName, destSubDirPath);
+                // Handle the exception (you might want to log it or perform other actions)
+                Console.WriteLine("An error occurred: " + ex.Message);
+                return false; // Return false indicating error
             }
         }
     }
