@@ -19,7 +19,7 @@ namespace EasySave.Tests
             bool fileSaved = false;
 
             // Assert that the file has not been saved
-            Assert.True(fileSaved);
+            Assert.False(fileSaved);
         }
     }
 }
