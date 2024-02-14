@@ -20,13 +20,8 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Restore NuGet packages
-        run: |
-          cd EasySave/EasySave/EasySave.Tests/obj
-          dotnet restore --no-cache --configfile project.assets.json
-
       - name: Build and Test
         run: |
-          cd EasySave/EasySave/EasySave.Tests
+          cd EasySave/EasySave
           dotnet build --configuration Release --no-restore
-          dotnet test --no-build --verbosity normal --configuration Release EasySave.Tests.csproj
+          dotnet test --no-build --verbosity normal --configuration Release EasySave.sln
