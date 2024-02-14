@@ -71,6 +71,18 @@ namespace EasySaveWPF.ViewModelNS
             }
         }
 
+        private string _errorText;
+
+        public string ErrorText
+        {
+            get { return _errorText; }
+            set
+            {
+                _errorText = value;
+                OnPropertyChanged(nameof(ErrorText));
+            }
+        }
+
         public ICommand ClickCommand { get; private set; }
         public ICommand btnOpenFilesSrc { get; private set; }
         public ICommand btnOpenFilesDest { get; private set; }
@@ -120,7 +132,7 @@ namespace EasySaveWPF.ViewModelNS
         {
             IsMetierSoftwareRunning();
             _log = new Log("D:\\CESI\\Anglais\\Presentation.txt", "feur", 25);
-            _log.AddLog();
+            ErrorText = _log.AddLog();
         }
 
         private void IsMetierSoftwareRunning()
@@ -133,11 +145,11 @@ namespace EasySaveWPF.ViewModelNS
             //Process[] processesExec = Process.GetProcesses();
             if (processes.Length>0)
             {
-                MessageBox.Show("Le logiciel métier est en cours d'exécution. Veuillez le fermer avant de lancer la sauvegarde.", "Attention", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ErrorText = "Le logiciel métier est en cours d'exécution. Veuillez le fermer avant de lancer la sauvegarde.";
             }
             else
             {
-                MessageBox.Show("Le travail de sauvegarde a été lancé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                ErrorText = "Le travail de sauvegarde a été lancé avec succès.";
             }
         }
     }
