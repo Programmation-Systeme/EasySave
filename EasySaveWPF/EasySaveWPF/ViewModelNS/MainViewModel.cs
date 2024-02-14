@@ -9,6 +9,7 @@ using EasySaveWPF.ModelNS;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace EasySaveWPF.ViewModelNS
 {
@@ -47,7 +48,32 @@ namespace EasySaveWPF.ViewModelNS
             }
         }
 
+        private string _openFileSrc;
+        public string OpenFileSrc
+        {
+            get { return _openFileSrc; }
+            set
+            {
+                _openFileSrc = value;
+                OnPropertyChanged(nameof(OpenFileSrc));
+            }
+        }
+
+        private string _openFileDest;
+
+        public string OpenFileDest
+        {
+            get { return _openFileDest; }
+            set
+            {
+                _openFileDest = value;
+                OnPropertyChanged(nameof(OpenFileDest));
+            }
+        }
+
         public ICommand ClickCommand { get; private set; }
+        public ICommand btnOpenFilesSrc { get; private set; }
+        public ICommand btnOpenFilesDest { get; private set; }
 
 
         /// <summary>
@@ -63,6 +89,31 @@ namespace EasySaveWPF.ViewModelNS
                 "Item3",
             };
             ClickCommand = new RelayCommand(ExecuteClickCommand);
+            btnOpenFilesSrc = new RelayCommand(OpenFilesSrc_Click);
+            btnOpenFilesDest = new RelayCommand(OpenFilesDest_Click);
+        }
+
+        private void OpenFilesSrc_Click()
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.Multiselect = false;
+            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                OpenFileSrc = openFolderDialog.FolderName;
+            }
+        }
+
+
+        private void OpenFilesDest_Click()
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.Multiselect = false;
+            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                OpenFileDest = openFolderDialog.FolderName;
+            }
         }
 
         private void ExecuteClickCommand()
