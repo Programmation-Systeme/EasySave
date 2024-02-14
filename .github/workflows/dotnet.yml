@@ -22,6 +22,6 @@ jobs:
 
       - name: Build and Test
         run: |
-          cd EasySave/EasySave.Tests
+          cd EasySave/EasySave/EasySave.Tests
           dotnet build --configuration Release --no-restore
           dotnet test --no-build --verbosity normal --configuration Release EasySave.Tests.csproj
