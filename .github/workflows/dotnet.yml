@@ -23,8 +23,12 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore EasySave/EasySave
 
-      - name: Build and Test
+      - name: Build
         run: |
           cd EasySave/EasySave/EasySave.Tests
           dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: |
+          cd EasySave/EasySave/EasySave.Tests
           dotnet test --no-build --verbosity normal --configuration Release EasySave.Tests.csproj
