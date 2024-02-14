@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EasySaveWPF
+namespace EasySaveWPF.View
 {
     /// <summary>
     /// Interaction logic for Create.xaml
