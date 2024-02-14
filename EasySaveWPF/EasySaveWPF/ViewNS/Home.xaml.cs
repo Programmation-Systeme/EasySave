@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EasySaveWPF.ViewModelNS;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -20,53 +21,37 @@ namespace EasySaveWPF.ViewNS
     /// </summary>
     public partial class Home : Page
     {
+
         public Home()
         {
             InitializeComponent();
-            PopulateListBox();
+            DataContext = new MainViewModel();
         }
-        private void MenuItem_Open_Click(object sender, RoutedEventArgs e)
+
+        private List<string> GetSelectedItems()
         {
-            //NavigateServices?.Navigate(new Ouvrir());
+            List<string> selectedItems = new List<string>();
+
+            // Parcourir les éléments sélectionnés dans le ListBox
+            foreach (var selectedItem in ItemSelected.SelectedItems)
+            {
+                // Ajouter les éléments sélectionnés à la liste
+                selectedItems.Add(selectedItem.ToString());
+            }
+
+            return selectedItems;
         }
-        private void PopulateListBox()
+
+        private void OnClick_Exe(object sender, RoutedEventArgs e)
         {
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
-            ItemSelected.Items.Add("Item 1");
-            ItemSelected.Items.Add("Item 2");
-            ItemSelected.Items.Add("Item 3");
+            List<string> itemsSelected = GetSelectedItems();
+            string result = "";
+
+            foreach (string element in itemsSelected)
+            {
+                result += element + " ";
+            }
+            
         }
     }
 }

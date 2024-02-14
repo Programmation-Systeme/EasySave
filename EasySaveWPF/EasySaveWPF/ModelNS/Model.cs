@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace EasySaveWPF.ModelNS
 {
     public class Model
     {
+
         private Data[] _datas;
         /// <summary>
         /// Entry point of the model
