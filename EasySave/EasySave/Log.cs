@@ -24,7 +24,7 @@ namespace EasySave
     {
         private readonly Model _model;
 
-        private static readonly string XmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Xml/Logs.xml");
+        private static readonly string XmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../LogsDirectory/Logs.xml");
 
         public XmlLog(Model model)
         {
@@ -113,7 +113,7 @@ namespace EasySave
     {
         private readonly Model _model;
 
-        private static readonly string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Json/Logs.json");
+        private static readonly string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../LogsDirectory/Logs.json");
 
         public JsonLog(Model model)
         {

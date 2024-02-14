@@ -17,7 +17,21 @@ namespace EasySave
         public ViewModel()
         {
             _model = new Model();
-            _log = new JsonLog(_model);
+            _log = null;
+        }
+
+        public void setLogsType(string type)
+        {
+            if(type == "Xml")
+            {
+                _log = new XmlLog(_model);
+
+            }
+            else if(type =="Json")
+            {
+                _log = new JsonLog(_model);
+
+            }
         }
 
         internal Model Model { get => _model; set => _model = value; }

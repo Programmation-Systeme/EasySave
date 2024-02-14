@@ -27,6 +27,7 @@ namespace EasySave
         viewModel = new ViewModel();
         datas = viewModel.Model.Datas;
         ChooseLanguages();
+        ChooseLogType();
         while (!exitRequested)
         {
             ChooseSlot();
@@ -66,10 +67,38 @@ namespace EasySave
         }
     }
 
+        static void ChooseLogType()
+        {
+            bool continueInput = true;
+            while (continueInput)
+            {
+                Console.WriteLine("Choose format Logs file: \n  1 : Json \n  2 : Xml \n  q : Quit");
+                string result = Console.ReadLine();
+                if (result.ToLower() == "q")
+                {
+                    Environment.Exit(0);
+                }
+                switch (result)
+                {
+                    case "1":
+                        viewModel.setLogsType("Json");
+                        continueInput = false;
+                        break;
+                    case "2":
+                        viewModel.setLogsType("Xml");
+                        continueInput = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input!");
+                        break;
+                }
+            }
+        }
+
         /// <summary>
         /// Allow the user to choose a slot
         /// </summary>
-    static void ChooseSlot()
+        static void ChooseSlot()
     {
         DisplayAvailableSlots();
             Console.WriteLine(Properties.ts.ChooseSaveSlots);
