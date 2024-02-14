@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EasySaveWPF.View
+namespace EasySaveWPF.ViewNS
 {
     /// <summary>
     /// Interaction logic for Home.xaml
