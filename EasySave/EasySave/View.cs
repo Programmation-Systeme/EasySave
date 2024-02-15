@@ -12,7 +12,7 @@ namespace EasySave
     internal class View
 {
     private static int languages;
-    private static ViewModel viewModel;
+        private static ViewModel viewModel;
     private static Data[] datas;
     private static bool exitRequested = false;
     
@@ -22,16 +22,32 @@ namespace EasySave
         /// <param name="args"></param>
     static void Main(string[] args)
     {
-            //By default, the selected language is english
-        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
-        viewModel = new ViewModel();
-        datas = viewModel.Model.Datas;
-        ChooseLanguages();
-        ChooseLogType();
-        while (!exitRequested)
-        {
-            ChooseSlot();
-        }
+            viewModel = new ViewModel();
+            datas = viewModel.Model.Datas;
+
+            //Launch by cmd line
+            if (args.Length > 0)
+            {
+                string argument = args[0];
+
+                List<int>? list = viewModel.GetSlotsNumbersFromCMD(argument);
+                if(list != null)
+                {
+                    SaveSelectedSlots(list);
+                }
+            }
+            //Normal launch (execution)
+            else
+            {
+                //By default, the selected language is english
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+                ChooseLanguages();
+                ChooseLogType();
+                while (!exitRequested)
+                {
+                    ChooseSlot();
+                }
+            }
     }
 
 /// <summary>
@@ -66,30 +82,34 @@ namespace EasySave
             }
         }
     }
-
+        /// <summary>
+        /// Allow the user to choose log format
+        /// </summary>
         static void ChooseLogType()
         {
             bool continueInput = true;
             while (continueInput)
             {
-                Console.WriteLine("Choose format Logs file: \n  1 : Json \n  2 : Xml \n  q : Quit");
+                Console.WriteLine(Properties.ts.ChooseFormatLogs);
                 string result = Console.ReadLine();
-                if (result.ToLower() == "q")
+                if (result.Equals("q", StringComparison.CurrentCultureIgnoreCase))
                 {
                     Environment.Exit(0);
                 }
                 switch (result)
                 {
                     case "1":
-                        viewModel.setLogsType("Json");
+                        // JSON
+                        viewModel.SetLogsType(1);
                         continueInput = false;
                         break;
                     case "2":
-                        viewModel.setLogsType("Xml");
+                        // XML
+                        viewModel.SetLogsType(2);
                         continueInput = false;
                         break;
                     default:
-                        Console.WriteLine("Invalid input!");
+                        Console.WriteLine(Properties.ts.InvalidInputLogsFormat);
                         break;
                 }
             }
@@ -103,7 +123,7 @@ namespace EasySave
         DisplayAvailableSlots();
             Console.WriteLine(Properties.ts.ChooseSaveSlots);
             string input = Console.ReadLine();
-        if (input.ToLower() == "q")
+        if (input.Equals("q", StringComparison.CurrentCultureIgnoreCase))
         {
             Environment.Exit(0);
         }
@@ -191,14 +211,20 @@ namespace EasySave
     {
         foreach (int choice in choices)
         {
-            Console.WriteLine(string.Format(Properties.ts.SavingSlot, choice));
-            Console.WriteLine(datas[choice - 1].SourceFilePath);
-            Console.WriteLine(datas[choice - 1].TargetFilePath);
-            EditSave.Update(datas[choice - 1].SourceFilePath, datas[choice - 1].TargetFilePath);
+            if (datas[choice - 1] != null)
+            {
+                Console.WriteLine(string.Format(Properties.ts.SavingSlot, choice));
+                Console.WriteLine(datas[choice - 1].SourceFilePath);
+                Console.WriteLine(datas[choice - 1].TargetFilePath);
+                EditSave.Update(datas[choice - 1].SourceFilePath, datas[choice - 1].TargetFilePath);
 
-            Data.Serialize(datas);
-
+                Data.Serialize(datas);
             }
+            else
+                {
+                    Console.WriteLine(string.Format(Properties.ts.ChooseSlotSourceFile, choice));
+                }
+        }
     }
         /// <summary>
         /// Delet the slot 

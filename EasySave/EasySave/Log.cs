@@ -86,7 +86,7 @@ namespace EasySave
         private static void WriteToFile(List<LogEntry> data)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<LogEntry>));
-            using (StreamWriter writer = new StreamWriter(XmlPath))
+            using (StreamWriter writer = new(XmlPath))
             {
                 xmlSerializer.Serialize(writer, data);
             }
@@ -97,10 +97,8 @@ namespace EasySave
             if (File.Exists(XmlPath))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<LogEntry>));
-                using (StreamReader reader = new StreamReader(XmlPath))
-                {
-                    return (List<LogEntry>)xmlSerializer.Deserialize(reader);
-                }
+                using StreamReader reader = new(XmlPath);
+                return (List<LogEntry>)xmlSerializer.Deserialize(reader);
             }
             else
             {
@@ -134,7 +132,7 @@ namespace EasySave
 
                 string date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
-                LogEntry newLogEntry = new LogEntry
+                LogEntry newLogEntry = new()
                 {
                     Name = NameFile,
                     FileSource = SourcePath,

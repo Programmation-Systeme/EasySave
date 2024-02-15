@@ -61,6 +61,18 @@ namespace EasySave.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Choose format Logs file:
+        ///1 : Json
+        ///2 : Xml
+        ///q : Quit.
+        /// </summary>
+        internal static string ChooseFormatLogs {
+            get {
+                return ResourceManager.GetString("ChooseFormatLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Choose save slots (e.g., 1;2;3) or &apos;q&apos; to Quit:.
         /// </summary>
         internal static string ChooseSaveSlots {
@@ -70,7 +82,7 @@ namespace EasySave.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Destination file path for Slot {0}:.
+        ///   Recherche une chaîne localisée semblable à Destination directory path for Slot {0}:.
         /// </summary>
         internal static string ChooseSlotDestination {
             get {
@@ -79,7 +91,7 @@ namespace EasySave.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Choose current source file for Slot {0}:.
+        ///   Recherche une chaîne localisée semblable à Choose current directory for Slot {0}:.
         /// </summary>
         internal static string ChooseSlotSourceFile {
             get {
@@ -133,6 +145,15 @@ namespace EasySave.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Invalid input!.
+        /// </summary>
+        internal static string InvalidInputLogsFormat {
+            get {
+                return ResourceManager.GetString("InvalidInputLogsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Invalid input! Please enter &apos;1&apos; to Save or &apos;2&apos; to Delete..
         /// </summary>
         internal static string InvalidInputSaveDelete {
@@ -156,6 +177,15 @@ namespace EasySave.Properties {
         internal static string OptionSave {
             get {
                 return ResourceManager.GetString("OptionSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Slot {0} is empty !.
+        /// </summary>
+        internal static string SaveSelectedSlotEmpty {
+            get {
+                return ResourceManager.GetString("SaveSelectedSlotEmpty", resourceCulture);
             }
         }
         
