@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using EasySaveWPF.ModelNS;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using System.Diagnostics;
 
 namespace EasySaveWPF.ViewModelNS
 {
@@ -45,6 +47,9 @@ namespace EasySaveWPF.ViewModelNS
             }
         }
 
+        public ICommand ClickCommand { get; private set; }
+
+
         /// <summary>
         /// Entry point of the log
         /// </summary>
@@ -57,12 +62,60 @@ namespace EasySaveWPF.ViewModelNS
                 "Item2",
                 "Item3",
             };
-            _model = new Model();
-            _log = new Log(_model);
+            ClickCommand = new RelayCommand(ExecuteClickCommand);
         }
 
-        internal Model Model { get => _model; set => _model = value; }
+        private void ExecuteClickCommand()
+        {
+            IsMetierSoftwareRunning();
+            _log = new Log("D:\\CESI\\Anglais\\Presentation.txt", "feur", 25);
+            _log.AddLog();
+        }
 
-        internal Log Log { get => _log; set => _log = value; }
+        private void IsMetierSoftwareRunning()
+        {
+            // Nom du processus du logiciel métier (à adapter en fonction de votre cas)
+            string metierSoftwareProcessName = "CalculatorApp";
+
+            // Vérifie si le processus est en cours d'exécution
+            Process[] processes = Process.GetProcessesByName(metierSoftwareProcessName);
+            //Process[] processesExec = Process.GetProcesses();
+            if (processes.Length>0)
+            {
+                MessageBox.Show("Le logiciel métier est en cours d'exécution. Veuillez le fermer avant de lancer la sauvegarde.", "Attention", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                MessageBox.Show("Le travail de sauvegarde a été lancé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+    }
+    public class RelayCommand : ICommand
+    {
+        private readonly Action _execute;
+        private readonly Func<bool> _canExecute;
+
+        public event EventHandler CanExecuteChanged;
+
+        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null || _canExecute();
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute();
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
