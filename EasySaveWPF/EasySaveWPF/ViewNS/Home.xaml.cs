@@ -27,31 +27,5 @@ namespace EasySaveWPF.ViewNS
             InitializeComponent();
             DataContext = new MainViewModel();
         }
-
-        private List<string> GetSelectedItems()
-        {
-            List<string> selectedItems = new List<string>();
-
-            // Parcourir les éléments sélectionnés dans le ListBox
-            foreach (var selectedItem in ItemSelected.SelectedItems)
-            {
-                // Ajouter les éléments sélectionnés à la liste
-                selectedItems.Add(selectedItem.ToString());
-            }
-
-            return selectedItems;
-        }
-
-        private void OnClick_Exe(object sender, RoutedEventArgs e)
-        {
-            List<string> itemsSelected = GetSelectedItems();
-            string result = "";
-
-            foreach (string element in itemsSelected)
-            {
-                result += element + " ";
-            }
-            
-        }
     }
 }

@@ -7,24 +7,29 @@ using System.Threading.Tasks;
 using System.Xml;
 using Newtonsoft.Json;
 using EasySaveWPF.ModelNS;
+using System.Windows;
 
 namespace EasySaveWPF.ViewModelNS
 {
     internal class Log
     {
-        private List<int> _indexes;
-        private Model _model;
-        private float _fileTransferTime;
-        internal List<int> Indexes { get => _indexes; set => _indexes = value; }
+        private string timestamp, saveName, sourcePath, targetPath;
+        private float directorySize, transferTime;
 
-        private string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Json/Logs.json");
+        private string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../ViewModelNS/Logs.json");
         /// <summary>
         /// Entry point of the log class
         /// </summary>
         /// <param name="model"></param>
-        internal Log(Model model)
+        internal Log(string sourcePath, string targetPath, float transferTime)
         {
-            _model = model;
+            this.timestamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            this.saveName = Path.GetFileName(sourcePath);
+            this.sourcePath = sourcePath;
+            this.targetPath = targetPath;
+            this.directorySize = 0;
+            this.transferTime = transferTime;
+            //this.directorySize = CalculateDirectorySize(new DirectoryInfo(sourcePath));
         }
 
         /// <summary>
@@ -32,26 +37,14 @@ namespace EasySaveWPF.ViewModelNS
         /// </summary>
         public void AddLog()
         {
-            for (int i = 0; i < _indexes.Count; i++)
-            {
-                string NameFile = _model.Datas[_indexes[i] - 1].Name;
-                string SourcePath = _model.Datas[_indexes[i] - 1].SourceFilePath;
-                string DestinationPath = _model.Datas[_indexes[i] - 1].TargetFilePath;
-                DirectoryInfo diSource = new DirectoryInfo(SourcePath);
-                long DirectorySize = CalculateDirectorySize(diSource);
-                //long fileSize = 25;
-                _fileTransferTime = 256;
-
-                string date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
                 var newLogEntry = new
                 {
-                    Name = NameFile,
-                    FileSource = SourcePath,
-                    FileDestination = DestinationPath,
-                    FileSize = DirectorySize,
-                    FileTransferTime = _fileTransferTime,
-                    Date = date
+                    Timestamp = this.timestamp,
+                    Name = this.saveName,
+                    sourcePath = this.sourcePath,
+                    targetPath = this.targetPath,
+                    DirSize = this.directorySize,
+                    DirTransferTime = this.transferTime
                 };
                 List<object> existingLogs = new List<object>();
 
@@ -62,13 +55,13 @@ namespace EasySaveWPF.ViewModelNS
                     existingLogs.Add(newLogEntry);
                     string updatedJson = JsonConvert.SerializeObject(existingLogs, Newtonsoft.Json.Formatting.Indented);
                     File.WriteAllText(JsonPath, updatedJson);
-                    Console.WriteLine("Ajout des Logs avec succès");
+                    MessageBox.Show("Ajout des Logs avec succès");
                 }
                 else
                 {
-                    Console.WriteLine("Pas trouvé le JSON");
+                MessageBox.Show(JsonPath + " Pas trouvé le JSON");
                 }
-            }
+            
         }
 
         static long CalculateDirectorySize(DirectoryInfo directory)
