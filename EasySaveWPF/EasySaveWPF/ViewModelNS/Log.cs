@@ -35,7 +35,7 @@ namespace EasySaveWPF.ViewModelNS
         /// <summary>
         /// Write in the log when save
         /// </summary>
-        public void AddLog()
+        public String AddLog()
         {
                 var newLogEntry = new
                 {
@@ -55,11 +55,11 @@ namespace EasySaveWPF.ViewModelNS
                     existingLogs.Add(newLogEntry);
                     string updatedJson = JsonConvert.SerializeObject(existingLogs, Newtonsoft.Json.Formatting.Indented);
                     File.WriteAllText(JsonPath, updatedJson);
-                    MessageBox.Show("Ajout des Logs avec succès");
+                    return "Ajout des Logs avec succès";
                 }
                 else
                 {
-                MessageBox.Show(JsonPath + " Pas trouvé le JSON");
+                return " Pas trouvé le JSON";
                 }
             
         }

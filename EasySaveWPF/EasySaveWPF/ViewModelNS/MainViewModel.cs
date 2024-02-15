@@ -9,6 +9,7 @@ using EasySaveWPF.ModelNS;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace EasySaveWPF.ViewModelNS
 {
@@ -47,7 +48,44 @@ namespace EasySaveWPF.ViewModelNS
             }
         }
 
+        private string _openFileSrc;
+        public string OpenFileSrc
+        {
+            get { return _openFileSrc; }
+            set
+            {
+                _openFileSrc = value;
+                OnPropertyChanged(nameof(OpenFileSrc));
+            }
+        }
+
+        private string _openFileDest;
+
+        public string OpenFileDest
+        {
+            get { return _openFileDest; }
+            set
+            {
+                _openFileDest = value;
+                OnPropertyChanged(nameof(OpenFileDest));
+            }
+        }
+
+        private string _errorText;
+
+        public string ErrorText
+        {
+            get { return _errorText; }
+            set
+            {
+                _errorText = value;
+                OnPropertyChanged(nameof(ErrorText));
+            }
+        }
+
         public ICommand ClickCommand { get; private set; }
+        public ICommand btnOpenFilesSrc { get; private set; }
+        public ICommand btnOpenFilesDest { get; private set; }
 
 
         /// <summary>
@@ -63,13 +101,38 @@ namespace EasySaveWPF.ViewModelNS
                 "Item3",
             };
             ClickCommand = new RelayCommand(ExecuteClickCommand);
+            btnOpenFilesSrc = new RelayCommand(OpenFilesSrc_Click);
+            btnOpenFilesDest = new RelayCommand(OpenFilesDest_Click);
+        }
+
+        private void OpenFilesSrc_Click()
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.Multiselect = false;
+            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                OpenFileSrc = openFolderDialog.FolderName;
+            }
+        }
+
+
+        private void OpenFilesDest_Click()
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.Multiselect = false;
+            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                OpenFileDest = openFolderDialog.FolderName;
+            }
         }
 
         private void ExecuteClickCommand()
         {
             IsMetierSoftwareRunning();
             _log = new Log("D:\\CESI\\Anglais\\Presentation.txt", "feur", 25);
-            _log.AddLog();
+            ErrorText = _log.AddLog();
         }
 
         private void IsMetierSoftwareRunning()
@@ -82,11 +145,11 @@ namespace EasySaveWPF.ViewModelNS
             //Process[] processesExec = Process.GetProcesses();
             if (processes.Length>0)
             {
-                MessageBox.Show("Le logiciel métier est en cours d'exécution. Veuillez le fermer avant de lancer la sauvegarde.", "Attention", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ErrorText = "Le logiciel métier est en cours d'exécution. Veuillez le fermer avant de lancer la sauvegarde.";
             }
             else
             {
-                MessageBox.Show("Le travail de sauvegarde a été lancé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                ErrorText = "Le travail de sauvegarde a été lancé avec succès.";
             }
         }
     }
