@@ -23,12 +23,24 @@ namespace EasySaveWPF.ViewNS
     {
         MainWindow _mainWindow;
         MainViewModel _mainViewModel;
-        public Home(MainWindow mainWindow)
+        PlayBreak _playBreak;
+        public Home(MainWindow mainWindow, PlayBreak playBreak)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
             _mainViewModel = _mainWindow.mainViewModel;
             DataContext = _mainViewModel;
+            _playBreak = playBreak;
+        }
+
+        private void Execut_Click(object sender, RoutedEventArgs e)
+        {
+            if (_playBreak != null && !_playBreak.IsVisible)
+            {
+                _playBreak = new PlayBreak(_mainWindow); // Recreate the window if it's closed
+            }
+
+            _playBreak.Show();
         }
 
     }
