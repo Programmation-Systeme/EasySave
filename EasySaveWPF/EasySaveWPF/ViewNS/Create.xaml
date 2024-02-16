@@ -35,7 +35,7 @@
 
         <!-- Boutons en bas -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
-            <Button Content="Ajouter" Margin="5"/>
+            <Button Name="btnAddSave" Command="{Binding btnAddSave}">Add save</Button>
         </StackPanel>
     </Grid>
 </Page>

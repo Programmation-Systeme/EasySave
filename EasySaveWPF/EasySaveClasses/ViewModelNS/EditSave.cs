@@ -16,7 +16,8 @@ namespace EasySaveClasses.ViewModelNS
         {
             // Generate formatted date-time string for unique identifier
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-
+            if(sourceFolder == null || destinationDirectory == null)
+            { return "source directory or target directory unselected"; }
             // Form a dynamic path for the folder
             string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
 
@@ -32,7 +33,6 @@ namespace EasySaveClasses.ViewModelNS
 
                 // Copy the entire source folder to the destination
                 Update(sourceFolder, pathWithId);
-
                 return pathWithId;
             }
             catch (Exception ex)
