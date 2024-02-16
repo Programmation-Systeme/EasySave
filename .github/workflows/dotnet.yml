@@ -21,7 +21,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Restore dependencies
-        run: dotnet restore EasySaveWPF/EasySave.Tests/EasySave.Tests.csproj
+        run: dotnet restore EasySave/EasySave
 
       - name: Build
         run: |
