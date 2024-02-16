@@ -6,16 +6,21 @@
         xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
         mc:Ignorable="d"
         ResizeMode ="NoResize"
-        WindowStyle="ThreeDBorderWindow"
+        WindowStyle="None"
         FontFamily="Segoe"
-        Title="EasySave - ProSoft" Height="450" Width="800" Icon="assets\icon.jpg"
+        Background="Transparent"
+        AllowsTransparency="True"
+        Title="EasySave - ProSoft" 
+        Height="600" Width="920" 
+        Icon="assets\icon.jpg"
         >
 
     <Window.Resources>
 
     </Window.Resources>
 
-
+    <Border Background="White" CornerRadius="20">
+        
     <StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -140,7 +145,8 @@
                 </TabItem>
             </TabControl>
         </Grid>
-        
 
-    </StackPanel>
+
+        </StackPanel>
+    </Border>
 </Window>
