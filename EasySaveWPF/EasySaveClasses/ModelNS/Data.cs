@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace EasySaveWPF.ModelNS
+namespace EasySaveClasses.ModelNS
 {
     internal class Data
     {

@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using EasySaveWPF.ModelNS;
 using System.Windows;
 
-namespace EasySaveWPF.ViewModelNS
+namespace EasySaveClasses.ViewModelNS
 {
     internal class Log
     {

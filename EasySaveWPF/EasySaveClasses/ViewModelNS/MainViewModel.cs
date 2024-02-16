@@ -5,13 +5,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EasySaveWPF.ModelNS;
+using EasySaveClasses.ModelNS;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
 using Microsoft.Win32;
 
-namespace EasySaveWPF.ViewModelNS
+namespace EasySaveClasses.ViewModelNS
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
@@ -104,6 +104,8 @@ namespace EasySaveWPF.ViewModelNS
             btnOpenFilesSrc = new RelayCommand(OpenFilesSrc_Click);
             btnOpenFilesDest = new RelayCommand(OpenFilesDest_Click);
         }
+
+
 
         private void OpenFilesSrc_Click()
         {
