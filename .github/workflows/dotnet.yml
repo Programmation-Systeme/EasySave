@@ -25,10 +25,10 @@ jobs:
 
       - name: Build
         run: |
-          cd EasySave/EasySave/EasySave.Tests
+          cd EasySaveWPF/EasySaveWPF/EasySave.Tests
           dotnet build --configuration Release --no-restore
 
       - name: Test
         run: |
-          cd EasySave/EasySave/EasySave.Tests
+          cd EasySaveWPF/EasySaveWPF/EasySave.Tests
           dotnet test --no-build --verbosity normal --configuration Release EasySave.Tests.csproj
