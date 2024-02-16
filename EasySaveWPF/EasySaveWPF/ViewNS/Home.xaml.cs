@@ -34,16 +34,6 @@ namespace EasySaveWPF.ViewNS
             _playBreak = playBreak;
         }
 
-        private void Execut_Click(object sender, RoutedEventArgs e)
-        {
-            if (_playBreak != null && !_playBreak.IsVisible)
-            {
-                _playBreak = new PlayBreak(_mainWindow); // Recreate the window if it's closed
-            }
-
-            _playBreak.Show();
-        }
-
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             List<string> list = new List<string>();
