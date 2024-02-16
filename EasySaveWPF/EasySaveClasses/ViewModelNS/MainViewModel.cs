@@ -13,7 +13,7 @@ using System.Diagnostics;
 using Microsoft.Win32;
 using System.IO;
 using System.Linq;
-using System.Windows.Controls;
+using System.Collections;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -43,16 +43,6 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private ObservableCollection<string> _selectedItemss;
-        public ObservableCollection<string> SelectedItemss
-        {
-            get { return _selectedItemss; }
-            set
-            {
-                _selectedItemss = value;
-                OnPropertyChanged(nameof(SelectedItemss));
-            }
-        }
 
         private string _selectedItem;
         public string SelectedItem
@@ -129,6 +119,9 @@ namespace EasySaveClasses.ViewModelNS
 
         public ICommand btnExecutSaves { get; private set; }
         public ICommand btnDeletSaves { get; private set; }
+
+        public ICommand btnOpenFilesSrc { get; private set; }
+        public ICommand btnOpenFilesDest { get; private set; }
         /// <summary>
         /// Entry point of the log
         /// </summary>
@@ -143,11 +136,9 @@ namespace EasySaveClasses.ViewModelNS
             foreach (string save in saveList) { Items.Add(save); }
 
             ClickCommand = new RelayCommand(ExecuteClickCommand);
-            btnOpenFilesSrc = new RelayCommand(OpenFilesSrc_Click);
-            btnOpenFilesDest = new RelayCommand(OpenFilesDest_Click);
             btnAddSave = new RelayCommand(AddSave_Click);
-            btnExecutSaves = new RelayCommand(ExecuteSave_Click);
-            btnDeletSaves = new RelayCommand(DeleteSave_Click);
+           // btnExecutSaves = new RelayCommand(ExecuteSave_Click);
+            //btnDeletSaves = new RelayCommand(DeleteSave_Click);
         }
         //private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         //{
@@ -160,28 +151,7 @@ namespace EasySaveClasses.ViewModelNS
         //    }
         //}
 
-        private void OpenFilesSrc_Click()
-        {
-            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
-            openFolderDialog.Multiselect = false;
-            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (openFolderDialog.ShowDialog() == true)
-            {
-                OpenFileSrc = openFolderDialog.FolderName;
-            }
-        }
-
-
-        private void OpenFilesDest_Click()
-        {
-            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
-            openFolderDialog.Multiselect = false;
-            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (openFolderDialog.ShowDialog() == true)
-            {
-                OpenFileDest = openFolderDialog.FolderName;
-            }
-        }
+      
 
         private void AddSave_Click()
         {
@@ -197,12 +167,12 @@ namespace EasySaveClasses.ViewModelNS
 
         }
 
-        private void ExecuteSave_Click()
+        public void ExecuteSave_Click(IList list)
         {
             List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
 
             // Itérer à travers les éléments sélectionnés
-            foreach (string selectedItemName in SelectedItemss)
+            foreach (string selectedItemName in list)
             {
                 // Utiliser LINQ pour trouver l'élément correspondant dans votre modèle de données
                 ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
@@ -210,43 +180,51 @@ namespace EasySaveClasses.ViewModelNS
                 // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
                 if (selectedSave != null)
                 {
-                    // Ajouter l'élément sélectionné à la liste
-                    selectedSaves.Add(selectedSave);
+                    EditSave.Update(selectedSave.SourceFilePath, selectedSave.TargetFilePath);
                 }
-            }
-
-            // Vous avez maintenant la liste des éléments sélectionnés dans la liste selectedSaves
-            // Vous pouvez les utiliser selon vos besoins ici.
-            foreach (ModelNS.Save save in selectedSaves)
-            {
-                // Faites ce que vous devez faire avec chaque élément sélectionné ici
-                // Par exemple, exécutez le travail sur cet élément, supprimez-le, etc.
             }
         }
 
-        private void DeleteSave_Click()
+        public void DeleteSave_Click(IList list)
         {
-            
-            _model.Datas.Add(new ModelNS.Save(Path.GetFileName(OpenFileSrc), OpenFileSrc, OpenFileDest, "ACTIVE", 3300, 1240312777, 3274, 0));
-            Save.Serialize(_model.Datas);
 
+            List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
 
-            List<ModelNS.Save> filteredItems = new List<ModelNS.Save>();
-
-            // Filtrage des éléments en fonction des noms sélectionnés
-            foreach (string selectedItemName in SelectedItemss)
+            // Itérer à travers les éléments sélectionnés
+            foreach (string selectedItemName in list)
             {
-                // Utilisation de LINQ pour filtrer les éléments dont le nom correspond à un élément de SelectedItems
-                var itemsWithName = _model.Datas.Where(item => item.Name == selectedItemName);
+                // Utiliser LINQ pour trouver l'élément correspondant dans votre modèle de données
+                ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
-                // Ajout des éléments filtrés à la liste de résultats
-                filteredItems.AddRange(itemsWithName);
+                // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
+                if (selectedSave != null)
+                {
+                    EditSave.Delete(selectedSave.TargetFilePath);
+                    _model.Datas.Remove(selectedSave);
+                    Save.Serialize(_model.Datas);
+                }
             }
 
-            foreach (Save save in filteredItems)
-            {
-                EditSave.Delete(save.TargetFilePath);
-            }
+            //_model.Datas.Add(new ModelNS.Save(Path.GetFileName(OpenFileSrc), OpenFileSrc, OpenFileDest, "ACTIVE", 3300, 1240312777, 3274, 0));
+            //Save.Serialize(_model.Datas);
+
+
+            //List<ModelNS.Save> filteredItems = new List<ModelNS.Save>();
+
+            //// Filtrage des éléments en fonction des noms sélectionnés
+            //foreach (string selectedItemName in SelectedItemss)
+            //{
+            //    // Utilisation de LINQ pour filtrer les éléments dont le nom correspond à un élément de SelectedItems
+            //    var itemsWithName = _model.Datas.Where(item => item.Name == selectedItemName);
+
+            //    // Ajout des éléments filtrés à la liste de résultats
+            //    filteredItems.AddRange(itemsWithName);
+            //}
+
+            //foreach (Save save in filteredItems)
+            //{
+            //    EditSave.Delete(save.TargetFilePath);
+            //}
         }
 
         private void ExecuteClickCommand()
@@ -273,6 +251,7 @@ namespace EasySaveClasses.ViewModelNS
                 ErrorText = "Le travail de sauvegarde a été lancé avec succès.";
             }
         }
+
     }
     public class RelayCommand : ICommand
     {
