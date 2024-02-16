@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Newtonsoft.Json;
-using EasySaveWPF.ModelNS;
+using EasySaveClasses.ModelNS;
 using System.Windows;
 
 namespace EasySaveClasses.ViewModelNS

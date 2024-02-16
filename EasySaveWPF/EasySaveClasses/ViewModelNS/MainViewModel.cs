@@ -13,7 +13,7 @@ using Microsoft.Win32;
 
 namespace EasySaveClasses.ViewModelNS
 {
-    internal class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,8 +84,6 @@ namespace EasySaveClasses.ViewModelNS
         }
 
         public ICommand ClickCommand { get; private set; }
-        public ICommand btnOpenFilesSrc { get; private set; }
-        public ICommand btnOpenFilesDest { get; private set; }
 
 
         /// <summary>
@@ -101,33 +99,6 @@ namespace EasySaveClasses.ViewModelNS
                 "Item3",
             };
             ClickCommand = new RelayCommand(ExecuteClickCommand);
-            btnOpenFilesSrc = new RelayCommand(OpenFilesSrc_Click);
-            btnOpenFilesDest = new RelayCommand(OpenFilesDest_Click);
-        }
-
-
-
-        private void OpenFilesSrc_Click()
-        {
-            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
-            openFolderDialog.Multiselect = false;
-            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (openFolderDialog.ShowDialog() == true)
-            {
-                OpenFileSrc = openFolderDialog.FolderName;
-            }
-        }
-
-
-        private void OpenFilesDest_Click()
-        {
-            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
-            openFolderDialog.Multiselect = false;
-            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            if (openFolderDialog.ShowDialog() == true)
-            {
-                OpenFileDest = openFolderDialog.FolderName;
-            }
         }
 
         private void ExecuteClickCommand()

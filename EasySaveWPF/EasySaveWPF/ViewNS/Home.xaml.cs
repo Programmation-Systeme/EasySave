@@ -27,5 +27,6 @@ namespace EasySaveWPF.ViewNS
             InitializeComponent();
             DataContext = new MainViewModel();
         }
+
     }
 }

@@ -20,7 +20,7 @@
         <!-- Selection chemain source -->
         <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnOpenFile" Command="{Binding btnOpenFilesSrc}">Open files</Button>
+                <Button Name="btnOpenFile" Click="OpenFolderSource_Click">Open files</Button>
             </WrapPanel>
             <TextBox Text="{Binding OpenFileSrc, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel>
@@ -28,7 +28,7 @@
         <!-- Selection chemain destination -->
         <StackPanel Orientation="Vertical" Grid.Row="2" HorizontalAlignment="Center">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnOpenFile2" Command="{Binding btnOpenFilesDest}">Open files</Button>
+                <Button Name="btnOpenFile2"  Click="OpenFolderDest_Click">Open files</Button>
             </WrapPanel>
             <TextBox Text="{Binding OpenFileDest, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel>
