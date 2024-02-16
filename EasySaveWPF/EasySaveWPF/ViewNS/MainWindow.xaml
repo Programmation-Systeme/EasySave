@@ -112,16 +112,16 @@
                             <TextBlock  Grid.Row="0"  FontWeight="Bold" FontSize="20"  Text="{DynamicResource SettingsMenuItem}"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
                             <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock Text="{DynamicResource LanguageMenuItem}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-                                <ComboBox Width="100" VerticalAlignment="Center" SelectionChanged="ComboBox_LanguageChanged">
+                                <ComboBox  SelectedIndex="0"  Width="100" VerticalAlignment="Center" SelectionChanged="ComboBox_LanguageChanged">
                                     <ComboBoxItem Content="English"/>
                                     <ComboBoxItem Content="Francais"/>
                                 </ComboBox>
                             </StackPanel>
                             <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock Text="{DynamicResource LogFormatMenuItem}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-                                <ComboBox Width="100" VerticalAlignment="Center">
-                                    <ComboBoxItem Content="XML"/>
+                                <ComboBox SelectedIndex="0" Width="100" VerticalAlignment="Center">
                                     <ComboBoxItem Content="Json"/>
+                                    <ComboBoxItem Content="XML"/>
                                 </ComboBox>
                             </StackPanel>
                         </Grid>
