@@ -40,28 +40,13 @@ namespace EasySaveWPF.ViewNS
                     break;
             }
         }
-
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            var itemsToRemove = new List<CurrentSave>();
-
-            foreach (var selectedItem in listBox.SelectedItems)
+            if (CurrentSave.SelectedItem != null)
             {
-                if (selectedItem is CurrentSave currentSave)
-                {
-                    itemsToRemove.Add(currentSave);
-                }
-            }
-
-            foreach (var itemToRemove in itemsToRemove)
-            {
-                _mainViewModel.CurrentSave.Remove(itemToRemove);
+                _mainViewModel.CurrentSave.Remove((string)CurrentSave.SelectedItem);
             }
         }
 
-        private void CanDelete_Click(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = listBox.SelectedItems.Count > 0;
-        }
     }
 }

@@ -11,13 +11,8 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBox" ItemsSource="{Binding CurrentSave}" Grid.Column="0">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <ListBox x:Name="CurrentSave" SelectedItem="{Binding CurrentSaveSelected}" ItemsSource="{Binding CurrentSave}" Grid.Column="0" />
+
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Button Content="✖"  Grid.Column="1" Margin="5" Click="Delete_Click" CommandParameter="{Binding ElementName=listBox}"/>
             <Button Name="Play" Click="Play_Click" Grid.Column="1" Margin="5"/>

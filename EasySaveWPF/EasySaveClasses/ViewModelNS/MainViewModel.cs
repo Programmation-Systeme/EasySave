@@ -37,6 +37,18 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private string _errorText;
+
+        public string ErrorText
+        {
+            get { return _errorText; }
+            set
+            {
+                _errorText = value;
+                OnPropertyChanged(nameof(ErrorText));
+            }
+        }
+
         private string _selectedItem;
         public string SelectedItem
         {
@@ -71,30 +83,29 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private string _errorText;
 
-        public string ErrorText
-        {
-            get { return _errorText; }
-            set
-            {
-                _errorText = value;
-                OnPropertyChanged(nameof(ErrorText));
-            }
-        }
+        private ObservableCollection<string> _currentSave;
+        private string _currentSaveSelected;
 
-        private ObservableCollection<CurrentSave> _currentSave;
-        public ObservableCollection<CurrentSave> CurrentSave
+        public ObservableCollection<string> CurrentSave
         {
             get { return _currentSave; }
             set
             {
                 _currentSave = value;
-                OnPropertyChanged(nameof(CurrentSave)); // Utilisez le nom de la propriété correct
+                OnPropertyChanged(nameof(CurrentSave));
             }
         }
 
-
+        public string CurrentSaveSelected
+        {
+            get { return _currentSaveSelected; }
+            set
+            {
+                _currentSaveSelected = value;
+                OnPropertyChanged(nameof(CurrentSaveSelected));
+            }
+        }
         public ICommand ClickCommand { get; private set; }
 
 
@@ -105,11 +116,12 @@ namespace EasySaveClasses.ViewModelNS
         /// 
         public MainViewModel()
         {
-            CurrentSave = new ObservableCollection<CurrentSave> {
-                new CurrentSave { Name = "Item 1" },
-                new CurrentSave { Name = "Item 2" },
-                new CurrentSave { Name = "Item 3" }
-            }; ;
+            CurrentSave = new ObservableCollection<string>
+            {
+                "Gaetan1",
+               "Gaetan1Bis",
+               "Gaetan1BisBis",
+            };
             Items = new ObservableCollection<string>
             {
                 "Item1",
@@ -142,37 +154,6 @@ namespace EasySaveClasses.ViewModelNS
             {
                 ErrorText = "Le travail de sauvegarde a été lancé avec succès.";
             }
-        }
-    }
-    public class CurrentSave : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
-        }
-
-        private bool _isSelected;
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set
-            {
-                _isSelected = value;
-                OnPropertyChanged(nameof(IsSelected));
-            }
-        }
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
