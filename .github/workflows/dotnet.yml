@@ -28,17 +28,7 @@ jobs:
           cd EasySaveWPF/EasySaveWPF/EasySave.Tests
           dotnet build --configuration Release --no-restore
 
-      - name: Install reportgenerator tool
-        run: dotnet tool install -g dotnet-reportgenerator-globaltool
-
       - name: Test
         run: |
           cd EasySaveWPF/EasySaveWPF/EasySave.Tests
-          dotnet test --no-build --verbosity normal --configuration Release EasySave.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-          reportgenerator "-reports:EasySave.Tests/coverage.opencover.xml" "-targetdir:TestResults" "-reporttypes:HTML"
-
-      - name: Publish Test Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: TestResults
-          path: EasySaveWPF/EasySaveWPF/EasySave.Tests/TestResults
+          dotnet test --no-build --verbosity normal --configuration Release EasySave.Tests.csproj
