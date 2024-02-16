@@ -19,15 +19,17 @@ namespace EasySaveWPF.ViewNS
     public partial class MainWindow : Window
     {
         public MainViewModel mainViewModel;
+        PlayBreak _playBreak;
         public MainWindow()
         {
             InitializeComponent();
             mainViewModel = new MainViewModel();
-            MainFrame.Navigate(new Home(this));
+            PlayBreak playBreak = new PlayBreak(this);
+            MainFrame.Navigate(new Home(this, playBreak));
         }
         private void MenuItem_Home_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Home(this));
+            MainFrame.Navigate(new Home(this, _playBreak));
         }
         private void MenuItem_Create_Click(object sender, RoutedEventArgs e)
         {

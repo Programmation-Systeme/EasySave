@@ -83,7 +83,20 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private ObservableCollection<CurrentSave> _currentSave;
+        public ObservableCollection<CurrentSave> CurrentSave
+        {
+            get { return _currentSave; }
+            set
+            {
+                _currentSave = value;
+                OnPropertyChanged(nameof(CurrentSave)); // Utilisez le nom de la propriété correct
+            }
+        }
+
+
         public ICommand ClickCommand { get; private set; }
+
 
 
         /// <summary>
@@ -92,6 +105,11 @@ namespace EasySaveClasses.ViewModelNS
         /// 
         public MainViewModel()
         {
+            CurrentSave = new ObservableCollection<CurrentSave> {
+                new CurrentSave { Name = "Item 1" },
+                new CurrentSave { Name = "Item 2" },
+                new CurrentSave { Name = "Item 3" }
+            }; ;
             Items = new ObservableCollection<string>
             {
                 "Item1",
@@ -99,8 +117,8 @@ namespace EasySaveClasses.ViewModelNS
                 "Item3",
             };
             ClickCommand = new RelayCommand(ExecuteClickCommand);
-        }
 
+        }
         private void ExecuteClickCommand()
         {
             IsMetierSoftwareRunning();
@@ -126,6 +144,38 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
     }
+    public class CurrentSave : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(nameof(IsSelected));
+            }
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
