@@ -43,6 +43,17 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private string _errorText;
+
+        public string ErrorText
+        {
+            get { return _errorText; }
+            set
+            {
+                _errorText = value;
+                OnPropertyChanged(nameof(ErrorText));
+            }
+        }
 
         private string _selectedItem;
         public string SelectedItem
@@ -78,38 +89,27 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private string _errorText;
 
-        public string ErrorText
+        private ObservableCollection<string> _currentSave;
+        private string _currentSaveSelected;
+
+        public ObservableCollection<string> CurrentSave
         {
-            get { return _errorText; }
+            get { return _currentSave; }
             set
             {
-                _errorText = value;
-                OnPropertyChanged(nameof(ErrorText));
+                _currentSave = value;
+                OnPropertyChanged(nameof(CurrentSave));
             }
         }
 
-        static void ExecuteWork(string source, string directory)
+        public string CurrentSaveSelected
         {
-            lock (lockObject)
+            get { return _currentSaveSelected; }
+            set
             {
-
-            }
-            bool res = EditSave.Update(source, directory);
-            if (res) 
-            {
-                lock (lockObject)
-                {
-
-                }
-            }
-            else
-            {
-                lock (lockObject)
-                {
-
-                }
+                _currentSaveSelected = value;
+                OnPropertyChanged(nameof(CurrentSaveSelected));
             }
         }
 
@@ -117,17 +117,18 @@ namespace EasySaveClasses.ViewModelNS
 
         public ICommand btnAddSave { get; private set; }
 
-        public ICommand btnExecutSaves { get; private set; }
-        public ICommand btnDeletSaves { get; private set; }
-
-        public ICommand btnOpenFilesSrc { get; private set; }
-        public ICommand btnOpenFilesDest { get; private set; }
         /// <summary>
         /// Entry point of the log
         /// </summary>
         /// 
         public MainViewModel()
         {
+            CurrentSave = new ObservableCollection<string>
+            {
+                "Gaetan1",
+               "Gaetan1Bis",
+               "Gaetan1BisBis",
+            };
             Items = new ObservableCollection<string>
             {
             };
@@ -136,9 +137,7 @@ namespace EasySaveClasses.ViewModelNS
             foreach (string save in saveList) { Items.Add(save); }
 
             ClickCommand = new RelayCommand(ExecuteClickCommand);
-            btnAddSave = new RelayCommand(AddSave_Click);
-           // btnExecutSaves = new RelayCommand(ExecuteSave_Click);
-            //btnDeletSaves = new RelayCommand(DeleteSave_Click);
+
         }
         //private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         //{
@@ -227,6 +226,7 @@ namespace EasySaveClasses.ViewModelNS
             //}
         }
 
+        }
         private void ExecuteClickCommand()
         {
             IsMetierSoftwareRunning();
@@ -253,6 +253,7 @@ namespace EasySaveClasses.ViewModelNS
         }
 
     }
+
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
