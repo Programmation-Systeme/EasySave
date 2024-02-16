@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EasySaveClasses.ViewModelNS;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -17,19 +18,20 @@ namespace EasySaveWPF.ViewNS
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MainViewModel mainViewModel;
         public MainWindow()
         {
             InitializeComponent();
-
-            MainFrame.Navigate(new Home());
+            mainViewModel = new MainViewModel();
+            MainFrame.Navigate(new Home(this));
         }
         private void MenuItem_Home_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Home());
+            MainFrame.Navigate(new Home(this));
         }
         private void MenuItem_Create_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Create());
+            MainFrame.Navigate(new Create(this));
         }
     }
 }

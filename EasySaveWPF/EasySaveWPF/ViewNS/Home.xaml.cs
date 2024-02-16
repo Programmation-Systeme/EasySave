@@ -21,11 +21,14 @@ namespace EasySaveWPF.ViewNS
     /// </summary>
     public partial class Home : Page
     {
-
-        public Home()
+        MainWindow _mainWindow;
+        MainViewModel _mainViewModel;
+        public Home(MainWindow mainWindow)
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            _mainWindow = mainWindow;
+            _mainViewModel = _mainWindow.mainViewModel;
+            DataContext = _mainViewModel;
         }
 
     }

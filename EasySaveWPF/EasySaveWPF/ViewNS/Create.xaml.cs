@@ -23,13 +23,14 @@ namespace EasySaveWPF.ViewNS
     /// </summary>
     public partial class Create : Page
     {
-
-        MainViewModel MVM;
-        public Create()
+        MainWindow _mainWindow;
+        MainViewModel _mainViewModel;
+        public Create(MainWindow mainWindow)
         {
             InitializeComponent();
-            MVM = new MainViewModel();
-            DataContext = MVM;
+            _mainWindow = mainWindow;
+            _mainViewModel = _mainWindow.mainViewModel;
+            DataContext = _mainViewModel;
         }
         private void OpenFolderSource_Click(object sender, RoutedEventArgs e)
         {
@@ -38,7 +39,7 @@ namespace EasySaveWPF.ViewNS
             openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFolderDialog.ShowDialog() == true)
             {
-                MVM.OpenFileSrc = openFolderDialog.FolderName;
+                _mainViewModel.OpenFileSrc = openFolderDialog.FolderName;
             }
         }
         private void OpenFolderDest_Click(object sender, RoutedEventArgs e)
@@ -48,7 +49,7 @@ namespace EasySaveWPF.ViewNS
             openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFolderDialog.ShowDialog() == true)
             {
-                MVM.OpenFileDest = openFolderDialog.FolderName;
+                _mainViewModel.OpenFileDest = openFolderDialog.FolderName;
             }
         }
     }
