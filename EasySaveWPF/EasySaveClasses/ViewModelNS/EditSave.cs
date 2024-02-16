@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace EasySaveWPF.ViewModelNS
+namespace EasySaveClasses.ViewModelNS
 {
     internal class EditSave
     {

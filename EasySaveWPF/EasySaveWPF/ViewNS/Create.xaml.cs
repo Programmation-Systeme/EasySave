@@ -1,4 +1,4 @@
-﻿using EasySaveWPF.ViewModelNS;
+﻿using EasySaveClasses.ViewModelNS;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EasySaveClasses.ViewModelNS;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -22,10 +23,34 @@ namespace EasySaveWPF.ViewNS
     /// </summary>
     public partial class Create : Page
     {
-        public Create()
+        MainWindow _mainWindow;
+        MainViewModel _mainViewModel;
+        public Create(MainWindow mainWindow)
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            _mainWindow = mainWindow;
+            _mainViewModel = _mainWindow.mainViewModel;
+            DataContext = _mainViewModel;
+        }
+        private void OpenFolderSource_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.Multiselect = false;
+            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                _mainViewModel.OpenFileSrc = openFolderDialog.FolderName;
+            }
+        }
+        private void OpenFolderDest_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
+            openFolderDialog.Multiselect = false;
+            openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (openFolderDialog.ShowDialog() == true)
+            {
+                _mainViewModel.OpenFileDest = openFolderDialog.FolderName;
+            }
         }
     }
 }
