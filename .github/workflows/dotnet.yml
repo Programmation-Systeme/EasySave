@@ -21,14 +21,14 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Restore dependencies
-        run: dotnet restore EasySave/EasySaveWPF
+        run: dotnet restore EasySaveWPF
 
       - name: Build
         run: |
-          cd EasySave/EasySaveWPF/EasySave.Tests
+          cd EasySaveWPF/EasySave.Tests
           dotnet build --configuration Release --no-restore
 
       - name: Test
         run: |
-          cd EasySave/EasySaveWPF/EasySave.Tests
+          cd EasySaveWPF/EasySave.Tests
           dotnet test --no-build --verbosity normal --configuration Release EasySave.Tests.csproj
