@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasySaveWPF.ViewNS"
         mc:Ignorable="d"
-        Title="PlayBreak" Height="450" Width="800">
+        Title="Loading" Height="150" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="CurrentSave" SelectedItem="{Binding CurrentSaveSelected}" ItemsSource="{Binding CurrentSave}" Grid.Column="0" />
-
+        <ScrollViewer Grid.Row="1" Grid.Column="0">
+            <ListBox x:Name="CurrentSave" SelectedItem="{Binding CurrentSaveSelected}" ItemsSource="{Binding CurrentSave}"/>
+        </ScrollViewer>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Button Content="✖"  Grid.Column="1" Margin="5" Click="Delete_Click" CommandParameter="{Binding ElementName=listBox}"/>
             <Button Name="Play" Click="Play_Click" Grid.Column="1" Margin="5"/>

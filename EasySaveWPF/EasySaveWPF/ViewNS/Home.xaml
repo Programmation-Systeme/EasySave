@@ -21,7 +21,7 @@
         <!-- Boutons en bas -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
             <Button Content="Supprimer" Margin="5"/>
-            <Button Content="Exécuter" Margin="5"  Command="{Binding ClickCommand}"/>
+            <Button Content="Exécuter" Margin="5" Click="Execut_Click" Command="{Binding ClickCommand}"/>
         </StackPanel>
         <TextBox Grid.Row="3" Text="{Binding ErrorText}" BorderThickness="0" Foreground="Red" FontStyle="Italic"/>
     </Grid>
