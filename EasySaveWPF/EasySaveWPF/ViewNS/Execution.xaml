@@ -14,7 +14,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <ScrollViewer Grid.Row="1" Grid.Column="0">
-            <ListBox x:Name="CurrentSave" SelectedItem="{Binding CurrentSaveSelected}" ItemsSource="{Binding CurrentSave}"/>
+            <ListBox Foreground="Black"  x:Name="CurrentSave" SelectedItem="{Binding CurrentSaveSelected}" ItemsSource="{Binding CurrentSave}"/>
         </ScrollViewer>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Button Content="✖"  Grid.Column="1" Margin="5" Click="Delete_Click" CommandParameter="{Binding ElementName=listBox}"/>
