@@ -6,7 +6,7 @@
         xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
         mc:Ignorable="d"
         ResizeMode ="NoResize"
-        WindowStyle="SingleBorderWindow"
+        WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
         FontFamily="Segoe"
@@ -29,7 +29,7 @@
                 <RowDefinition Height="75"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <TextBlock Text="EasySave"
             VerticalAlignment="Center"
             HorizontalAlignment="Left"
@@ -44,29 +44,24 @@
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
                     IsChecked="True"
-                    Command="{Binding HomeViewCommand}"
+                             Click="RadioButtonHome_Click"
                 />
-                <RadioButton Content="Our Feature"
+                <RadioButton Content="Create"
                     Height="50"
                     Foreground="White"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
+                             Click="RadioButtonCreate_Click"
                 />
                 <RadioButton Content="About Us"
                     Height="50"
                     Foreground="White"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
-                    Command="{Binding AboutUsViewCommand}"
                 />
             </StackPanel>
-
-            <ScrollViewer  Grid.Row="1" Grid.Column="1" Margin="10" HorizontalScrollBarVisibility="Auto">
-                <Frame x:Name="Home"/>
-            </ScrollViewer>
+            <Frame x:Name="Frame" NavigationUIVisibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="10"/>
         </Grid>
-
-
     </Border>
 </Window>
 <!--

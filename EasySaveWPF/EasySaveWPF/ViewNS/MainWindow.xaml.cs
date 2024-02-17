@@ -25,22 +25,22 @@ namespace EasySaveWPF.ViewNS
     public partial class MainWindow : Window
     {
         public MainViewModel mainViewModel;
-        PlayBreak _playBreak;
+        Home home;
+        Create create;
+        PlayBreak playBreak;
+        Execution execution;
         public MainWindow()
         {
             InitializeComponent();
             LoadLanguage_En();
-
-            PlayBreak playBreak = new PlayBreak(this);
-            Home.Navigate(new Home(this, playBreak));
-
-            /* 
-            Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
             mainViewModel = new MainViewModel();
-            PlayBreak playBreak = new PlayBreak(this);
-            Home.Navigate(new Home(this, playBreak));
-            Create.Navigate(new Create(this));
-            PlayBreak.Navigate(new Execution(this));*/
+
+            home = new Home(this);
+            create =  new Create(this);
+            Frame.Navigate(home);
+            Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
+            execution = new Execution(this);
+
         }
         private void ComboBox_LanguageChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -88,6 +88,15 @@ namespace EasySaveWPF.ViewNS
         private void MenuItem_Language_Fr(object sender, RoutedEventArgs e)
         {
             LoadLanguage_Fr();
+        }
+
+        private void RadioButtonHome_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(home);
+        }
+        private void RadioButtonCreate_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(create);
         }
     }
 }
