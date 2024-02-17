@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="EasySave - ProSoft" Height="450" Width="800">
 
     <StackPanel>
 
         <DockPanel>
             <Menu DockPanel.Dock="Top"  Background="LightGray">
-                <MenuItem Header="Home" Click="MenuItem_Home_Click"></MenuItem>
-                <MenuItem Header="Créer" Click="MenuItem_Create_Click"></MenuItem>
-                <MenuItem Header="Option">
+                <MenuItem Header="{DynamicResource HomeMenuItem}" Click="MenuItem_Home_Click"></MenuItem>
+                <MenuItem Header="{DynamicResource CreateMenuItem}" Click="MenuItem_Create_Click"></MenuItem>
+                <MenuItem Header="{DynamicResource SettingsMenuItem}">
 
-                    <MenuItem Header="Langue">
-                        <MenuItem Header="Francais" />
-                        <MenuItem Header="Anglais" />
+                    <MenuItem Header="{DynamicResource LanguageMenuItem}">
+                        <MenuItem Header="Francais" Click="MenuItem_Language_Fr" />
+                        <MenuItem Header="Anglais" Click="MenuItem_Language_En" />
                     </MenuItem>
-                    <MenuItem Header="Format des langues">
+                    <MenuItem Header="{DynamicResource LogFormatMenuItem}">
                         <MenuItem Header="XML" />
                         <MenuItem Header="JSON" />
                     </MenuItem>
