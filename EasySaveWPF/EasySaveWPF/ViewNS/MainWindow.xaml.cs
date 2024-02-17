@@ -30,12 +30,17 @@ namespace EasySaveWPF.ViewNS
         {
             InitializeComponent();
             LoadLanguage_En();
+
+            PlayBreak playBreak = new PlayBreak(this);
+            Home.Navigate(new Home(this, playBreak));
+
+            /* 
             Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
             mainViewModel = new MainViewModel();
             PlayBreak playBreak = new PlayBreak(this);
             Home.Navigate(new Home(this, playBreak));
             Create.Navigate(new Create(this));
-            PlayBreak.Navigate(new Execution(this));
+            PlayBreak.Navigate(new Execution(this));*/
         }
         private void ComboBox_LanguageChanged(object sender, SelectionChangedEventArgs e)
         {
