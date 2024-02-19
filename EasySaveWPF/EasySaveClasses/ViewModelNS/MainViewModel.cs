@@ -158,11 +158,11 @@ namespace EasySaveClasses.ViewModelNS
         public void AddSave()
         {
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-            string directoryPath = EditSave.directoryPath(OpenFileSrc, OpenFileDest);
-            EditSave.Create(OpenFileSrc, directoryPath);
-            _model.Datas.Add(new ModelNS.Save(Path.GetFileName(directoryPath), "ACTIVE", OpenFileSrc, directoryPath, 3300, 1240312777, 3274, 0));
+            Save save = new ModelNS.Save(Path.GetFileName(OpenFileSrc + "_" + formattedDateTime), "ACTIVE", OpenFileSrc, OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "_" + formattedDateTime, 3300, 1240312777, 3274, 0);
+            _model.Datas.Add(save);
+            EditSave.Create(OpenFileSrc, OpenFileDest);
             Save.Serialize(_model.Datas);
-            Items.Add(Path.GetFileName(OpenFileSrc));
+            Items.Add(save.Name);
             //foreach (Save save in _model.Datas)
             //{
             //    Thread newWork = new Thread(() => ExecuteWork(save.SourceFilePath, save.TargetFilePath));
