@@ -44,7 +44,9 @@ namespace EasySaveWPF.ViewNS
         {
             if (CurrentSave.SelectedItem != null)
             {
+
                 _mainViewModel.CurrentSave.Remove((string)CurrentSave.SelectedItem);
+
             }
         }
 

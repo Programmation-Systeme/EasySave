@@ -110,6 +110,7 @@ namespace EasySaveClasses.ModelNS
                         {
                             saveSaveArray.Remove(saveToRemove);
                         }
+                        Serialize(saveSaveArray);
                         // Return the deserialized Save array
                         return saveSaveArray;
                     }

@@ -42,7 +42,7 @@ namespace EasySaveWPF.ViewNS
             _mainViewModel.DeleteSave_Click(list);
         }
 
-        private void ExecutExecute_Click(object sender, RoutedEventArgs e)
+        private void ButtonExecute_Click(object sender, RoutedEventArgs e)
         {
             List<string> list = new List<string>();
             foreach (string element in ItemSelecteds.SelectedItems)
@@ -51,6 +51,11 @@ namespace EasySaveWPF.ViewNS
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
         }

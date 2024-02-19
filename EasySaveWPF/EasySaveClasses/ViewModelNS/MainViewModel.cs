@@ -14,15 +14,17 @@ using Microsoft.Win32;
 using System.IO;
 using System.Linq;
 using System.Collections;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EasySaveClasses.ViewModelNS
 {
     public class MainViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        SynchronizationContext _syncContext = SynchronizationContext.Current;
         List<Thread> workersList = new List<Thread>();
         static object lockObject = new object();
-
+        static Mutex mutex = new Mutex();
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -125,9 +127,6 @@ namespace EasySaveClasses.ViewModelNS
         {
             CurrentSave = new ObservableCollection<string>
             {
-                "Gaetan1",
-               "Gaetan1Bis",
-               "Gaetan1BisBis",
             };
             Items = new ObservableCollection<string>
             {
@@ -149,9 +148,19 @@ namespace EasySaveClasses.ViewModelNS
         //        viewModel.SelectedItems = new ObservableCollection<string>(ItemSelected.SelectedItems.Cast<string>());
         //    }
         //}
-        private void ExecuteWork(Save save)
+
+        private void ExecuteWork(Save save, SynchronizationContext syncContext,int time)
         {
-            EditSave.Update(save.SourceFilePath, save.TargetFilePath);
+            bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath);
+            Thread.Sleep(time*4000);
+
+           syncContext.Post(state =>
+            {
+                mutex.WaitOne();
+                CurrentSave.Remove(save.Name);
+                mutex.ReleaseMutex();
+            }, null);
+               
         }
 
 
@@ -161,7 +170,9 @@ namespace EasySaveClasses.ViewModelNS
             string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
             Save save = new ModelNS.Save(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath);
             _model.Datas.Add(save);
+            CurrentSave.Add(save.Name);
             EditSave.Create(OpenFileSrc, OpenFileDest);
+            CurrentSave.Remove(save.Name);
             Save.Serialize(_model.Datas);
             Items.Add(save.Name);
 
@@ -179,18 +190,23 @@ namespace EasySaveClasses.ViewModelNS
             List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
 
             // Itérer à travers les éléments sélectionnés
+            int i = 0;
+
             foreach (string selectedItemName in list)
             {
+                CurrentSave.Add(selectedItemName);
                 // Utiliser LINQ pour trouver l'élément correspondant dans votre modèle de données
                 ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
                 // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
                 if (selectedSave != null)
                 {
-                    Thread newWork = new Thread(() => ExecuteWork(selectedSave));
+                    i++;
+                    Thread newWork = new Thread(() => ExecuteWork(selectedSave,_syncContext,i));
                     workersList.Add(newWork);
                     newWork.Start();
                 }
+
             }
         }
 
