@@ -5,29 +5,27 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
       mc:Ignorable="d" 
-      Height="650" d:DesignWidth="920"
+      Background="Transparent" 
+      Height="600" d:DesignWidth="920"
       Title="Home">
-    <Page.Resources>
-        <ResourceDictionary Source="Theme/ModernButton.xaml"/>
-    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="240"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="120"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0"  Text="{DynamicResource AddButton}" Foreground="White" FontSize="28" HorizontalAlignment="Left" Margin="0,0,0,10"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource AddButton}" Foreground="White" FontSize="28" HorizontalAlignment="Left" Margin="0,0,0,10"/>
         <ScrollViewer Grid.Row="1" Margin="100,0,100,0"
               VerticalScrollBarVisibility="Auto"
               HorizontalScrollBarVisibility="Auto">
             <ScrollViewer.Resources>
-                <Style TargetType="ScrollBar" BasedOn="{StaticResource ModernScrollBar}" />
+                <Style TargetType="ScrollBar" />
             </ScrollViewer.Resources>
             <ListBox Name="ItemSelecteds" 
              SelectionMode="Extended" 
              ItemsSource="{Binding Items}"
-             Style="{StaticResource ModernListBox}"/>
+             Style="{DynamicResource ModernListBox}"/>
         </ScrollViewer>
 
 
@@ -37,7 +35,11 @@
                 Click="ButtonDelete_Click" 
                 Margin="5"
                 Style="{DynamicResource ModernButton}"/>
-            <Button Content="{DynamicResource ExecuteButton}" Click="ButtonExecute_Click"  Margin="5" Command="{Binding ClickCommand}" Style="{StaticResource ModernButton}"/>
+            <Button Content="{DynamicResource ExecuteButton}" 
+                    Click="ButtonExecute_Click"  
+                    Margin="5" 
+                    Command="{Binding ClickCommand}" 
+                    Style="{DynamicResource ModernButton}"/>
         </StackPanel>
         <TextBox Grid.Row="3" Text="{Binding ErrorText}" BorderThickness="0" Foreground="Red" FontStyle="Italic"/>
     </Grid>

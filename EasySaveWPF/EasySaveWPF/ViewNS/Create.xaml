@@ -16,12 +16,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseSave}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Margin="0,30"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseSave}" Foreground="White" FontSize="28" HorizontalAlignment="Left" Margin="0,0,0,10"/>
 
         <!-- Selection chemin source -->
         <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnOpenFile" Click="OpenFolderSource_Click" Content="{DynamicResource SelectSourceFolderButton}" />
+                <Button Style="{DynamicResource ModernButton}" Name="btnOpenFile" Click="OpenFolderSource_Click" Content="{DynamicResource SelectSourceFolderButton}" />
             </WrapPanel>
             <TextBox Text="{Binding OpenFileSrc, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel>
@@ -29,7 +29,7 @@
         <!-- Selection chemin destination -->
         <StackPanel Orientation="Vertical" Grid.Row="2" HorizontalAlignment="Center">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnOpenFile2"  Click="OpenFolderDest_Click" Content="{DynamicResource SelectDestinationFolderButton}"/>
+                <Button Style="{DynamicResource ModernButton}" Name="btnOpenFile2"  Click="OpenFolderDest_Click" Content="{DynamicResource SelectDestinationFolderButton}"/>
             </WrapPanel>
             <TextBox Text="{Binding OpenFileDest, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel>
@@ -44,7 +44,7 @@
 
         <!-- Boutons en bas -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
-            <Button  Name="btnAddSave" Click="btnAddSave_Click" Margin="5"/>
+            <Button Style="{DynamicResource ModernButton}" Name="btnAddSave" Click="btnAddSave_Click" Margin="5"/>
         </StackPanel>
     </Grid>
 </Page>
