@@ -7,17 +7,27 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
                     <Grid Background="{TemplateBinding Background}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="20,0,0,0"  Foreground="black"/>
+                        <TextBlock Text="{TemplateBinding Property=Content}" VerticalAlignment="Center" Margin="20,0,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                            <Setter Property="Foreground" Value="#87CEFA"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="#87CEFA"/>
-                <Setter Property="Opacity" Value="0.2"/>
-                <Setter Property="Foreground" Value="red"/>
+                <Setter Property="Background" Value="WhiteSmoke"/>
+                <Setter Property="Opacity" Value="0.9"/>
             </Trigger>
         </Style.Triggers>
     </Style>
+
 </ResourceDictionary>
