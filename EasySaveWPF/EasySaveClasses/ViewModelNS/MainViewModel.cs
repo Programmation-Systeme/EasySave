@@ -22,8 +22,9 @@ namespace EasySaveClasses.ViewModelNS
     {
         public event PropertyChangedEventHandler PropertyChanged;
         SynchronizationContext _syncContext = SynchronizationContext.Current;
-        List<Thread> workersList = new List<Thread>();
-        static object lockObject = new object();
+        private Dictionary<string, Thread> saveThreads = new Dictionary<string, Thread>();
+        private Dictionary<string, bool> threadPausedStates = new Dictionary<string, bool>();
+        private object pauseLock = new object();
         static Mutex mutex = new Mutex();
         private void OnPropertyChanged(string propertyName)
         {
@@ -148,19 +149,74 @@ namespace EasySaveClasses.ViewModelNS
         //        viewModel.SelectedItems = new ObservableCollection<string>(ItemSelected.SelectedItems.Cast<string>());
         //    }
         //}
-
-        private void ExecuteWork(Save save, SynchronizationContext syncContext,int time)
+        public void PauseSave(string saveName)
         {
-            bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath);
-            Thread.Sleep(time*10000);
-
-           syncContext.Post(state =>
+            lock (pauseLock)
             {
-                mutex.WaitOne();
-                CurrentSave.Remove(save.Name);
-                mutex.ReleaseMutex();
-            }, null);
-               
+                if (threadPausedStates.ContainsKey(saveName))
+                {
+                    threadPausedStates[saveName] = true;
+                    Monitor.Enter(pauseLock);
+                }
+            }
+        }
+
+
+        public void ResumeSave(string saveName)
+        {
+            lock (pauseLock)
+            {
+                if (threadPausedStates.ContainsKey(saveName))
+                {
+                    threadPausedStates[saveName] = false;
+                    Monitor.PulseAll(pauseLock);
+                }
+            }
+        }
+
+        public void AbortSave(string saveName)
+        {
+            if (saveThreads.ContainsKey(saveName))
+            {
+                Thread thread = saveThreads[saveName];
+                thread.Abort();
+            }
+        }
+
+        private void ExecuteWork(Save save, SynchronizationContext syncContext,int index)
+        {
+
+           
+                lock (pauseLock)
+                {
+                    if (threadPausedStates.ContainsKey(save.Name) && threadPausedStates[save.Name])
+                    {
+                        Monitor.Wait(pauseLock);
+                    }
+                }
+
+                Thread.Sleep(4000);
+
+                bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath);
+
+                lock (pauseLock)
+                {
+                    if (threadPausedStates.ContainsKey(save.Name) && threadPausedStates[save.Name])
+                    {
+                        Monitor.Wait(pauseLock);
+                    }
+                }
+                syncContext.Post(state =>
+                    {
+                        mutex.WaitOne();
+                        CurrentSave.Remove(save.Name);
+                        mutex.ReleaseMutex();
+                    }, null);
+
+      
+                threadPausedStates.Remove(save.Name);
+                saveThreads.Remove(save.Name);
+                   
         }
 
 
@@ -168,20 +224,18 @@ namespace EasySaveClasses.ViewModelNS
         {
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
             string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
-            Save save = new ModelNS.Save(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath);
+            Save save = new ModelNS.Save(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath,1);
             _model.Datas.Add(save);
             CurrentSave.Add(save.Name);
             EditSave.Create(OpenFileSrc, OpenFileDest);
             CurrentSave.Remove(save.Name);
             Save.Serialize(_model.Datas);
             Items.Add(save.Name);
-
-            //foreach (Save save in _model.Datas)
-            //{
-            //    Thread newWork = new Thread(() => ExecuteWork(save));
-            //    workersList.Add(newWork);
-            //    newWork.Start();
-            //}
+            CurrentSave.Add(save.Name);
+            Thread newWork = new Thread(() => ExecuteWork(save, _syncContext, 4));
+            saveThreads.Add(save.Name, newWork);
+            threadPausedStates.Add(save.Name, false);
+            newWork.Start();
 
         }
 
@@ -195,15 +249,14 @@ namespace EasySaveClasses.ViewModelNS
             foreach (string selectedItemName in list)
             {
                 CurrentSave.Add(selectedItemName);
-                // Utiliser LINQ pour trouver l'élément correspondant dans votre modèle de données
                 ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
-
-                // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
                 if (selectedSave != null)
                 {
                     i++;
+
                     Thread newWork = new Thread(() => ExecuteWork(selectedSave,_syncContext,i));
-                    workersList.Add(newWork);
+                    saveThreads.Add(selectedSave.Name, newWork);
+                    threadPausedStates.Add(selectedSave.Name,false);
                     newWork.Start();
                 }
 

@@ -34,7 +34,7 @@ namespace EasySaveClasses.ModelNS
         public Save()
         {
         }
-        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int nbFilesLeftToDo =0, int progression =0)
+        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int progression, int nbFilesLeftToDo =0)
         {
 
             string[] files = Directory.GetFiles(currentSourceFile);
