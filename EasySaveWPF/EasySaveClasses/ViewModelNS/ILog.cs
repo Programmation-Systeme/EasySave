@@ -18,17 +18,16 @@ namespace EasySaveClasses.ViewModelNS
         protected string timestamp, saveName, sourcePath, targetPath;
         protected float directorySize, transferTime;
 
-    internal LogEntry(string sourcePath, string targetPath, float transferTime)
-    {
-        this.timestamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-        this.saveName = Path.GetFileName(sourcePath);
-        this.sourcePath = sourcePath;
-        this.targetPath = targetPath;
-        this.directorySize = 0;
-        this.transferTime = transferTime;
+        internal LogEntry(string sourcePath, string targetPath, float transferTime)
+        {
+            this.timestamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            this.saveName = Path.GetFileName(sourcePath);
+            this.sourcePath = sourcePath;
+            this.targetPath = targetPath;
+            this.directorySize = 0;
+            this.transferTime = transferTime;
+        }
     }
-    }
-
 
     public interface ILog
     {
