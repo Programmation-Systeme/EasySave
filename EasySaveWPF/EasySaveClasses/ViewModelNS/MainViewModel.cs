@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,17 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.IO;
+using System.Linq;
+using System.Collections;
 
 namespace EasySaveClasses.ViewModelNS
 {
     public class MainViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        List<Thread> workersList = new List<Thread>();
+        static object lockObject = new object();
 
         private void OnPropertyChanged(string propertyName)
         {
@@ -106,9 +112,10 @@ namespace EasySaveClasses.ViewModelNS
                 OnPropertyChanged(nameof(CurrentSaveSelected));
             }
         }
+
         public ICommand ClickCommand { get; private set; }
 
-
+        public ICommand btnAddSave { get; private set; }
 
         /// <summary>
         /// Entry point of the log
@@ -124,13 +131,109 @@ namespace EasySaveClasses.ViewModelNS
             };
             Items = new ObservableCollection<string>
             {
-                "Item1",
-                "Item2",
-                "Item3",
             };
+            _model = new Model();
+            List<string> saveList = _model.getSaveList();
+            foreach (string save in saveList) { Items.Add(save); }
+
             ClickCommand = new RelayCommand(ExecuteClickCommand);
 
         }
+        //private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    var item = sender as ListBoxItem;
+        //    if (item != null && item.IsSelected)
+        //    {
+        //        // Assuming your DataContext is MainViewModel
+        //        var viewModel = (MainViewModel)this.DataContext;
+        //        viewModel.SelectedItems = new ObservableCollection<string>(ItemSelected.SelectedItems.Cast<string>());
+        //    }
+        //}
+        private void ExecuteWork(string source, string target)
+        {
+
+        }
+
+
+        public void AddSave()
+        {
+            string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
+            string directoryPath = EditSave.directoryPath(OpenFileSrc, OpenFileDest);
+            EditSave.Create(OpenFileSrc, directoryPath);
+            _model.Datas.Add(new ModelNS.Save(Path.GetFileName(directoryPath), "ACTIVE", OpenFileSrc, directoryPath, 3300, 1240312777, 3274, 0));
+            Save.Serialize(_model.Datas);
+            Items.Add(Path.GetFileName(OpenFileSrc));
+            //foreach (Save save in _model.Datas)
+            //{
+            //    Thread newWork = new Thread(() => ExecuteWork(save.SourceFilePath, save.TargetFilePath));
+            //    workersList.Add(newWork);
+            //    newWork.Start();
+            //}
+
+        }
+
+        public void ExecuteSave_Click(IList list)
+        {
+            List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
+
+            // Itérer à travers les éléments sélectionnés
+            foreach (string selectedItemName in list)
+            {
+                // Utiliser LINQ pour trouver l'élément correspondant dans votre modèle de données
+                ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
+
+                // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
+                if (selectedSave != null)
+                {
+                    EditSave.Update(selectedSave.SourceFilePath, selectedSave.TargetFilePath);
+                }
+            }
+        }
+
+        public void DeleteSave_Click(IList list)
+        {
+
+            List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
+
+            // Itérer à travers les éléments sélectionnés
+            foreach (string selectedItemName in list)
+            {
+                // Utiliser LINQ pour trouver l'élément correspondant dans votre modèle de données
+                ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
+
+                // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
+                if (selectedSave != null)
+                {
+                    EditSave.Delete(selectedSave.TargetFilePath);
+                    _model.Datas.Remove(selectedSave);
+                    Save.Serialize(_model.Datas);
+                    Items.Remove(selectedSave.Name);
+                }
+            }
+
+            //_model.Datas.Add(new ModelNS.Save(Path.GetFileName(OpenFileSrc), OpenFileSrc, OpenFileDest, "ACTIVE", 3300, 1240312777, 3274, 0));
+            //Save.Serialize(_model.Datas);
+
+
+            //List<ModelNS.Save> filteredItems = new List<ModelNS.Save>();
+
+            //// Filtrage des éléments en fonction des noms sélectionnés
+            //foreach (string selectedItemName in SelectedItemss)
+            //{
+            //    // Utilisation de LINQ pour filtrer les éléments dont le nom correspond à un élément de SelectedItems
+            //    var itemsWithName = _model.Datas.Where(item => item.Name == selectedItemName);
+
+            //    // Ajout des éléments filtrés à la liste de résultats
+            //    filteredItems.AddRange(itemsWithName);
+            //}
+
+            //foreach (Save save in filteredItems)
+            //{
+            //    EditSave.Delete(save.TargetFilePath);
+            //}
+        }
+
+        
         private void ExecuteClickCommand()
         {
             IsMetierSoftwareRunning();
@@ -155,6 +258,7 @@ namespace EasySaveClasses.ViewModelNS
                 ErrorText = "Le travail de sauvegarde a été lancé avec succès.";
             }
         }
+
     }
 
     public class RelayCommand : ICommand

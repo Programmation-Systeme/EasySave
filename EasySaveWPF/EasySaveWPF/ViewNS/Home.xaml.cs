@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,5 +44,14 @@ namespace EasySaveWPF.ViewNS
             _playBreak.Show();
         }
 
+        private void btnDeletSaves_Click(object sender, RoutedEventArgs e)
+        {
+            _mainViewModel.DeleteSave_Click(ItemSelecteds.SelectedItems);
+        }
+
+        private void btnExecutSaves_Click(object sender, RoutedEventArgs e)
+        {
+            _mainViewModel.ExecuteSave_Click(ItemSelecteds.SelectedItems);
+        }
     }
 }

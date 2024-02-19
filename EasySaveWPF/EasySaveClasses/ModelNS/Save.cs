@@ -8,9 +8,9 @@ using System.IO;
 
 namespace EasySaveClasses.ModelNS
 {
-    internal class Data
+    internal class Save
     {
-        // Private fields for the data class
+        // Private fields for the Save class
         private string _fileName;
         private string _state;
         private string _currentSourceFile;
@@ -31,12 +31,22 @@ namespace EasySaveClasses.ModelNS
         public string TargetFilePath { get => _destinationFile; set => _destinationFile = value; }
 
         // Constructor
-        public Data()
+        public Save()
         {
         }
-
-        // Method to serialize the Data array to JSON and save it to a file
-        public static void Serialize(Data[] saveDataList)
+        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int totalFilesToCopy, int totalFilesSize, int nbFilesLeftToDo, int progression)
+        {
+            _fileName = fileName;
+            _state = state;
+            _currentSourceFile = currentSourceFile;
+            _destinationFile = destinationFile;
+            _totalFilesToCopy = totalFilesToCopy;
+            _totalFilesSize = totalFilesSize;
+            _nbFilesLeftToDo = nbFilesLeftToDo;
+            _progression = progression;
+        }
+        // Method to serialize the Save array to JSON and save it to a file
+        public static void Serialize(List<Save> dataSaveList)
         {
             string fileName = "SaveData.json";
             try
@@ -46,10 +56,10 @@ namespace EasySaveClasses.ModelNS
                 {
                     WriteIndented = true,
                 };
-                // Serialize the data list to JSON string
-                string jsonData = JsonSerializer.Serialize(saveDataList, options);
-                // Write JSON data to file
-                File.WriteAllText(fileName, jsonData);
+                // Serialize the Save list to JSON string
+                string jsonSave = JsonSerializer.Serialize(dataSaveList, options);
+                // Write JSON Save to file
+                File.WriteAllText(fileName, jsonSave);
             }
             catch (Exception ex)
             {
@@ -58,29 +68,29 @@ namespace EasySaveClasses.ModelNS
             }
         }
 
-        // Method to deserialize JSON data from file back to Data array
-        public static Data[] UnSerialize()
+        // Method to deserialize JSON Save from file back to Save array
+        public static List<Save> UnSerialize()
         {
             string fileName = "SaveData.json";
             // Check if the file exists
             if (File.Exists(fileName))
             {
                 string jsonString = File.ReadAllText(fileName);
-                // Check if JSON data is not empty
+                // Check if JSON Save is not empty
                 if (jsonString != "")
                 {
-                    // Deserialize JSON data to Data array
-                    Data[] saveDataArray = JsonSerializer.Deserialize<Data[]>(jsonString);
+                    // Deserialize JSON Save to Save array
+                    List<Save> saveSaveArray = JsonSerializer.Deserialize<List<Save>>(jsonString);
 
-                    if (saveDataArray != null)
+                    if (saveSaveArray.Any())
                     {
-                        // Return the deserialized data array
-                        return saveDataArray;
+                        // Return the deserialized Save array
+                        return saveSaveArray;
                     }
                 }
             }
-            // If file doesn't exist or JSON data is empty, create a new Data array, serialize it and return it
-            Data[] saveTab = new Data[5];
+            // If file doesn't exist or JSON Save is empty, create a new Save array, serialize it and return it
+            List<Save> saveTab = new List<Save>();
             Serialize(saveTab);
             return saveTab;
         }

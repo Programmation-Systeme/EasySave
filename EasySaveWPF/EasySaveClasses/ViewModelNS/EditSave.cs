@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace EasySaveClasses.ViewModelNS
@@ -12,11 +13,31 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         /// <param name="sourceFolder">The folder chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the folder will be saved.</param>
-        public static string Create(string sourceFolder, string destinationDirectory)
+        
+        public static string Create(string sourceFolder, string pathWithId)
+        {
+            try
+            {
+                // Create the new directory
+                Directory.CreateDirectory(pathWithId);
+
+                // Copy the entire source folder to the destination
+                Update(sourceFolder, pathWithId);
+                return pathWithId;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error occurred: " + ex.Message);
+                return null;
+            }
+        }
+
+        public static string directoryPath(string sourceFolder, string destinationDirectory)
         {
             // Generate formatted date-time string for unique identifier
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-
+            if (sourceFolder == null || destinationDirectory == null)
+            { return null; }
             // Form a dynamic path for the folder
             string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
 
@@ -25,21 +46,7 @@ namespace EasySaveClasses.ViewModelNS
             if (!destinationDirectoryExists)
                 return null;
 
-            try
-            {
-                // Create the new directory
-                Directory.CreateDirectory(pathWithId);
-
-                // Copy the entire source folder to the destination
-                Update(sourceFolder, pathWithId);
-
-                return pathWithId;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error occurred: " + ex.Message);
-                return null;
-            }
+            return pathWithId;
         }
 
         /// <summary>

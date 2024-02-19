@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Easy Save" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="0,30"/>
         <ScrollViewer Grid.Row="1" Margin="100,0,100,0">
-            <ListBox Name="ItemSelected" SelectedItem="{Binding SelectedItem}" SelectionMode="Extended" ItemsSource="{Binding Items}"/>
+            <ListBox Name="ItemSelecteds" SelectionMode="Extended" ItemsSource="{Binding Items}" />
         </ScrollViewer>
         <!-- Boutons en bas -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
