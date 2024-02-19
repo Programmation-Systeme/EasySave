@@ -21,5 +21,18 @@ namespace EasySave.Tests
             // Assert that the file has not been saved
             Assert.False(fileSaved);
         }
+
+        [Fact]
+        public void check_FileName_Example()
+        {
+            // Simulate a scenario where the file name is "Hi"
+            string expectedFileName = "Hi";
+
+            // Retrieve the actual file name
+            string actualFileName = "Hi";
+
+            // Assert that the actual file name matches the expected file name
+            Assert.Equal(expectedFileName, actualFileName);
+        }
     }
 }
