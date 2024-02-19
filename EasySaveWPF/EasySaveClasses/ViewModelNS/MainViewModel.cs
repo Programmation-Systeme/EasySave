@@ -91,6 +91,17 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private int _saveType;
+
+        public int SaveType
+        {
+            get { return _saveType; }
+            set
+            {
+                _saveType = value;
+            }
+        }
+
 
         private ObservableCollection<string> _currentSave;
         private string _currentSaveSelected;
@@ -151,7 +162,7 @@ namespace EasySaveClasses.ViewModelNS
 
         private void ExecuteWork(Save save, SynchronizationContext syncContext,int time)
         {
-            bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath);
+            bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType);
             Thread.Sleep(time*10000);
 
            syncContext.Post(state =>
@@ -171,7 +182,7 @@ namespace EasySaveClasses.ViewModelNS
             Save save = new ModelNS.Save(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath);
             _model.Datas.Add(save);
             CurrentSave.Add(save.Name);
-            EditSave.Create(OpenFileSrc, OpenFileDest);
+            EditSave.Create(OpenFileSrc, OpenFileDest, SaveType);
             CurrentSave.Remove(save.Name);
             Save.Serialize(_model.Datas);
             Items.Add(save.Name);
@@ -259,7 +270,7 @@ namespace EasySaveClasses.ViewModelNS
             IsMetierSoftwareRunning();
             _log = new Log("D:\\CESI\\Anglais\\Presentation.txt", "feur", 25);
             ErrorText = _log.AddLog();
-            bool save = EditSave.Update("D:\\CESI\\Anglais\\Presentation.txt", "D:\\CESI\\Anglais");
+            bool save = EditSave.Update("D:\\CESI\\Anglais\\Presentation.txt", "D:\\CESI\\Anglais", 1);
         }
 
         private void IsMetierSoftwareRunning()

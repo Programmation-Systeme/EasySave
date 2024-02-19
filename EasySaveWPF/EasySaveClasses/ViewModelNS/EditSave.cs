@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.AccessControl;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -16,11 +17,11 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         /// <param name="sourceFolder">The folder chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the folder will be saved.</param>
-        public static string Create(string sourceFolder, string destinationDirectory)
+        public static string Create(string sourceFolder, string destinationDirectory, int saveType)
         {
             // Generate formatted date-time string for unique identifier
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-            if(sourceFolder == null || destinationDirectory == null)
+            if (sourceFolder == null || destinationDirectory == null)
             { return "source directory or target directory unselected"; }
             // Form a dynamic path for the folder
             string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
@@ -36,7 +37,7 @@ namespace EasySaveClasses.ViewModelNS
                 Directory.CreateDirectory(pathWithId);
 
                 // Copy the entire source folder to the destination
-                Update(sourceFolder, pathWithId);
+                Update(sourceFolder, pathWithId, saveType);
                 return pathWithId;
             }
             catch (Exception ex)
@@ -81,7 +82,7 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         /// <param name="sourceDir">The source directory to copy from.</param>
         /// <param name="destDir">The destination directory to copy to.</param>
-        public static bool Update(string sourceDir, string destDir)
+        public static bool Update(string sourceDir, string destDir, int saveType)
         {
             try
             {
@@ -96,23 +97,39 @@ namespace EasySaveClasses.ViewModelNS
                 if (!Directory.Exists(destDir))
                     Directory.CreateDirectory(destDir);
 
+                DirectoryInfo destDirInfo = new DirectoryInfo(destDir);
+
                 // Get the files in the source directory
                 FileInfo[] sourceFiles = sourceDirInfo.GetFiles();
+                FileInfo[] destFiles = destDirInfo.GetFiles();
+
+                List<string> sourceFilesNames = [];
+
+                foreach (FileInfo sourceFile in sourceFiles)
+                {
+                    sourceFilesNames.Add(sourceFile.Name);
+                }
+
+                foreach (FileInfo destFile in destFiles)
+                {
+                    if (!sourceFilesNames.Contains(destFile.Name))
+                    {
+                        File.Delete(destFile.FullName);
+                    }
+                }
+
                 foreach (FileInfo sourceFile in sourceFiles)
                 {
                     string destFilePath = Path.Combine(destDir, sourceFile.Name);
 
-                    // Check if the corresponding file exists in the destination directory
-                    if (File.Exists(destFilePath))
+                    // Full save
+                    if (saveType == 1)
                     {
-                        // Check if the source file is deleted
-                        if (!File.Exists(sourceFile.FullName))
-                        {
-                            // If the source file is deleted, delete the corresponding file in the destination directory
-                            File.Delete(destFilePath);
-                            continue; // Move to the next file
-                        }
-
+                        sourceFile.CopyTo(destFilePath, true);
+                    }
+                    // Differential save
+                    else if (saveType == 2)
+                    {
                         // Compare metadata (last write time) of source and destination files
                         DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
                         DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
@@ -123,15 +140,15 @@ namespace EasySaveClasses.ViewModelNS
                             sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
                         }
                     }
+                    // If saveType is not full or differential, error
                     else
                     {
-                        // Destination file doesn't exist, just copy the source file
-                        sourceFile.CopyTo(destFilePath);
+                        return false;
                     }
                 }
-                DirectoryInfo destDirInfo = new DirectoryInfo(destDir);
+                destDirInfo = new DirectoryInfo(destDir);
                 DirectoryInfo[] destSubDirs = destDirInfo.GetDirectories();
-                FileInfo[] destFiles = destDirInfo.GetFiles();
+                destFiles = destDirInfo.GetFiles();
                 // encrypt
                 List<string> listFilesPath = [];
                 foreach (FileInfo file in destFiles)
@@ -144,11 +161,10 @@ namespace EasySaveClasses.ViewModelNS
                 foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
                 {
                     string destSubDirPath = Path.Combine(destDir, sourceSubDir.Name);
-                    Update(sourceSubDir.FullName, destSubDirPath);
+                    Update(sourceSubDir.FullName, destSubDirPath, saveType);
                 }
-
-;                return true;
-            }    
+                return true;
+            }
             catch (Exception ex)
             {
                 // Handle the exception (you might want to log it or perform other actions)

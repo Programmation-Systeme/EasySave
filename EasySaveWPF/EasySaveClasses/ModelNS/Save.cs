@@ -19,6 +19,7 @@ namespace EasySaveClasses.ModelNS
         private int _totalFilesSize;
         private int _nbFilesLeftToDo;
         private int _progression;
+        private int _saveType;
 
         // Properties for accessing the private fields
         public string State { get => _state; set => _state = value; }
@@ -29,6 +30,8 @@ namespace EasySaveClasses.ModelNS
         public string Name { get => _fileName; set => _fileName = value; }
         public string SourceFilePath { get => _currentSourceFile; set => _currentSourceFile = value; }
         public string TargetFilePath { get => _destinationFile; set => _destinationFile = value; }
+
+        public int SaveType { get => _saveType; set => _saveType = value; }
 
         // Constructor
         public Save()
