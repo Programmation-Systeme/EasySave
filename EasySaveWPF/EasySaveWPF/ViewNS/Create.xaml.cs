@@ -1,20 +1,8 @@
 ﻿using EasySaveClasses.ViewModelNS;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using EasySaveClasses.ViewModelNS;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -50,6 +38,21 @@ namespace EasySaveWPF.ViewNS
             if (openFolderDialog.ShowDialog() == true)
             {
                 _mainViewModel.OpenFileDest = openFolderDialog.FolderName;
+            }
+        }
+        private void SaveTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (saveTypeComboBox.SelectedItem == null)
+                return;
+
+            ComboBoxItem selectedItem = (ComboBoxItem)saveTypeComboBox.SelectedItem;
+            if (selectedItem.Content.ToString() == "Différentiel")
+            {
+                _mainViewModel.SaveType = 1;
+            }
+            else if (selectedItem.Content.ToString() == "Complète")
+            {
+                _mainViewModel.SaveType = 2;
             }
         }
 
