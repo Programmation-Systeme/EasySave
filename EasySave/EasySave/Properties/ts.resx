@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChooseFormatLogs" xml:space="preserve">
+    <value>Choose format Logs file:
+1 : Json
+2 : Xml
+q : Quit</value>
+  </data>
   <data name="ChooseSaveSlots" xml:space="preserve">
     <value>Choose save slots (e.g., 1;2;3) or 'q' to Quit:</value>
   </data>
@@ -141,6 +147,9 @@
   <data name="ErrorSelectedSlotsEmptyNonEmpty" xml:space="preserve">
     <value>Error: One or more selected slots are empty or non-empty.</value>
   </data>
+  <data name="InvalidInputLogsFormat" xml:space="preserve">
+    <value>Invalid input!</value>
+  </data>
   <data name="InvalidInputSaveDelete" xml:space="preserve">
     <value>Invalid input! Please enter '1' to Save or '2' to Delete.</value>
   </data>
@@ -149,6 +158,9 @@
   </data>
   <data name="OptionSave" xml:space="preserve">
     <value>1 : Save</value>
+  </data>
+  <data name="SaveSelectedSlotEmpty" xml:space="preserve">
+    <value>Slot {0} is empty !</value>
   </data>
   <data name="SavingSlot" xml:space="preserve">
     <value>Saving Slot {0}</value>

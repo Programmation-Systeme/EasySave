@@ -1,75 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.IO;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
-
 
 namespace EasySave
 {
-    internal class Log
+    public class LogEntry
     {
-        private List<int> _indexes;
-        private Model _model;
-        private float _fileTransferTime;
-        internal List<int> Indexes { get => _indexes; set => _indexes = value; }
+        public string Name { get; set; }
+        public string FileSource { get; set; }
+        public string FileDestination { get; set; }
+        public long FileSize { get; set; }
+        public float FileTransferTime { get; set; }
+        public string Date { get; set; }
+    }
+    public interface ILog
+    {
+        void AddLog(List<int> indexes);
+    }
 
-        private string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Json/Logs.json");
-        /// <summary>
-        /// Entry point of the log class
-        /// </summary>
-        /// <param name="model"></param>
-        internal Log(Model model) {
+    internal class XmlLog : ILog
+    {
+        private readonly Model _model;
+
+        private static readonly string XmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../LogsDirectory/Logs.xml");
+
+        public XmlLog(Model model)
+        {
             _model = model;
         }
 
-        /// <summary>
-        /// Write in the log when save
-        /// </summary>
-        public void AddLog()
+        public void AddLog(List<int> indexes)
         {
-            for (int i = 0; i < _indexes.Count; i++) 
+            foreach (int index in indexes)
             {
-                string NameFile = _model.Datas[_indexes[i]-1].Name;
-                string SourcePath = _model.Datas[_indexes[i]-1].SourceFilePath;
-                string DestinationPath = _model.Datas[_indexes[i] - 1].TargetFilePath;
+                string NameFile = _model.Datas[index - 1].Name;
+                string SourcePath = _model.Datas[index - 1].SourceFilePath;
+                string DestinationPath = _model.Datas[index - 1].TargetFilePath;
+
                 DirectoryInfo diSource = new DirectoryInfo(SourcePath);
                 long DirectorySize = CalculateDirectorySize(diSource);
-                //long fileSize = 25;
-                _fileTransferTime = 256;
+                float fileTransferTime = 256;
 
                 string date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
-                var newLogEntry = new
+                LogEntry newLogEntry = new LogEntry
                 {
                     Name = NameFile,
                     FileSource = SourcePath,
                     FileDestination = DestinationPath,
                     FileSize = DirectorySize,
-                    FileTransferTime = _fileTransferTime,
+                    FileTransferTime = fileTransferTime,
                     Date = date
                 };
-                List<object> existingLogs = new List<object>();
 
-                if (File.Exists(JsonPath))
-                {
-                    string jsonContent = File.ReadAllText(JsonPath);
-                    existingLogs = JsonConvert.DeserializeObject<List<object>>(jsonContent);
-                    existingLogs.Add(newLogEntry);
-                    string updatedJson = JsonConvert.SerializeObject(existingLogs, Formatting.Indented);
-                    File.WriteAllText(JsonPath, updatedJson);
-                    Console.WriteLine("Ajout des Logs avec succès");
-                }
-                else
-                {
-                    Console.WriteLine("Pas trouvé le JSON");
-                }
+                List<LogEntry> existingLogs = ReadFromFile();
+                existingLogs.Add(newLogEntry);
+                WriteToFile(existingLogs);
+
+                Console.WriteLine("Logs ajoutés avec succès");
             }
         }
 
-        static long CalculateDirectorySize(DirectoryInfo directory)
+        private static long CalculateDirectorySize(DirectoryInfo directory)
         {
             long size = 0;
             FileInfo[] files = directory.GetFiles();
@@ -87,6 +81,112 @@ namespace EasySave
             }
 
             return size;
+        }
+
+        private static void WriteToFile(List<LogEntry> data)
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<LogEntry>));
+            using (StreamWriter writer = new(XmlPath))
+            {
+                xmlSerializer.Serialize(writer, data);
+            }
+        }
+
+        private static List<LogEntry> ReadFromFile()
+        {
+            if (File.Exists(XmlPath))
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<LogEntry>));
+                using StreamReader reader = new(XmlPath);
+                return (List<LogEntry>)xmlSerializer.Deserialize(reader);
+            }
+            else
+            {
+                return new List<LogEntry>();
+            }
+        }
+    }
+
+    internal class JsonLog : ILog
+    {
+        private readonly Model _model;
+
+        private static readonly string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../LogsDirectory/Logs.json");
+
+        public JsonLog(Model model)
+        {
+            _model = model;
+        }
+
+        public void AddLog(List<int> indexes)
+        {
+            foreach (int index in indexes)
+            {
+                string NameFile = _model.Datas[index - 1].Name;
+                string SourcePath = _model.Datas[index - 1].SourceFilePath;
+                string DestinationPath = _model.Datas[index - 1].TargetFilePath;
+
+                DirectoryInfo diSource = new DirectoryInfo(SourcePath);
+                long DirectorySize = CalculateDirectorySize(diSource);
+                float fileTransferTime = 256;
+
+                string date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+
+                LogEntry newLogEntry = new()
+                {
+                    Name = NameFile,
+                    FileSource = SourcePath,
+                    FileDestination = DestinationPath,
+                    FileSize = DirectorySize,
+                    FileTransferTime = fileTransferTime,
+                    Date = date
+                };
+
+                List<LogEntry> existingLogs = ReadFromFile();
+                existingLogs.Add(newLogEntry);
+                WriteToFile(existingLogs);
+
+                Console.WriteLine("Logs ajoutés avec succès");
+            }
+        }
+
+        private static long CalculateDirectorySize(DirectoryInfo directory)
+        {
+            long size = 0;
+            FileInfo[] files = directory.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                size += file.Length;
+            }
+
+            DirectoryInfo[] subDirectories = directory.GetDirectories();
+
+            foreach (DirectoryInfo subDirectory in subDirectories)
+            {
+                size += CalculateDirectorySize(subDirectory);
+            }
+
+            return size;
+        }
+
+        private static void WriteToFile(List<LogEntry> data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText(JsonPath, jsonData);
+        }
+
+        private static List<LogEntry> ReadFromFile()
+        {
+            if (File.Exists(JsonPath))
+            {
+                string jsonData = File.ReadAllText(JsonPath);
+                return JsonConvert.DeserializeObject<List<LogEntry>>(jsonData);
+            }
+            else
+            {
+                return new List<LogEntry>();
+            }
         }
     }
 }

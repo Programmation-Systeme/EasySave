@@ -1,0 +1,58 @@
+[
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\test_easysave-02-14-2024-4-13-19",
+    "FileSize": 698,
+    "FileTransferTime": 256.0,
+    "Date": "14/02/2024 16:29:52"
+  },
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\test_easysave-02-14-2024-4-13-19",
+    "FileSize": 698,
+    "FileTransferTime": 256.0,
+    "Date": "14/02/2024 16:31:55"
+  },
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\Downloads\\test_easysave-02-15-2024-9-07-28",
+    "FileSize": 698,
+    "FileTransferTime": 256.0,
+    "Date": "15/02/2024 09:07:37"
+  },
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\Downloads\\test_easysave-02-15-2024-9-07-28",
+    "FileSize": 698,
+    "FileTransferTime": 256.0,
+    "Date": "15/02/2024 09:07:55"
+  },
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\Downloads\\test_easysave-02-15-2024-9-07-28",
+    "FileSize": 698,
+    "FileTransferTime": 256.0,
+    "Date": "15/02/2024 10:13:01"
+  },
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\Downloads\\test_easysave-02-15-2024-9-07-28",
+    "FileSize": 698,
+    "FileTransferTime": 256.0,
+    "Date": "15/02/2024 10:17:19"
+  },
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\Documents\\test_easysave-02-15-2024-10-18-55",
+    "FileSize": 698,
+    "FileTransferTime": 256.0,
+    "Date": "15/02/2024 10:18:55"
+  }
+]

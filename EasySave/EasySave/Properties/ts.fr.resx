@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChooseFormatLogs" xml:space="preserve">
+    <value>Choisir le format des logs:
+1 : Json
+2 : Xml
+q : Quitter</value>
+  </data>
   <data name="ChooseSaveSlots" xml:space="preserve">
     <value>Choisir des emplacements de sauvegarde (ex. 1;2;3) ou 'q' pour quitter:</value>
   </data>
@@ -141,6 +147,9 @@
   <data name="ErrorSelectedSlotsEmptyNonEmpty" xml:space="preserve">
     <value>Erreur: Un ou plusieurs emplacements sélectionnés sont vides ou non-vides.</value>
   </data>
+  <data name="InvalidInputLogsFormat" xml:space="preserve">
+    <value>Entrée invalide !</value>
+  </data>
   <data name="InvalidInputSaveDelete" xml:space="preserve">
     <value>Entrée invalide ! Veuillez taper '1' pour Sauvegarder ou '2' pour Supprimer.</value>
   </data>
@@ -149,6 +158,9 @@
   </data>
   <data name="OptionSave" xml:space="preserve">
     <value>1 : Sauvegarder</value>
+  </data>
+  <data name="SaveSelectedSlotEmpty" xml:space="preserve">
+    <value>L'emplacement {0} est vide !</value>
   </data>
   <data name="SavingSlot" xml:space="preserve">
     <value>Sauvegarde de l'emplacement {0}</value>
