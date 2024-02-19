@@ -158,7 +158,8 @@ namespace EasySaveClasses.ViewModelNS
         public void AddSave()
         {
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-            Save save = new ModelNS.Save(Path.GetFileName(OpenFileSrc + "_" + formattedDateTime), "ACTIVE", OpenFileSrc, OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "_" + formattedDateTime, 3300, 1240312777, 3274, 0);
+            string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
+            Save save = new ModelNS.Save(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath, 3300, 1240312777, 3274, 0);
             _model.Datas.Add(save);
             EditSave.Create(OpenFileSrc, OpenFileDest);
             Save.Serialize(_model.Datas);
@@ -172,7 +173,7 @@ namespace EasySaveClasses.ViewModelNS
 
         }
 
-        public void ExecuteSave_Click(IList list)
+        public void ExecuteSave_Click(List<string> list)
         {
             List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
 
@@ -190,7 +191,7 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        public void DeleteSave_Click(IList list)
+        public void DeleteSave_Click(List<string> list)
         {
 
             List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();

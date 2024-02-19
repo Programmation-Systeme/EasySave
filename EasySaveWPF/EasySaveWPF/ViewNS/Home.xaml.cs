@@ -44,14 +44,25 @@ namespace EasySaveWPF.ViewNS
             _playBreak.Show();
         }
 
-        private void btnDeletSaves_Click(object sender, RoutedEventArgs e)
+        private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            _mainViewModel.DeleteSave_Click(ItemSelecteds.SelectedItems);
+            List<string> list = new List<string>();
+            foreach(string element in ItemSelecteds.SelectedItems)
+            { list.Add(element); }
+            _mainViewModel.DeleteSave_Click(list);
         }
 
-        private void btnExecutSaves_Click(object sender, RoutedEventArgs e)
+        private void ExecutExecute_Click(object sender, RoutedEventArgs e)
         {
-            _mainViewModel.ExecuteSave_Click(ItemSelecteds.SelectedItems);
+            List<string> list = new List<string>();
+            foreach (string element in ItemSelecteds.SelectedItems)
+            { list.Add(element); }
+            _mainViewModel.ExecuteSave_Click(list);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
