@@ -268,9 +268,9 @@ namespace EasySaveClasses.ViewModelNS
         private void ExecuteClickCommand()
         {
             IsMetierSoftwareRunning();
-            _log = new Log("D:\\CESI\\Anglais\\Presentation.txt", "feur", 25);
+            _log = new Log(OpenFileSrc, OpenFileDest, 25);
             ErrorText = _log.AddLog();
-            bool save = EditSave.Update("D:\\CESI\\Anglais\\Presentation.txt", "D:\\CESI\\Anglais", 1);
+            bool save = EditSave.Update(OpenFileSrc, OpenFileDest, SaveType);
         }
 
         private void IsMetierSoftwareRunning()
