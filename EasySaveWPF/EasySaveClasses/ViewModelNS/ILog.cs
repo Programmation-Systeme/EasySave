@@ -24,8 +24,20 @@ namespace EasySaveClasses.ViewModelNS
             this.saveName = Path.GetFileName(sourcePath);
             this.sourcePath = sourcePath;
             this.targetPath = targetPath;
-            this.directorySize = 0;
+            this.directorySize = GetFileSize(sourcePath);
             this.transferTime = transferTime;
+        }
+
+        static long GetFileSize(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                return new FileInfo(filePath).Length;
+            }
+            else
+            {
+                throw new FileNotFoundException($"Le fichier {filePath} n'a pas été trouvé.");
+            }
         }
     }
 
