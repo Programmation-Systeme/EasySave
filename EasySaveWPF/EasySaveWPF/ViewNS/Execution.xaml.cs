@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -26,18 +27,20 @@ namespace EasySaveWPF.ViewNS
         }
         private void Play_Click(object sender, RoutedEventArgs e)
         {
-            switch (Play.Content)
+            if (CurrentSave.SelectedItem != null)
             {
-                case "▶":
-                    Play.Content = "⏸";
-                    break;
-
-                case "⏸":
+                // Cast de l'élément sélectionné en ListBoxItem
+                ListBoxItem selectedItem = CurrentSave.ItemContainerGenerator.ContainerFromItem(CurrentSave.SelectedItem) as ListBoxItem;
+                if(selectedItem.Foreground == Brushes.Red)
+                {
+                    selectedItem.Foreground = Brushes.Black;
                     Play.Content = "▶";
-                    break;
-
-                default:
-                    break;
+                }
+                else if(selectedItem.Foreground == Brushes.Black)
+                {
+                    selectedItem.Foreground = Brushes.Red;
+                    Play.Content = "⏸";
+                }
             }
         }
         private void Delete_Click(object sender, RoutedEventArgs e)

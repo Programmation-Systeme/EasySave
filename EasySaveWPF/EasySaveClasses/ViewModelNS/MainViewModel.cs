@@ -152,7 +152,7 @@ namespace EasySaveClasses.ViewModelNS
         private void ExecuteWork(Save save, SynchronizationContext syncContext,int time)
         {
             bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath);
-            Thread.Sleep(time*4000);
+            Thread.Sleep(time*10000);
 
            syncContext.Post(state =>
             {
