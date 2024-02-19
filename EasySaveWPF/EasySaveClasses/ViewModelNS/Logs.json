@@ -30,5 +30,13 @@
     "targetPath": null,
     "DirSize": 0.0,
     "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:12:20",
+    "Name": "Presentation.txt",
+    "sourcePath": "D:\\CESI\\Anglais\\Presentation.txt",
+    "targetPath": "feur",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
   }
 ]
