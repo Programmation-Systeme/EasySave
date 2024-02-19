@@ -82,7 +82,7 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="destDir">The destination directory to copy to.</param>
         public static bool Update(string sourceDir, string destDir)
         {
-            List<String> listFiles = ["fichier1.txt", "fichier2.png", "fichier3.pdf"];
+            List<String> listFilesPath = ["C:/Users/aure8/Downloads/fichier1.txt", "C:\\Users\\aure8\\Downloads\\fichier2.txt"];
             string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
             List<string> listExt = new List<string>();
             if (File.Exists(configPath))
@@ -92,7 +92,12 @@ namespace EasySaveClasses.ViewModelNS
                 dynamic jsonObject = JsonConvert.DeserializeObject(jsonContent);
                 dynamic firstConfig = jsonObject[0];
 
-             
+                static bool IsFileWithExtension(string filePath, string extension)
+                {
+                    string fileExtension = Path.GetExtension(filePath);
+                    return string.Equals(fileExtension, extension, StringComparison.OrdinalIgnoreCase);
+                }
+
                 if (firstConfig.ExtensionCryptage != null)
                 {
                     foreach (var extension in firstConfig.ExtensionCryptage)
@@ -100,33 +105,29 @@ namespace EasySaveClasses.ViewModelNS
                         listExt.Add(extension.ToString());
                     }
                 }
-                List<string> filteredFiles = listFiles.Where(file => listExt.Any(ext => file.EndsWith(ext, StringComparison.OrdinalIgnoreCase))).ToList();
-                string CryptoSoftPath = "../../../../../CryptoSoft/CryptoSoft/bin/Debug/net8.0/CryptoSoft.exe";
+                List<string> filteredFiles = listFilesPath.Where(file => listExt.Any(ext => IsFileWithExtension(file, ext))).ToList();
+                string CryptoSoftPath = "../../../../../CryptoSoft/CryptoSoft/bin/Debug/net8.0";
                 string FilteredFilesPath = "";
                 foreach (string fileCrypt in filteredFiles)
                 {
-                    FilteredFilesPath += "\"" + fileCrypt + "\" ";
+                    FilteredFilesPath += fileCrypt + " ";
                 }
-                string command = CryptoSoftPath + " -e " + FilteredFilesPath;
-                ProcessStartInfo processStartInfo = new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",         
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,      
-                    CreateNoWindow = true         
-                };
 
-                // Créer et démarrer le processus
-                using (Process process = new Process())
-                {
-                    process.StartInfo = processStartInfo;
-                    process.StartInfo.Arguments = "/c " + command; // "/c" est utilisé pour exécuter la commande puis fermer le terminal
-                    process.Start();
+                string command = "/c cd " + CryptoSoftPath + " && CryptoSoft.exe -e " + FilteredFilesPath;
+                Process process2 = new Process();
+                process2.StartInfo.FileName = "cmd.exe";
+                process2.StartInfo.Arguments = command;
+                process2.StartInfo.RedirectStandardOutput = true;
+                process2.StartInfo.RedirectStandardError = true;
+                process2.StartInfo.CreateNoWindow = true;
+                process2.Start();
+                // Lire la sortie standard
+                string output2 = process2.StandardOutput.ReadToEnd();
+                string error2 = process2.StandardError.ReadToEnd();
+                process2.WaitForExit();
+                // Afficher la sortie
+                Console.WriteLine(output2);
 
-                    // Lire et afficher la sortie du processus
-                    string output = process.StandardOutput.ReadToEnd();
-                    
-                }
             }
 
             try
