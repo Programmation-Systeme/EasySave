@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ViewNS\assets\icon.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
@@ -17,4 +21,7 @@
     <ProjectReference Include="..\EasySaveClasses\EasySaveClasses.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="ViewNS\assets\icon.jpg" />
+  </ItemGroup>
 </Project>
