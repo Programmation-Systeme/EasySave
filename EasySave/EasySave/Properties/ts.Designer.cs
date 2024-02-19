@@ -136,6 +136,15 @@ namespace EasySave.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error occurred during the serialization : {0}.
+        /// </summary>
+        internal static string ErrorDuringSerialization {
+            get {
+                return ResourceManager.GetString("ErrorDuringSerialization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Error: One or more selected slots are empty or non-empty..
         /// </summary>
         internal static string ErrorSelectedSlotsEmptyNonEmpty {

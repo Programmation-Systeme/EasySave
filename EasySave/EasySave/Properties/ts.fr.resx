@@ -144,6 +144,9 @@ q : Quitter</value>
   <data name="ErrorCreationFile" xml:space="preserve">
     <value>Erreur lors de la création du fichier</value>
   </data>
+  <data name="ErrorDuringSerialization" xml:space="preserve">
+    <value>Erreur survenue lors de la sérialisation : {0}</value>
+  </data>
   <data name="ErrorSelectedSlotsEmptyNonEmpty" xml:space="preserve">
     <value>Erreur: Un ou plusieurs emplacements sélectionnés sont vides ou non-vides.</value>
   </data>

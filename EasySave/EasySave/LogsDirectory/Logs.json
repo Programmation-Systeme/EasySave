@@ -166,5 +166,21 @@
     "FileSize": 50,
     "FileTransferTime": 256.0,
     "Date": "19/02/2024 11:56:36"
+  },
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\Documents\\test_easysave-02-19-2024-5-10-39",
+    "FileSize": 50,
+    "FileTransferTime": 256.0,
+    "Date": "19/02/2024 17:10:39"
+  },
+  {
+    "Name": "test_easysave",
+    "FileSource": "C:\\Users\\testa\\Documents\\test_easysave",
+    "FileDestination": "C:\\Users\\testa\\Documents\\test_easysave-02-19-2024-5-10-39",
+    "FileSize": 50,
+    "FileTransferTime": 256.0,
+    "Date": "19/02/2024 17:10:43"
   }
 ]

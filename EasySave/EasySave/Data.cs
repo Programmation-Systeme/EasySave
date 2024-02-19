@@ -52,10 +52,10 @@ namespace EasySave
                 // Write JSON data to file
                 File.WriteAllText(fileName, jsonData);
             }
-            catch (Exception ex)
+            catch
             {
                 // Handle any errors during file creation
-                Console.WriteLine($" Error in file creation : {ex.Message}");
+                throw;
             }
         }
 

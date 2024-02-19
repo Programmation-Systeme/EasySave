@@ -11,14 +11,29 @@ namespace EasySave
     {
         private Model _model;
 
-        private ILog? _log;
-         /// <summary>
-         /// Entry point of the log
-         /// </summary>
+        private ILog _log;
+
+        internal ILog Log { get => _log; set => _log = value; }
+
+        public Data[] Datas { get => _model.Datas; set => _model.Datas = value; }
+
+        /// <summary>
+        /// Entry point of the log
+        /// </summary>
         public ViewModel()
         {
             _model = new Model();
             _log = null;
+        }
+
+        public void AddDataOnSlot(string sourceDirectory, string destinationFile, int saveType, int slot)
+        {
+            _model.AddDataOnSlot(sourceDirectory, destinationFile, saveType, slot);
+        }
+
+        public void SerializeDatas()
+        {
+            try { _model.SerializeDatas(); } catch { throw; }
         }
 
         public void SetLogsType(int type)
@@ -63,11 +78,12 @@ namespace EasySave
                     }
                     else
                     {
-                        return null; // Incorrect range
+                        return null; // Incorrect range (if end is lower than start)
                     }
                 }
                 else
                 {
+                    // Check if input is integer and between 1 and 5
                     if (!IsValidNumber(section))
                         return null;
                     SlotsNumbers.Add(int.Parse(section));
@@ -76,13 +92,14 @@ namespace EasySave
             return SlotsNumbers; // Success
         }
 
+        /// <summary>
+        /// Check if a string can be parsed in integer and is between 1 and 5
+        /// </summary>
+        /// <param name="text">The number in string format to check</param>
+        /// <returns>True if valid, otherwise false</returns>
         public static bool IsValidNumber(string text)
         {
             return (int.TryParse(text, out int parsedInt) && parsedInt >= 1 && parsedInt <= 5);
         }
-
-        internal Model Model { get => _model; set => _model = value; }
-
-        internal ILog? Log { get => _log; set => _log = value; }
     }
 }
