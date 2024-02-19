@@ -5,9 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="450"
       Title="Home">
-    <Grid MaxHeight="500">
+    <Grid MaxHeight="600">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="2*"/>
@@ -24,5 +24,7 @@
             <Button Content="{DynamicResource ExecuteButton}" Margin="5" Click="Execut_Click" Command="{Binding ClickCommand}"/>
         </StackPanel>
         <TextBox Grid.Row="3" Text="{Binding ErrorText}" BorderThickness="0" Foreground="Red" FontStyle="Italic"/>
+        
+
     </Grid>
 </Page>
