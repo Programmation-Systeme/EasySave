@@ -6,9 +6,8 @@
         xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
         mc:Ignorable="d"
         ResizeMode ="NoResize"
-        WindowStyle="None"
+        WindowStyle="SingleBorderWindow"
         Background="Transparent"
-        AllowsTransparency="True"
         FontFamily="Segoe"
         Title="EasySave - ProSoft" 
         Height="600" Width="920" 
@@ -18,51 +17,48 @@
 
     </Window.Resources>
 
-    <Border Background="#272537" CornerRadius="20">
+    <Grid Background="white">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="75"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="EasySave"
+        <TextBlock Text="EasySave"
             VerticalAlignment="Center"
             HorizontalAlignment="Left"
-            Foreground="White"
+            Foreground="#87CEFA"
             FontSize="22"
             Margin="20,0,0,0"/>
 
-            <StackPanel Grid.Row="1" Grid.Column="0">
-                <RadioButton Content="Home"
+        <StackPanel Grid.Row="1" Grid.Column="0">
+            <RadioButton Content="Home"
                     Height="50"
-                    Foreground="White"
+                    Foreground="black"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
                     IsChecked="True"
                              Click="RadioButtonHome_Click"
                 />
-                <RadioButton Content="Create"
+            <RadioButton Content="Create"
                     Height="50"
-                    Foreground="White"
+                    Foreground="black"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
                              Click="RadioButtonCreate_Click"
                 />
-                <RadioButton Content="About Us"
+            <RadioButton Content="About Us"
                     Height="50"
-                    Foreground="White"
+                    Foreground="black"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
                 />
-            </StackPanel>
-            <Frame x:Name="Frame" NavigationUIVisibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="10"/>
-        </Grid>
-    </Border>
+        </StackPanel>
+        <Frame x:Name="Frame" NavigationUIVisibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="10"/>
+    </Grid>
 </Window>
 <!--
   <StackPanel>
