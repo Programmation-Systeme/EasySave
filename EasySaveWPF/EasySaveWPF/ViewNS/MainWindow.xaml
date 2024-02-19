@@ -127,6 +127,16 @@
                         </Grid>
                     </ScrollViewer>
                 </TabItem>
+                <TabItem
+                    Style="{DynamicResource TabItemStyle}"
+                Background="White"
+                    Width="200"
+                    Padding="10,8"
+                    Header="Execution">
+                    <ScrollViewer Padding="10" Height="450" HorizontalScrollBarVisibility="Auto">
+                        <Frame x:Name="PlayBreak"/>
+                    </ScrollViewer>
+                </TabItem>
             </TabControl>
         </Grid>
         
