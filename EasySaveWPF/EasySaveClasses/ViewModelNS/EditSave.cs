@@ -3,7 +3,7 @@ using System.IO;
 
 namespace EasySaveClasses.ViewModelNS
 {
-    internal class EditSave
+    public class EditSave
     {
         /// <summary>
         /// Creates a new save folder and returns routes when saved.
