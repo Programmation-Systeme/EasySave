@@ -29,6 +29,7 @@ namespace EasySaveWPF.ViewNS
         Create create;
         PlayBreak playBreak;
         Execution execution;
+        Settings settings;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,23 +41,8 @@ namespace EasySaveWPF.ViewNS
             Frame.Navigate(home);
             Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
             execution = new Execution(this);
+            settings = new Settings(this);
 
-        }
-        private void ComboBox_LanguageChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox comboBox = sender as ComboBox;
-            ComboBoxItem selectedItem = comboBox.SelectedItem as ComboBoxItem;
-            if (selectedItem != null)
-            {
-                if (selectedItem.Content.ToString() == "Francais")
-                {
-                    LoadLanguage_Fr();
-                }
-                if (selectedItem.Content.ToString() == "English")
-                {
-                    LoadLanguage_En();
-                }
-            }
         }
         private void LoadLanguage(string relativePath)
         {
@@ -70,12 +56,12 @@ namespace EasySaveWPF.ViewNS
             }
         }
 
-        private void LoadLanguage_Fr()
+        public void LoadLanguage_Fr()
         {
             LoadLanguage("../../../Properties/French.xaml");
         }
 
-        private void LoadLanguage_En()
+        public void LoadLanguage_En()
         {
             LoadLanguage("../../../Properties/English.xaml");
         }
@@ -97,6 +83,11 @@ namespace EasySaveWPF.ViewNS
         private void RadioButtonCreate_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(create);
+        }
+        
+        private void RadioButtonSetting_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(settings);
         }
     }
 }

@@ -35,7 +35,7 @@
             Margin="20,0,0,0"/>
 
         <StackPanel Grid.Row="1" Grid.Column="0">
-            <RadioButton Content="Home"
+            <RadioButton Content="{DynamicResource HomeMenuItem}"
                     Height="50"
                     Foreground="black"
                     FontSize="14"
@@ -43,18 +43,19 @@
                     IsChecked="True"
                              Click="RadioButtonHome_Click"
                 />
-            <RadioButton Content="Create"
+            <RadioButton Content="{DynamicResource CreateMenuItem}"
                     Height="50"
                     Foreground="black"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
                              Click="RadioButtonCreate_Click"
                 />
-            <RadioButton Content="About Us"
+            <RadioButton Content="{DynamicResource SettingsMenuItem}"
                     Height="50"
                     Foreground="black"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
+                             Click="RadioButtonSetting_Click"
                 />
         </StackPanel>
         <Frame x:Name="Frame" NavigationUIVisibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="10"/>
@@ -135,7 +136,7 @@
             Background="White"
                 Width="200"
                 Padding="10,8"
-                Header="{DynamicResource CreateMenuItem}">
+                Header="
                 <ScrollViewer Padding="10" Height="450" HorizontalScrollBarVisibility="Auto">
                     <Frame x:Name="Create"/>
                 </ScrollViewer>
@@ -146,7 +147,7 @@
             Background="White"
                 Width="200"
                 Padding="10,8"
-                Header="{DynamicResource SettingsMenuItem}">
+                Header="
                 <ScrollViewer Padding="10" Height="450" HorizontalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.RowDefinitions>
