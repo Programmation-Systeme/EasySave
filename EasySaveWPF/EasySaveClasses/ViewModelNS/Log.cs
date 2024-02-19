@@ -16,7 +16,7 @@ namespace EasySaveClasses.ViewModelNS
         private string timestamp, saveName, sourcePath, targetPath;
         private float directorySize, transferTime;
 
-        private string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../ViewModelNS/Logs.json");
+        private string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Logs.json");
         /// <summary>
         /// Entry point of the log class
         /// </summary>

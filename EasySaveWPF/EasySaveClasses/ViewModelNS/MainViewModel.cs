@@ -259,6 +259,7 @@ namespace EasySaveClasses.ViewModelNS
             IsMetierSoftwareRunning();
             _log = new Log("D:\\CESI\\Anglais\\Presentation.txt", "feur", 25);
             ErrorText = _log.AddLog();
+            bool save = EditSave.Update("D:\\CESI\\Anglais\\Presentation.txt", "D:\\CESI\\Anglais");
         }
 
         private void IsMetierSoftwareRunning()
