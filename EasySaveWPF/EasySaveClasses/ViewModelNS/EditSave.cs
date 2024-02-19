@@ -1,4 +1,7 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace EasySaveClasses.ViewModelNS
@@ -79,6 +82,54 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="destDir">The destination directory to copy to.</param>
         public static bool Update(string sourceDir, string destDir)
         {
+            List<String> listFilesPath = ["C:/Users/aure8/Downloads/fichier1.txt", "C:\\Users\\aure8\\Downloads\\fichier2.txt"];
+            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
+            List<string> listExt = new List<string>();
+            if (File.Exists(configPath))
+            {
+                string jsonContent = File.ReadAllText(configPath);
+
+                dynamic jsonObject = JsonConvert.DeserializeObject(jsonContent);
+                dynamic firstConfig = jsonObject[0];
+
+                static bool IsFileWithExtension(string filePath, string extension)
+                {
+                    string fileExtension = Path.GetExtension(filePath);
+                    return string.Equals(fileExtension, extension, StringComparison.OrdinalIgnoreCase);
+                }
+
+                if (firstConfig.ExtensionCryptage != null)
+                {
+                    foreach (var extension in firstConfig.ExtensionCryptage)
+                    {
+                        listExt.Add(extension.ToString());
+                    }
+                }
+                List<string> filteredFiles = listFilesPath.Where(file => listExt.Any(ext => IsFileWithExtension(file, ext))).ToList();
+                string CryptoSoftPath = "../../../../../CryptoSoft/CryptoSoft/bin/Debug/net8.0";
+                string FilteredFilesPath = "";
+                foreach (string fileCrypt in filteredFiles)
+                {
+                    FilteredFilesPath += fileCrypt + " ";
+                }
+
+                string command = "/c cd " + CryptoSoftPath + " && CryptoSoft.exe -e " + FilteredFilesPath;
+                Process process2 = new Process();
+                process2.StartInfo.FileName = "cmd.exe";
+                process2.StartInfo.Arguments = command;
+                process2.StartInfo.RedirectStandardOutput = true;
+                process2.StartInfo.RedirectStandardError = true;
+                process2.StartInfo.CreateNoWindow = true;
+                process2.Start();
+                // Lire la sortie standard
+                string output2 = process2.StandardOutput.ReadToEnd();
+                string error2 = process2.StandardError.ReadToEnd();
+                process2.WaitForExit();
+                // Afficher la sortie
+                Console.WriteLine(output2);
+
+            }
+
             try
             {
                 // Get the subdirectories for the specified directory

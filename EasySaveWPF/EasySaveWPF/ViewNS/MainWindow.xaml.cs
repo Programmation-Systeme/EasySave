@@ -15,6 +15,7 @@ using System.Windows.Resources;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -29,7 +30,7 @@ namespace EasySaveWPF.ViewNS
         {
             InitializeComponent();
             LoadLanguage_En();
-
+            Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
             mainViewModel = new MainViewModel();
             PlayBreak playBreak = new PlayBreak(this);
             Home.Navigate(new Home(this, playBreak));
