@@ -13,6 +13,8 @@ using EasySaveClasses.ViewModelNS;
 using System.Globalization;
 using System.Windows.Resources;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -30,17 +32,25 @@ namespace EasySaveWPF.ViewNS
 
             mainViewModel = new MainViewModel();
             PlayBreak playBreak = new PlayBreak(this);
-            MainFrame.Navigate(new Home(this, playBreak));
+            Home.Navigate(new Home(this, playBreak));
+            Create.Navigate(new Create(this));
         }
-        private void MenuItem_Home_Click(object sender, RoutedEventArgs e)
+        private void ComboBox_LanguageChanged(object sender, SelectionChangedEventArgs e)
         {
-            MainFrame.Navigate(new Home(this, _playBreak));
+            ComboBox comboBox = sender as ComboBox;
+            ComboBoxItem selectedItem = comboBox.SelectedItem as ComboBoxItem;
+            if (selectedItem != null)
+            {
+                if (selectedItem.Content.ToString() == "Francais")
+                {
+                    LoadLanguage_Fr();
+                }
+                if (selectedItem.Content.ToString() == "English")
+                {
+                    LoadLanguage_En();
+                }
+            }
         }
-        private void MenuItem_Create_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new Create(this));
-        }
-
         private void LoadLanguage(string relativePath)
         {
             Application.Current.Resources.MergedDictionaries.Clear();
