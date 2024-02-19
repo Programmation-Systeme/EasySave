@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <sys:String x:Key="AddButton">Add</sys:String>
+    <sys:String x:Key="ChooseSave">Please choose saves</sys:String>
+    <sys:String x:Key="CreateMenuItem">Create</sys:String>
+    <sys:String x:Key="DeleteButton">Delete</sys:String>
+    <sys:String x:Key="ExecuteButton">Execute</sys:String>
+    <sys:String x:Key="HomeMenuItem">Home</sys:String>
+    <sys:String x:Key="LanguageMenuItem">Language</sys:String>
+    <sys:String x:Key="LogFormatMenuItem">Logs format</sys:String>
+    <sys:String x:Key="SelectDestinationFolderButton">Select destination folder</sys:String>
+    <sys:String x:Key="SelectSourceFolderButton">Select source folder</sys:String>
+    <sys:String x:Key="SettingsMenuItem">Settings</sys:String>
+</ResourceDictionary>

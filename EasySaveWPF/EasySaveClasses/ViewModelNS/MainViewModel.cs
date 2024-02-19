@@ -149,20 +149,26 @@ namespace EasySaveClasses.ViewModelNS
         //        viewModel.SelectedItems = new ObservableCollection<string>(ItemSelected.SelectedItems.Cast<string>());
         //    }
         //}
-
-      
-
-        private void AddSave_Click()
+        private void ExecuteWork(string source, string target)
         {
-            EditSave.Create(OpenFileSrc, OpenFileDest);
-            _model.Datas.Add(new ModelNS.Save(Path.GetFileName(OpenFileSrc), OpenFileSrc, OpenFileDest, "ACTIVE", 3300, 1240312777, 3274, 0));
+
+        }
+
+
+        public void AddSave()
+        {
+            string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
+            string directoryPath = EditSave.directoryPath(OpenFileSrc, OpenFileDest);
+            EditSave.Create(OpenFileSrc, directoryPath);
+            _model.Datas.Add(new ModelNS.Save(Path.GetFileName(directoryPath), "ACTIVE", OpenFileSrc, directoryPath, 3300, 1240312777, 3274, 0));
             Save.Serialize(_model.Datas);
-            foreach (Save save in _model.Datas)
-            {
-                Thread newWork = new Thread(() => ExecuteWork(save.SourceFilePath, save.TargetFilePath));
-                workersList.Add(newWork);
-                newWork.Start();
-            }
+            Items.Add(Path.GetFileName(OpenFileSrc));
+            //foreach (Save save in _model.Datas)
+            //{
+            //    Thread newWork = new Thread(() => ExecuteWork(save.SourceFilePath, save.TargetFilePath));
+            //    workersList.Add(newWork);
+            //    newWork.Start();
+            //}
 
         }
 
@@ -201,6 +207,7 @@ namespace EasySaveClasses.ViewModelNS
                     EditSave.Delete(selectedSave.TargetFilePath);
                     _model.Datas.Remove(selectedSave);
                     Save.Serialize(_model.Datas);
+                    Items.Remove(selectedSave.Name);
                 }
             }
 
@@ -226,7 +233,7 @@ namespace EasySaveClasses.ViewModelNS
             //}
         }
 
-        }
+        
         private void ExecuteClickCommand()
         {
             IsMetierSoftwareRunning();

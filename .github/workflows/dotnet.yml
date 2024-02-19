@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          path: EasySave
+          path: EasySaveWPF
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3

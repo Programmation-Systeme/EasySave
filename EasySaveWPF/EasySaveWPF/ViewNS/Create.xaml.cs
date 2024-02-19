@@ -52,5 +52,10 @@ namespace EasySaveWPF.ViewNS
                 _mainViewModel.OpenFileDest = openFolderDialog.FolderName;
             }
         }
+
+        private void btnAddSave_Click(object sender, RoutedEventArgs e)
+        {
+            _mainViewModel.AddSave();
+        }
     }
 }
