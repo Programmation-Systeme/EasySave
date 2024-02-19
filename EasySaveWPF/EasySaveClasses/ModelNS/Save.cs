@@ -34,14 +34,26 @@ namespace EasySaveClasses.ModelNS
         public Save()
         {
         }
-        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int totalFilesToCopy, int totalFilesSize, int nbFilesLeftToDo, int progression)
+        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int nbFilesLeftToDo =0, int progression =0)
         {
+
+            string[] files = Directory.GetFiles(currentSourceFile);
+            int numberOfFiles = files.Length;
+
+            // Calculer la taille du dossier
+            long totalSize = 0;
+            foreach (string file in files)
+            {
+                FileInfo fileInfo = new FileInfo(file);
+                totalSize += fileInfo.Length;
+            }
+
             _fileName = fileName;
             _state = state;
             _currentSourceFile = currentSourceFile;
             _destinationFile = destinationFile;
-            _totalFilesToCopy = totalFilesToCopy;
-            _totalFilesSize = totalFilesSize;
+            _totalFilesToCopy = numberOfFiles;
+            _totalFilesSize = Convert.ToInt32(totalSize);
             _nbFilesLeftToDo = nbFilesLeftToDo;
             _progression = progression;
         }
@@ -84,6 +96,20 @@ namespace EasySaveClasses.ModelNS
 
                     if (saveSaveArray.Any())
                     {
+                        List<Save> savesToRemove = new List<Save>();
+                        foreach (Save save in saveSaveArray)
+                        {
+                            if (!Directory.Exists(save.TargetFilePath))
+                            {
+                                savesToRemove.Add(save);
+                            }
+                        }
+
+                        // Supprimer les éléments marqués
+                        foreach (Save saveToRemove in savesToRemove)
+                        {
+                            saveSaveArray.Remove(saveToRemove);
+                        }
                         // Return the deserialized Save array
                         return saveSaveArray;
                     }

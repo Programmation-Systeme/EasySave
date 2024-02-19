@@ -149,9 +149,9 @@ namespace EasySaveClasses.ViewModelNS
         //        viewModel.SelectedItems = new ObservableCollection<string>(ItemSelected.SelectedItems.Cast<string>());
         //    }
         //}
-        private void ExecuteWork(string source, string target)
+        private void ExecuteWork(Save save)
         {
-
+            EditSave.Update(save.SourceFilePath, save.TargetFilePath);
         }
 
 
@@ -159,14 +159,15 @@ namespace EasySaveClasses.ViewModelNS
         {
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
             string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
-            Save save = new ModelNS.Save(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath, 3300, 1240312777, 3274, 0);
+            Save save = new ModelNS.Save(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath);
             _model.Datas.Add(save);
             EditSave.Create(OpenFileSrc, OpenFileDest);
             Save.Serialize(_model.Datas);
             Items.Add(save.Name);
+
             //foreach (Save save in _model.Datas)
             //{
-            //    Thread newWork = new Thread(() => ExecuteWork(save.SourceFilePath, save.TargetFilePath));
+            //    Thread newWork = new Thread(() => ExecuteWork(save));
             //    workersList.Add(newWork);
             //    newWork.Start();
             //}
@@ -186,7 +187,9 @@ namespace EasySaveClasses.ViewModelNS
                 // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
                 if (selectedSave != null)
                 {
-                    EditSave.Update(selectedSave.SourceFilePath, selectedSave.TargetFilePath);
+                    Thread newWork = new Thread(() => ExecuteWork(selectedSave));
+                    workersList.Add(newWork);
+                    newWork.Start();
                 }
             }
         }
