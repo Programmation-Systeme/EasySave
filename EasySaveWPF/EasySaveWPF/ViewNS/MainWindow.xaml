@@ -57,6 +57,13 @@
                     Style="{StaticResource MenuButtonTheme}"
                              Click="RadioButtonSetting_Click"
                 />
+            <RadioButton Content="Execution"
+                    Height="50"
+                    Foreground="black"
+                    FontSize="14"
+                    Style="{StaticResource MenuButtonTheme}"
+                             Click="RadioButtonExecution_Click"
+                />
         </StackPanel>
         <Frame x:Name="Frame" NavigationUIVisibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="10"/>
     </Grid>

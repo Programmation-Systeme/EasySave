@@ -84,10 +84,15 @@ namespace EasySaveWPF.ViewNS
         {
             Frame.Navigate(create);
         }
-        
+
         private void RadioButtonSetting_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(settings);
         }
+        private void RadioButtonExecution_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(execution);
+        }
+        
     }
 }
