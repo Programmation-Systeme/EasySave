@@ -38,5 +38,109 @@
     "targetPath": "feur",
     "DirSize": 0.0,
     "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:32:42",
+    "Name": "pip",
+    "sourcePath": "C:\\Users\\33782\\Downloads\\pip",
+    "targetPath": "C:\\Users\\33782\\Downloads\\p",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:33:20",
+    "Name": "pip",
+    "sourcePath": "C:\\Users\\33782\\Downloads\\pip",
+    "targetPath": "C:\\Users\\33782\\Downloads\\p",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:33:50",
+    "Name": "pip",
+    "sourcePath": "C:\\Users\\33782\\Downloads\\pip",
+    "targetPath": "C:\\Users\\33782\\Downloads\\p",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:35:01",
+    "Name": "pip",
+    "sourcePath": "C:\\Users\\33782\\Downloads\\pip",
+    "targetPath": "C:\\Users\\33782\\Downloads\\p",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:35:10",
+    "Name": "pip",
+    "sourcePath": "C:\\Users\\33782\\Downloads\\pip",
+    "targetPath": "C:\\Users\\33782\\Downloads\\p",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:35:39",
+    "Name": "cacatest",
+    "sourcePath": "C:\\Users\\33782\\Downloads\\p\\cacatest",
+    "targetPath": "C:\\Users\\33782\\Downloads\\pip",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:41:43",
+    "Name": null,
+    "sourcePath": null,
+    "targetPath": null,
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:44:26",
+    "Name": null,
+    "sourcePath": null,
+    "targetPath": null,
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:45:52",
+    "Name": null,
+    "sourcePath": null,
+    "targetPath": null,
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:46:14",
+    "Name": null,
+    "sourcePath": null,
+    "targetPath": null,
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:52:16",
+    "Name": "cacatest",
+    "sourcePath": "C:\\Users\\33782\\Downloads\\p\\cacatest",
+    "targetPath": "C:\\Users\\33782\\Downloads\\pip",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:52:42",
+    "Name": "cacatest",
+    "sourcePath": "C:\\Users\\33782\\Downloads\\p\\cacatest",
+    "targetPath": "C:\\Users\\33782\\Downloads\\pip",
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
+  },
+  {
+    "Timestamp": "19/02/2024 22:55:57",
+    "Name": null,
+    "sourcePath": null,
+    "targetPath": null,
+    "DirSize": 0.0,
+    "DirTransferTime": 25.0
   }
 ]
