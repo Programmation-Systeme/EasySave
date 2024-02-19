@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace EasySaveClasses.ViewModelNS
@@ -13,9 +12,20 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         /// <param name="sourceFolder">The folder chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the folder will be saved.</param>
-        
-        public static string Create(string sourceFolder, string pathWithId)
+        public static string Create(string sourceFolder, string destinationDirectory)
         {
+            // Generate formatted date-time string for unique identifier
+            string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
+            if(sourceFolder == null || destinationDirectory == null)
+            { return "source directory or target directory unselected"; }
+            // Form a dynamic path for the folder
+            string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
+
+            // Check if the destination directory already exists
+            bool destinationDirectoryExists = Directory.Exists(destinationDirectory);
+            if (!destinationDirectoryExists)
+                return null;
+
             try
             {
                 // Create the new directory
@@ -30,23 +40,6 @@ namespace EasySaveClasses.ViewModelNS
                 Console.WriteLine("Error occurred: " + ex.Message);
                 return null;
             }
-        }
-
-        public static string directoryPath(string sourceFolder, string destinationDirectory)
-        {
-            // Generate formatted date-time string for unique identifier
-            string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-            if (sourceFolder == null || destinationDirectory == null)
-            { return null; }
-            // Form a dynamic path for the folder
-            string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
-
-            // Check if the destination directory already exists
-            bool destinationDirectoryExists = Directory.Exists(destinationDirectory);
-            if (!destinationDirectoryExists)
-                return null;
-
-            return pathWithId;
         }
 
         /// <summary>
