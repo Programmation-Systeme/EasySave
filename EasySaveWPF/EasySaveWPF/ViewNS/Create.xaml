@@ -3,39 +3,38 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
+      xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Create">
 
-    <Grid MaxHeight="500">
+    <Grid MaxHeight="450">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Choisisez des sauvgardes" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Margin="0,30"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseSave}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Margin="0,30"/>
 
-        <!-- Selection chemain source -->
+        <!-- Selection chemin source -->
         <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnOpenFile" Click="OpenFolderSource_Click">Open files</Button>
+                <Button Name="btnOpenFile" Click="OpenFolderSource_Click" Content="{DynamicResource SelectSourceFolderButton}" />
             </WrapPanel>
             <TextBox Text="{Binding OpenFileSrc, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel>
 
-        <!-- Selection chemain destination -->
+        <!-- Selection chemin destination -->
         <StackPanel Orientation="Vertical" Grid.Row="2" HorizontalAlignment="Center">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnOpenFile2"  Click="OpenFolderDest_Click">Open files</Button>
+                <Button Name="btnOpenFile2"  Click="OpenFolderDest_Click" Content="{DynamicResource SelectDestinationFolderButton}"/>
             </WrapPanel>
             <TextBox Text="{Binding OpenFileDest, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel>
 
         <!-- Boutons en bas -->
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
-            <Button Content="Ajouter" Margin="5"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,50,0,10">
+            <Button Content="{DynamicResource AddButton}" Margin="5"/>
         </StackPanel>
     </Grid>
 </Page>

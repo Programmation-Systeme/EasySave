@@ -37,6 +37,18 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private string _errorText;
+
+        public string ErrorText
+        {
+            get { return _errorText; }
+            set
+            {
+                _errorText = value;
+                OnPropertyChanged(nameof(ErrorText));
+            }
+        }
+
         private string _selectedItem;
         public string SelectedItem
         {
@@ -71,19 +83,31 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private string _errorText;
 
-        public string ErrorText
+        private ObservableCollection<string> _currentSave;
+        private string _currentSaveSelected;
+
+        public ObservableCollection<string> CurrentSave
         {
-            get { return _errorText; }
+            get { return _currentSave; }
             set
             {
-                _errorText = value;
-                OnPropertyChanged(nameof(ErrorText));
+                _currentSave = value;
+                OnPropertyChanged(nameof(CurrentSave));
             }
         }
 
+        public string CurrentSaveSelected
+        {
+            get { return _currentSaveSelected; }
+            set
+            {
+                _currentSaveSelected = value;
+                OnPropertyChanged(nameof(CurrentSaveSelected));
+            }
+        }
         public ICommand ClickCommand { get; private set; }
+
 
 
         /// <summary>
@@ -92,6 +116,12 @@ namespace EasySaveClasses.ViewModelNS
         /// 
         public MainViewModel()
         {
+            CurrentSave = new ObservableCollection<string>
+            {
+                "Gaetan1",
+               "Gaetan1Bis",
+               "Gaetan1BisBis",
+            };
             Items = new ObservableCollection<string>
             {
                 "Item1",
@@ -99,8 +129,8 @@ namespace EasySaveClasses.ViewModelNS
                 "Item3",
             };
             ClickCommand = new RelayCommand(ExecuteClickCommand);
-        }
 
+        }
         private void ExecuteClickCommand()
         {
             IsMetierSoftwareRunning();
@@ -126,6 +156,7 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
     }
+
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;

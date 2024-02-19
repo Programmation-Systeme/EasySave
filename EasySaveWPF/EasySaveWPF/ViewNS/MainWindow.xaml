@@ -5,28 +5,131 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:view="clr-namespace:EasySaveWPF.ViewNS"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        ResizeMode ="NoResize"
+        WindowStyle="ThreeDBorderWindow"
+        FontFamily="Segoe"
+        Title="EasySave - ProSoft" Height="450" Width="800">
+
+    <Window.Resources>
+
+    </Window.Resources>
+
 
     <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <TabControl
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0"
+                Padding="0"
+                HorizontalContentAlignment="Left"
+                TabStripPlacement="Left">
 
-        <DockPanel>
-            <Menu DockPanel.Dock="Top"  Background="LightGray">
-                <MenuItem Header="Home" Click="MenuItem_Home_Click"></MenuItem>
-                <MenuItem Header="Créer" Click="MenuItem_Create_Click"></MenuItem>
-                <MenuItem Header="Option">
+                <TabControl.Resources>
+                    <Style TargetType="{x:Type TabItem}"
+             x:Key="TabItemStyle">
+                        <Setter Property="VerticalContentAlignment"
+                 Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment"
+                 Value="Stretch" />
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Label x:Name="TabItemHeaderLabel" Foreground="Black" Content="{Binding}" />
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True">
+                                            <Setter TargetName="TabItemHeaderLabel" Property="Foreground" Value="#3689d1"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Border x:Name="Chrome" BorderBrush="White">
+                                        <ContentPresenter ContentSource="Header"
+                                           Margin="0,0,0,0"
+                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="Selector.IsSelected" Value="True">
+                                            <Setter TargetName="Chrome" Property="BorderThickness" Value="10,10,10,10" />
+                                        </Trigger>
+                                        <Trigger Property="Selector.IsSelected" Value="False">
+                                            <Setter TargetName="Chrome"  Property="BorderThickness" Value="0,1,0,1" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
 
-                    <MenuItem Header="Langue">
-                        <MenuItem Header="Francais" />
-                        <MenuItem Header="Anglais" />
-                    </MenuItem>
-                    <MenuItem Header="Format des langues">
-                        <MenuItem Header="XML" />
-                        <MenuItem Header="JSON" />
-                    </MenuItem>
-                </MenuItem>
-            </Menu>
-        </DockPanel>
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+                <TabItem
+                    Style="{DynamicResource TabItemStyle}"
+                Background="White"
+                    Width="200"
+                    Padding="10,8"
+                    Header="{DynamicResource HomeMenuItem}">
+                    <ScrollViewer Padding="10" Height="450" HorizontalScrollBarVisibility="Auto">
+                        <Frame x:Name="Home"/>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem
+                    Style="{DynamicResource TabItemStyle}"
+                Background="White"
+                    Width="200"
+                    Padding="10,8"
+                    Header="{DynamicResource CreateMenuItem}">
+                    <ScrollViewer Padding="10" Height="450" HorizontalScrollBarVisibility="Auto">
+                        <Frame x:Name="Create"/>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem
+                    Style="{DynamicResource TabItemStyle}"
+                Background="White"
+                    Width="200"
+                    Padding="10,8"
+                    Header="{DynamicResource SettingsMenuItem}">
+                    <ScrollViewer Padding="10" Height="450" HorizontalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="4*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock  Grid.Row="0"  FontWeight="Bold" FontSize="20"  Text="{DynamicResource SettingsMenuItem}"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                            <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="{DynamicResource LanguageMenuItem}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+                                <ComboBox Width="100" VerticalAlignment="Center" SelectionChanged="ComboBox_LanguageChanged">
+                                    <ComboBoxItem Content="English"/>
+                                    <ComboBoxItem Content="Francais"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="{DynamicResource LogFormatMenuItem}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+                                <ComboBox Width="100" VerticalAlignment="Center">
+                                    <ComboBoxItem Content="XML"/>
+                                    <ComboBoxItem Content="Json"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        
 
     </StackPanel>
 </Window>
