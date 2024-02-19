@@ -12,8 +12,13 @@ namespace EasySave
         /// </summary>
         /// <param name="sourceFolder">The folder chosen by the user to be saved.</param>
         /// <param name="destinationDirectory">The directory where the folder will be saved.</param>
-        public static string Create(string sourceFolder, string destinationDirectory)
+        /// <param name="saveType">The save type (1 for full, 2 for differential)</param>
+        public static string Create(string sourceFolder, string destinationDirectory, int saveType)
         {
+            if(saveType == -1)
+            {
+                return null;
+            }
             // Generate formatted date-time string for unique identifier
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
 
@@ -31,7 +36,7 @@ namespace EasySave
                 Directory.CreateDirectory(pathWithId);
 
                 // Copy the entire source folder to the destination
-                Update(sourceFolder, pathWithId);
+                Update(sourceFolder, pathWithId, saveType);
 
                 return pathWithId;
             }
@@ -77,7 +82,8 @@ namespace EasySave
         /// </summary>
         /// <param name="sourceDir">The source directory to copy from.</param>
         /// <param name="destDir">The destination directory to copy to.</param>
-        public static bool Update(string sourceDir, string destDir)
+        /// <param name="saveType">The save type (1 for full, 2 for differential)</param>
+        public static bool Update(string sourceDir, string destDir, int saveType)
         {
             try
             {
@@ -86,14 +92,33 @@ namespace EasySave
 
                 if (!sourceDirInfo.Exists)
                     throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDir);
-
                 DirectoryInfo[] sourceSubDirs = sourceDirInfo.GetDirectories();
                 // If the destination directory doesn't exist, create it
                 if (!Directory.Exists(destDir))
                     Directory.CreateDirectory(destDir);
 
+                DirectoryInfo destDirInfo = new DirectoryInfo(destDir);
+
                 // Get the files in the source directory
                 FileInfo[] sourceFiles = sourceDirInfo.GetFiles();
+                // Get the files in the destination directory
+                FileInfo[] destFiles = destDirInfo.GetFiles();
+
+                List<string> sourceFilesNames = [];
+
+                foreach(FileInfo sourceFile in sourceFiles)
+                {
+                    sourceFilesNames.Add(sourceFile.Name);
+                }
+
+                foreach(FileInfo destFile in destFiles)
+                {
+                    if (!sourceFilesNames.Contains(destFile.Name))
+                    {
+                        File.Delete(destFile.FullName);
+                    }
+                }
+                
                 foreach (FileInfo sourceFile in sourceFiles)
                 {
                     string destFilePath = Path.Combine(destDir, sourceFile.Name);
@@ -101,22 +126,28 @@ namespace EasySave
                     // Check if the corresponding file exists in the destination directory
                     if (File.Exists(destFilePath))
                     {
-                        // Check if the source file is deleted
-                        if (!File.Exists(sourceFile.FullName))
+                        // Full save
+                        if(saveType == 1)
                         {
-                            // If the source file is deleted, delete the corresponding file in the destination directory
-                            File.Delete(destFilePath);
-                            continue; // Move to the next file
+                            sourceFile.CopyTo(destFilePath, true);
                         }
-
-                        // Compare metadata (last write time) of source and destination files
-                        DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
-                        DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
-
-                        // If the metadata differs, update the destination file with the source file
-                        if (sourceLastWriteTime != destLastWriteTime)
+                        // Differential save
+                        else if (saveType == 2)
                         {
-                            sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
+                            // Compare metadata (last write time) of source and destination files
+                            DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
+                            DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
+
+                            // If the metadata differs, update the destination file with the source file
+                            if (sourceLastWriteTime != destLastWriteTime)
+                            {
+                                sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
+                            }
+                        }
+                        // If saveType is not full or differential, error
+                        else
+                        {
+                            return false;
                         }
                     }
                     else
@@ -130,7 +161,7 @@ namespace EasySave
                 foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
                 {
                     string destSubDirPath = Path.Combine(destDir, sourceSubDir.Name);
-                    Update(sourceSubDir.FullName, destSubDirPath);
+                    Update(sourceSubDir.FullName, destSubDirPath, saveType);
                 }
 
                 return true;

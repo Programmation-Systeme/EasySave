@@ -153,8 +153,20 @@ namespace EasySave
                 string sourceDirectory = Console.ReadLine();
                 Console.WriteLine(string.Format(Properties.ts.ChooseSlotDestination, choice));
                 string destinationDirectory = Console.ReadLine();
+                Console.WriteLine("Select the save type \n 1: Full \n 2: Differential");
+                //string saveType = Console.ReadLine();
+                int saveType = -1;
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        saveType = 1;
+                        break;
+                    case "2":
+                        saveType = 2;
+                        break;
+                }
 
-                string destinationFile = EditSave.Create(sourceDirectory, destinationDirectory);
+                string destinationFile = EditSave.Create(sourceDirectory, destinationDirectory, saveType);
                 if(destinationFile == null ) 
                 {
                     Console.WriteLine(Properties.ts.ErrorCreationFile);
@@ -170,7 +182,8 @@ namespace EasySave
                         TotalFilesToCopy = 3300,
                         TotalFilesSize = 1240312777,
                         NbFilesLeftToDo = 3274,
-                        Progression = 0
+                        Progression = 0,
+                        SaveType = saveType,
                     };
                     datas[choice - 1] = saveData1;
                     Data.Serialize(datas);
@@ -216,7 +229,7 @@ namespace EasySave
                 Console.WriteLine(string.Format(Properties.ts.SavingSlot, choice));
                 Console.WriteLine(datas[choice - 1].SourceFilePath);
                 Console.WriteLine(datas[choice - 1].TargetFilePath);
-                EditSave.Update(datas[choice - 1].SourceFilePath, datas[choice - 1].TargetFilePath);
+                EditSave.Update(datas[choice - 1].SourceFilePath, datas[choice - 1].TargetFilePath, datas[choice - 1].SaveType);
 
                 Data.Serialize(datas);
             }
