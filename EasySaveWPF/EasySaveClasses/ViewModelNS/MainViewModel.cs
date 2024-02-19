@@ -1,39 +1,33 @@
-﻿using System;
-using System.Windows;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using EasySaveClasses.ModelNS;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
-using Microsoft.Win32;
-using System.IO;
-using System.Linq;
-using System.Collections;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace EasySaveClasses.ViewModelNS
 {
+    /// <summary>
+    /// ViewModel for the main functionality of the application.
+    /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        SynchronizationContext _syncContext = SynchronizationContext.Current;
-        List<Thread> workersList = new List<Thread>();
-        static object lockObject = new object();
-        static Mutex mutex = new Mutex();
+
+        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly List<Thread> workersList = [];
+        static readonly Mutex mutex = new();
+
+        /// <summary>
+        /// Raises the PropertyChanged event.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed.</param>
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private Model _model;
-
+        private readonly Model _model;
         private Log _log;
-
         private ObservableCollection<string> _items;
         public ObservableCollection<string> Items
         {
@@ -46,7 +40,6 @@ namespace EasySaveClasses.ViewModelNS
         }
 
         private string _errorText;
-
         public string ErrorText
         {
             get { return _errorText; }
@@ -80,7 +73,6 @@ namespace EasySaveClasses.ViewModelNS
         }
 
         private string _openFileDest;
-
         public string OpenFileDest
         {
             get { return _openFileDest; }
@@ -92,7 +84,6 @@ namespace EasySaveClasses.ViewModelNS
         }
 
         private int _saveType;
-
         public int SaveType
         {
             get { return _saveType; }
@@ -102,10 +93,8 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-
         private ObservableCollection<string> _currentSave;
         private string _currentSaveSelected;
-
         public ObservableCollection<string> CurrentSave
         {
             get { return _currentSave; }
@@ -126,40 +115,27 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        public ICommand ClickCommand { get; private set; }
-
-        public ICommand btnAddSave { get; private set; }
 
         /// <summary>
-        /// Entry point of the log
+        /// Constructor initializes necessary properties and loads data.
         /// </summary>
         /// 
         public MainViewModel()
         {
-            CurrentSave = new ObservableCollection<string>
-            {
-            };
-            Items = new ObservableCollection<string>
-            {
-            };
+            CurrentSave = [];
+            Items = [];
             _model = new Model();
             List<string> saveList = _model.getSaveList();
             foreach (string save in saveList) { Items.Add(save); }
 
-            ClickCommand = new RelayCommand(ExecuteClickCommand);
-
         }
-        //private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    var item = sender as ListBoxItem;
-        //    if (item != null && item.IsSelected)
-        //    {
-        //        // Assuming your DataContext is MainViewModel
-        //        var viewModel = (MainViewModel)this.DataContext;
-        //        viewModel.SelectedItems = new ObservableCollection<string>(ItemSelected.SelectedItems.Cast<string>());
-        //    }
-        //}
 
+        /// <summary>
+        /// Executes the work of saving a file.
+        /// </summary>
+        /// <param name="save">The save object containing details of the save operation.</param>
+        /// <param name="syncContext">The synchronization context for UI updates.</param>
+        /// <param name="time">The time for which to sleep the thread.</param>
         private void ExecuteWork(Save save, SynchronizationContext syncContext,int time)
         {
             bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType);
@@ -174,65 +150,72 @@ namespace EasySaveClasses.ViewModelNS
                
         }
 
-
+        /// <summary>
+        /// Adds a new save operation.
+        /// </summary>
         public void AddSave()
         {
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
             string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
-            Save save = new ModelNS.Save(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath);
+            Save save = new(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath);
             _model.Datas.Add(save);
             CurrentSave.Add(save.Name);
             EditSave.Create(OpenFileSrc, OpenFileDest, SaveType);
             CurrentSave.Remove(save.Name);
             Save.Serialize(_model.Datas);
             Items.Add(save.Name);
-
-            //foreach (Save save in _model.Datas)
-            //{
-            //    Thread newWork = new Thread(() => ExecuteWork(save));
-            //    workersList.Add(newWork);
-            //    newWork.Start();
-            //}
-
         }
 
+        /// <summary>
+        /// Executes save operation for selected items.
+        /// </summary>
+        /// <param name="list">List of selected items.</param>
         public void ExecuteSave_Click(List<string> list)
         {
+
+            // // Execute the selected save
             List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
 
-            // Itérer à travers les éléments sélectionnés
+            // Iterate through selected items
             int i = 0;
-
             foreach (string selectedItemName in list)
             {
                 CurrentSave.Add(selectedItemName);
-                // Utiliser LINQ pour trouver l'élément correspondant dans votre modèle de données
+                // Use LINQ to find the corresponding item in your data model
                 ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
-                // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
+                // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
                     i++;
-                    Thread newWork = new Thread(() => ExecuteWork(selectedSave,_syncContext,i));
+                    Thread newWork = new Thread(() => ExecuteWork(selectedSave, _syncContext, i));
                     workersList.Add(newWork);
                     newWork.Start();
                 }
-
             }
+
+            // // Verify if the calculator is open
+            IsMetierSoftwareRunning();
+            _log = new Log(OpenFileSrc, OpenFileDest, 25);
+            ErrorText = _log.AddLog();
+            EditSave.Update(OpenFileSrc, OpenFileDest, SaveType);
         }
 
+        /// <summary>
+        /// Deletes selected save operations.
+        /// </summary>
+        /// <param name="list">List of selected items to delete.</param>
         public void DeleteSave_Click(List<string> list)
         {
-
             List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
 
-            // Itérer à travers les éléments sélectionnés
+            // Iterate through selected items
             foreach (string selectedItemName in list)
             {
-                // Utiliser LINQ pour trouver l'élément correspondant dans votre modèle de données
+                // Use LINQ to find the corresponding item in your data model
                 ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
-                // Vérifier si l'élément est trouvé (il pourrait être null si aucun élément ne correspond)
+                // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
                     EditSave.Delete(selectedSave.TargetFilePath);
@@ -241,84 +224,27 @@ namespace EasySaveClasses.ViewModelNS
                     Items.Remove(selectedSave.Name);
                 }
             }
-
-            //_model.Datas.Add(new ModelNS.Save(Path.GetFileName(OpenFileSrc), OpenFileSrc, OpenFileDest, "ACTIVE", 3300, 1240312777, 3274, 0));
-            //Save.Serialize(_model.Datas);
-
-
-            //List<ModelNS.Save> filteredItems = new List<ModelNS.Save>();
-
-            //// Filtrage des éléments en fonction des noms sélectionnés
-            //foreach (string selectedItemName in SelectedItemss)
-            //{
-            //    // Utilisation de LINQ pour filtrer les éléments dont le nom correspond à un élément de SelectedItems
-            //    var itemsWithName = _model.Datas.Where(item => item.Name == selectedItemName);
-
-            //    // Ajout des éléments filtrés à la liste de résultats
-            //    filteredItems.AddRange(itemsWithName);
-            //}
-
-            //foreach (Save save in filteredItems)
-            //{
-            //    EditSave.Delete(save.TargetFilePath);
-            //}
         }
 
-        
-        private void ExecuteClickCommand()
-        {
-            IsMetierSoftwareRunning();
-            _log = new Log(OpenFileSrc, OpenFileDest, 25);
-            ErrorText = _log.AddLog();
-            bool save = EditSave.Update(OpenFileSrc, OpenFileDest, SaveType);
-        }
-
+        /// <summary>
+        /// Checks if the business software is running.
+        /// </summary>
         private void IsMetierSoftwareRunning()
         {
-            // Nom du processus du logiciel métier (à adapter en fonction de votre cas)
+            // Name of the business software process (adjust according to your case)
             string metierSoftwareProcessName = "CalculatorApp";
 
-            // Vérifie si le processus est en cours d'exécution
+            // Check if the process is running
             Process[] processes = Process.GetProcessesByName(metierSoftwareProcessName);
-            //Process[] processesExec = Process.GetProcesses();
-            if (processes.Length>0)
+            if (processes.Length > 0)
             {
-                ErrorText = "Le logiciel métier est en cours d'exécution. Veuillez le fermer avant de lancer la sauvegarde.";
+                ErrorText = "The business software is currently running. Please close it before launching the backup.";
             }
             else
             {
-                ErrorText = "Le travail de sauvegarde a été lancé avec succès.";
+                ErrorText = "Backup job launched successfully.";
             }
         }
 
-    }
-
-    public class RelayCommand : ICommand
-    {
-        private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
-
-        public event EventHandler CanExecuteChanged;
-
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null || _canExecute();
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute();
-        }
-
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
     }
 }
