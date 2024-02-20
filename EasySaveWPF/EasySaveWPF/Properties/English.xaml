@@ -8,8 +8,9 @@
     <sys:String x:Key="ExecuteButton">Execute</sys:String>
     <sys:String x:Key="HomeMenuItem">Home</sys:String>
     <sys:String x:Key="LanguageMenuItem">Language</sys:String>
-    <sys:String x:Key="LogFormatMenuItem">Logs format</sys:String>
+    <sys:String x:Key="LogFormatMenuItem">Log format</sys:String>
     <sys:String x:Key="SelectDestinationFolderButton">Select destination folder</sys:String>
+    <sys:String x:Key="SaveFormat">Backup format</sys:String>
     <sys:String x:Key="SelectSourceFolderButton">Select source folder</sys:String>
     <sys:String x:Key="SettingsMenuItem">Settings</sys:String>
 </ResourceDictionary>
