@@ -7,32 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Execution">
-    <Page.Resources>
-        <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="#87CEFA"/>
-            <Setter Property="Foreground" Value="black"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Width="100" Height="40">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E0E0E0"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#BDBDBD"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -42,10 +17,8 @@
             <ListBox Foreground="Black"  x:Name="CurrentSave" SelectedItem="{Binding CurrentSaveSelected}" ItemsSource="{Binding CurrentSave}"/>
         </ScrollViewer>
         <StackPanel Grid.Column="1" Orientation="Vertical">
-            <Button 
-             Style="{DynamicResource ModernListBox}" Content="✖"  Grid.Column="1" Margin="5" Click="Delete_Click" CommandParameter="{Binding ElementName=listBox}"/>
-            <Button  
-             Style="{DynamicResource ModernListBox}" Name="Play" Click="Play_Click" Grid.Column="1" Margin="5"/>
+            <Button Content="✖"  Grid.Column="1" Margin="5" Click="Delete_Click" CommandParameter="{Binding ElementName=listBox}"/>
+            <Button Name="Play" Click="Play_Click" Grid.Column="1" Margin="5"/>
         </StackPanel>
     </Grid>
 </Page>
