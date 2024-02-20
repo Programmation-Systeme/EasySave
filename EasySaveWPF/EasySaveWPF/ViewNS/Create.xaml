@@ -110,9 +110,9 @@
 
         <StackPanel Margin="20" Grid.Row="3"  HorizontalAlignment="Left" Orientation="Horizontal">
             <TextBlock Text="{DynamicResource SaveFormat}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-            <ComboBox Style="{StaticResource Flat_ComboBox}" 
-                      SelectedIndex="0" 
-
+            <ComboBox x:Name="saveTypeComboBox"
+                Style="{StaticResource Flat_ComboBox}" 
+                      SelectedItem="{Binding SaveType}"
                       Width="100" Grid.Row="3" 
                       VerticalAlignment="Center"
                       SelectionChanged="SaveTypeComboBox_SelectionChanged">
