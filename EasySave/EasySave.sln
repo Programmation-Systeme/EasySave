@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasySave", "EasySave\EasySave.csproj", "{53F440D1-0FDC-4A6D-A479-0E85E314F574}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySave.Tests", "EasySave.Tests\EasySave.Tests.csproj", "{A57666E3-38E0-4D62-9D4D-0DA4DC72BCAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySave", "EasySave\EasySave.csproj", "{53F440D1-0FDC-4A6D-A479-0E85E314F574}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{53F440D1-0FDC-4A6D-A479-0E85E314F574}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53F440D1-0FDC-4A6D-A479-0E85E314F574}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53F440D1-0FDC-4A6D-A479-0E85E314F574}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A57666E3-38E0-4D62-9D4D-0DA4DC72BCAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A57666E3-38E0-4D62-9D4D-0DA4DC72BCAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A57666E3-38E0-4D62-9D4D-0DA4DC72BCAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A57666E3-38E0-4D62-9D4D-0DA4DC72BCAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
