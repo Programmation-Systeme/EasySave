@@ -175,8 +175,13 @@ namespace EasySaveClasses.ViewModelNS
         public void ExecuteSave_Click(List<string> list)
         {
 
-            // // Execute the selected save
-            List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
+            // // Verify if the calculator is open
+            if (!IsMetierSoftwareRunning())
+            {
+                return;
+            }
+
+            List<ModelNS.Save> selectedSaves = [];
 
             // Iterate through selected items
             int i = 0;
@@ -186,6 +191,9 @@ namespace EasySaveClasses.ViewModelNS
                 // Use LINQ to find the corresponding item in your data model
                 ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
+                // // Write in log
+                _log = new Log(selectedSave.Name, selectedSave.SourceFilePath, selectedSave.TargetFilePath, selectedSave.TotalFilesSize);
+                ErrorText = _log.AddLog();
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
@@ -196,10 +204,7 @@ namespace EasySaveClasses.ViewModelNS
                 }
             }
 
-            // // Verify if the calculator is open
-            IsMetierSoftwareRunning();
-            _log = new Log(OpenFileSrc, OpenFileDest, 25);
-            ErrorText = _log.AddLog();
+            // // Execute the selected save
             EditSave.Update(OpenFileSrc, OpenFileDest, SaveType);
         }
 
@@ -231,7 +236,7 @@ namespace EasySaveClasses.ViewModelNS
         /// <summary>
         /// Checks if the business software is running.
         /// </summary>
-        private void IsMetierSoftwareRunning()
+        private bool IsMetierSoftwareRunning()
         {
             // Name of the business software process (adjust according to your case)
             string metierSoftwareProcessName = "CalculatorApp";
@@ -241,10 +246,12 @@ namespace EasySaveClasses.ViewModelNS
             if (processes.Length > 0)
             {
                 ErrorText = "The business software is currently running. Please close it before launching the backup.";
+                return false;
             }
             else
             {
                 ErrorText = "Backup job launched successfully.";
+                return true;
             }
         }
 

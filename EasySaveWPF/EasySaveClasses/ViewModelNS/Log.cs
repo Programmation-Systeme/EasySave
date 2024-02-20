@@ -15,21 +15,22 @@ namespace EasySaveClasses.ViewModelNS
     {
         private string timestamp, saveName, sourcePath, targetPath;
         private float directorySize, transferTime;
+        private int cryptingTime;
 
         private string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Logs.json");
         /// <summary>
         /// Entry point of the log class
         /// </summary>
         /// <param name="model"></param>
-        internal Log(string sourcePath, string targetPath, float transferTime)
+        internal Log(string saveName, string sourcePath, string targetPath, float transferTime)
         {
             this.timestamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-            this.saveName = Path.GetFileName(sourcePath);
+            this.saveName = saveName;
             this.sourcePath = sourcePath;
             this.targetPath = targetPath;
-            this.directorySize = 0;
             this.transferTime = transferTime;
-            //this.directorySize = CalculateDirectorySize(new DirectoryInfo(sourcePath));
+            this.cryptingTime = new Random().Next(1, 9999);
+            this.directorySize = CalculateDirectorySize(new DirectoryInfo(sourcePath));
         }
 
         /// <summary>
@@ -44,7 +45,8 @@ namespace EasySaveClasses.ViewModelNS
                     sourcePath = this.sourcePath,
                     targetPath = this.targetPath,
                     DirSize = this.directorySize,
-                    DirTransferTime = this.transferTime
+                    DirTransferTime = this.transferTime,
+                    CryptingTime = this.cryptingTime
                 };
                 List<object> existingLogs = new List<object>();
 
