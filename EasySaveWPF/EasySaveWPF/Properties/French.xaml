@@ -10,7 +10,6 @@
     <sys:String x:Key="LanguageMenuItem">Langues</sys:String>
     <sys:String x:Key="LogFormatMenuItem">Format des logs</sys:String>
     <sys:String x:Key="SelectDestinationFolderButton">Sélectionner le dossier de destination</sys:String>
-    <sys:String x:Key="SaveFormat">Format des sauvegardes</sys:String>
     <sys:String x:Key="SelectSourceFolderButton">Sélectionner le dossier source</sys:String>
     <sys:String x:Key="SettingsMenuItem">Options</sys:String>
 </ResourceDictionary>

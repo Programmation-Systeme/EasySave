@@ -3,7 +3,6 @@ using EasySaveClasses.ModelNS;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
-using System.Security.AccessControl;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -123,7 +122,6 @@ namespace EasySaveClasses.ViewModelNS
         /// 
         public MainViewModel()
         {
-            SaveType = 1;
             CurrentSave = [];
             Items = [];
             _model = new Model();
