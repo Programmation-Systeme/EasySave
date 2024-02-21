@@ -159,7 +159,7 @@ namespace EasySaveClasses.ViewModelNS
         {
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
             string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
-            Save save = new(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath);
+            Save save = new(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath, SaveType);
             _model.Datas.Add(save);
             CurrentSave.Add(save.Name);
             EditSave.Create(OpenFileSrc, OpenFileDest, SaveType);
@@ -205,7 +205,7 @@ namespace EasySaveClasses.ViewModelNS
             }
 
             // // Execute the selected save
-            EditSave.Update(OpenFileSrc, OpenFileDest, SaveType);
+            //EditSave.Update(OpenFileSrc, OpenFileDest, SaveType);
         }
 
         /// <summary>

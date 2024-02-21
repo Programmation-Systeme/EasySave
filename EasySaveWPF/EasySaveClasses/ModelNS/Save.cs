@@ -34,10 +34,8 @@ namespace EasySaveClasses.ModelNS
         public int SaveType { get => _saveType; set => _saveType = value; }
 
         // Constructor
-        public Save()
-        {
-        }
-        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int nbFilesLeftToDo =0, int progression =0)
+
+        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int saveType, int nbFilesLeftToDo =0, int progression =0)
         {
 
             string[] files = Directory.GetFiles(currentSourceFile);
@@ -59,6 +57,7 @@ namespace EasySaveClasses.ModelNS
             _totalFilesSize = Convert.ToInt32(totalSize);
             _nbFilesLeftToDo = nbFilesLeftToDo;
             _progression = progression;
+            _saveType = saveType;
         }
         // Method to serialize the Save array to JSON and save it to a file
         public static void Serialize(List<Save> dataSaveList)

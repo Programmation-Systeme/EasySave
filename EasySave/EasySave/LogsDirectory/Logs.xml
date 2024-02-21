@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfLogEntry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LogEntry>
+    <Name>testv11</Name>
+    <FileSource>C:\Users\testa\Documents\testv11</FileSource>
+    <FileDestination>C:\Users\testa\Documents\testv11-02-20-2024-3-03-41</FileDestination>
+    <FileSize>19</FileSize>
+    <FileTransferTime>256</FileTransferTime>
+    <Date>20/02/2024 15:03:41</Date>
+  </LogEntry>
+  <LogEntry>
+    <Name>testv11</Name>
+    <FileSource>C:\Users\testa\Documents\testv11</FileSource>
+    <FileDestination>C:\Users\testa\Documents\testv11-02-20-2024-3-03-41</FileDestination>
+    <FileSize>19</FileSize>
+    <FileTransferTime>256</FileTransferTime>
+    <Date>20/02/2024 15:03:50</Date>
+  </LogEntry>
+</ArrayOfLogEntry>
