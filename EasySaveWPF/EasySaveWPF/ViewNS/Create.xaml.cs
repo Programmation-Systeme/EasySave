@@ -15,10 +15,10 @@ namespace EasySaveWPF.ViewNS
         MainViewModel _mainViewModel;
         public Create(MainWindow mainWindow)
         {
-            InitializeComponent();
             _mainWindow = mainWindow;
             _mainViewModel = _mainWindow.mainViewModel;
             DataContext = _mainViewModel;
+            InitializeComponent();
         }
         private void OpenFolderSource_Click(object sender, RoutedEventArgs e)
         {
@@ -42,23 +42,23 @@ namespace EasySaveWPF.ViewNS
         }
         private void SaveTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (saveTypeComboBox.SelectedItem == null)
-                return;
-
-            ComboBoxItem selectedItem = (ComboBoxItem)saveTypeComboBox.SelectedItem;
-            if (selectedItem.Content.ToString() == "Différentiel")
-            {
+            if (saveTypeComboBox.SelectedIndex == 0)
+                {
                 _mainViewModel.SaveType = 1;
             }
-            else if (selectedItem.Content.ToString() == "Complète")
+            else if (saveTypeComboBox.SelectedIndex == 1)
             {
                 _mainViewModel.SaveType = 2;
+            }
+            else
+            {
+                return;
             }
         }
 
         private void btnAddSave_Click(object sender, RoutedEventArgs e)
         {
-            _mainViewModel.AddSave();
+            _mainViewModel.AddSave_Click();
         }
     }
 }

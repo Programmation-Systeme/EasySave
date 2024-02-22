@@ -1,16 +1,16 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
-    <sys:String x:Key="AddButton">Ajouter</sys:String>
-    <sys:String x:Key="ChooseSave">Choisissez des sauvegardes</sys:String>
-    <sys:String x:Key="CreateMenuItem">Créer</sys:String>
-    <sys:String x:Key="DeleteButton">Supprimer</sys:String>
-    <sys:String x:Key="ExecuteButton">Exécuter</sys:String>
-    <sys:String x:Key="HomeMenuItem">Accueil</sys:String>
-    <sys:String x:Key="LanguageMenuItem">Langues</sys:String>
-    <sys:String x:Key="LogFormatMenuItem">Format des logs</sys:String>
-    <sys:String x:Key="SelectDestinationFolderButton">Sélectionner le dossier de destination</sys:String>
-    <sys:String x:Key="SaveFormat">Format des sauvegardes</sys:String>
-    <sys:String x:Key="SelectSourceFolderButton">Sélectionner le dossier source</sys:String>
-    <sys:String x:Key="SettingsMenuItem">Options</sys:String>
+    <sys:String x:Key="AddButton_txt">Ajouter</sys:String>
+    <sys:String x:Key="CreateSave_txt">Créer une sauvegarde</sys:String>
+    <sys:String x:Key="CreateMenuItem_txt">Créer</sys:String>
+    <sys:String x:Key="DeleteButton_txt">Supprimer</sys:String>
+    <sys:String x:Key="ExecuteButton_txt">Exécuter</sys:String>
+    <sys:String x:Key="HomeMenuItem_txt">Accueil</sys:String>
+    <sys:String x:Key="LanguageMenuItem_txt">Langues</sys:String>
+    <sys:String x:Key="LogFormatMenuItem_txt">Format des logs</sys:String>
+    <sys:String x:Key="SelectDestinationFolderButton_txt">Sélectionner le dossier de destination</sys:String>
+    <sys:String x:Key="SaveFormat_txt">Format des sauvegardes</sys:String>
+    <sys:String x:Key="SelectSourceFolderButton_txt">Sélectionner le dossier source</sys:String>
+    <sys:String x:Key="SettingsMenuItem_txt">Options</sys:String>
 </ResourceDictionary>

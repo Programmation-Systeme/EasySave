@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
 using System.Security.AccessControl;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -12,9 +13,9 @@ namespace EasySaveClasses.ViewModelNS
     /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
         readonly List<Thread> workersList = [];
         static readonly Mutex mutex = new();
 
@@ -85,6 +86,10 @@ namespace EasySaveClasses.ViewModelNS
         }
 
         private int _saveType;
+
+        /// <summary>
+        /// Getter/Setter of SaveType (1 for full save, 2 for differential)
+        /// </summary>
         public int SaveType
         {
             get { return _saveType; }
@@ -127,7 +132,7 @@ namespace EasySaveClasses.ViewModelNS
             CurrentSave = [];
             Items = [];
             _model = new Model();
-            List<string> saveList = _model.getSaveList();
+            List<string> saveList = _model.GetSaveList();
             foreach (string save in saveList) { Items.Add(save); }
 
         }
@@ -141,7 +146,7 @@ namespace EasySaveClasses.ViewModelNS
         private void ExecuteWork(Save save, SynchronizationContext syncContext,int time)
         {
             bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType);
-            Thread.Sleep(time*10000);
+            Thread.Sleep(time*5000);
 
            syncContext.Post(state =>
             {
@@ -155,15 +160,18 @@ namespace EasySaveClasses.ViewModelNS
         /// <summary>
         /// Adds a new save operation.
         /// </summary>
-        public void AddSave()
+        public void AddSave_Click()
         {
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
             string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
+
             Save save = new(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath, SaveType);
             _model.Datas.Add(save);
             CurrentSave.Add(save.Name);
+            
             EditSave.Create(OpenFileSrc, OpenFileDest, SaveType);
             CurrentSave.Remove(save.Name);
+
             Save.Serialize(_model.Datas);
             Items.Add(save.Name);
         }
@@ -189,38 +197,36 @@ namespace EasySaveClasses.ViewModelNS
             {
                 CurrentSave.Add(selectedItemName);
                 // Use LINQ to find the corresponding item in your data model
-                ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
+                Save? selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
-                // // Write in log
-                _log = new Log(selectedSave.Name, selectedSave.SourceFilePath, selectedSave.TargetFilePath, selectedSave.TotalFilesSize);
-                ErrorText = _log.AddLog();
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
+                    // Write in log
+                    _log = new Log(selectedSave.Name, selectedSave.SourceFilePath, selectedSave.TargetFilePath, selectedSave.TotalFilesSize);
+                    ErrorText = _log.AddLog();
+
                     i++;
-                    Thread newWork = new Thread(() => ExecuteWork(selectedSave, _syncContext, i));
+                    Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, i));
                     workersList.Add(newWork);
                     newWork.Start();
                 }
             }
-
-            // // Execute the selected save
-            //EditSave.Update(OpenFileSrc, OpenFileDest, SaveType);
         }
 
         /// <summary>
         /// Deletes selected save operations.
         /// </summary>
-        /// <param name="list">List of selected items to delete.</param>
-        public void DeleteSave_Click(List<string> list)
+        /// <param name="listSaves">List of selected saves to delete.</param>
+        public void DeleteSave_Click(List<string> listSaves)
         {
-            List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
+            List<Save> selectedSaves = [];
 
             // Iterate through selected items
-            foreach (string selectedItemName in list)
+            foreach (string selectedSaveName in listSaves)
             {
                 // Use LINQ to find the corresponding item in your data model
-                ModelNS.Save selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
+                Save? selectedSave = _model.Datas.FirstOrDefault(save => save.Name == selectedSaveName);
 
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
@@ -238,7 +244,7 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         private bool IsMetierSoftwareRunning()
         {
-            // Name of the business software process (adjust according to your case)
+            // Name of the business software process
             string metierSoftwareProcessName = "CalculatorApp";
 
             // Check if the process is running

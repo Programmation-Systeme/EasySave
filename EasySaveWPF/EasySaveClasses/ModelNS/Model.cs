@@ -9,7 +9,9 @@ namespace EasySaveClasses.ModelNS
 {
     public class Model
     {
-        private List<Save> _datas = new List<Save>();
+        private List<Save> _datas = [];
+        internal List<Save> Datas { get => _datas; set => _datas = value; }
+
         /// <summary>
         /// Entry point of the model
         /// </summary>
@@ -18,16 +20,14 @@ namespace EasySaveClasses.ModelNS
             _datas = Save.UnSerialize();
         }
 
-        public List<string> getSaveList()
+        public List<string> GetSaveList()
         {
-            List<string> list = new List<string>();
+            List<string> saveList = [];
             foreach (var save in _datas) 
             {
-                list.Add(save.Name);
+                saveList.Add(save.Name);
             }
-            return list;
+            return saveList;
         }
-
-        internal List<Save> Datas { get => _datas; set => _datas = value; }
     }
 }
