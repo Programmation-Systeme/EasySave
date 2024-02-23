@@ -59,6 +59,9 @@ namespace EasySaveWPF.ViewNS
         private void btnAddSave_Click(object sender, RoutedEventArgs e)
         {
             _mainViewModel.AddSave_Click();
+            _mainViewModel.OpenFileSrc = null;
+            _mainViewModel.OpenFileDest = null;
+            saveTypeComboBox.SelectedIndex = 0;
         }
     }
 }
