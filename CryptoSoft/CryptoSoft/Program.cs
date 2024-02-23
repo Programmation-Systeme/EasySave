@@ -43,8 +43,7 @@ namespace CryptoSoft
                             // Writing of the encrypted content in a new file
                             File.WriteAllBytes(encryptedFileName, encryptedBytes);
 
-                            //temporary disable
-                            //fileInfo.Delete();
+                            fileInfo.Delete();
                         }
                         // Decryption
                         else if (args[0] == "-d")

@@ -1,20 +1,8 @@
 ﻿using EasySaveClasses.ViewModelNS;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using EasySaveClasses.ViewModelNS;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -27,10 +15,10 @@ namespace EasySaveWPF.ViewNS
         MainViewModel _mainViewModel;
         public Create(MainWindow mainWindow)
         {
-            InitializeComponent();
             _mainWindow = mainWindow;
             _mainViewModel = _mainWindow.mainViewModel;
             DataContext = _mainViewModel;
+            InitializeComponent();
         }
         private void OpenFolderSource_Click(object sender, RoutedEventArgs e)
         {
@@ -52,10 +40,25 @@ namespace EasySaveWPF.ViewNS
                 _mainViewModel.OpenFileDest = openFolderDialog.FolderName;
             }
         }
+        private void SaveTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (saveTypeComboBox.SelectedIndex == 0)
+                {
+                _mainViewModel.SaveType = 1;
+            }
+            else if (saveTypeComboBox.SelectedIndex == 1)
+            {
+                _mainViewModel.SaveType = 2;
+            }
+            else
+            {
+                return;
+            }
+        }
 
         private void btnAddSave_Click(object sender, RoutedEventArgs e)
         {
-            _mainViewModel.AddSave();
+            _mainViewModel.AddSave_Click();
         }
     }
 }

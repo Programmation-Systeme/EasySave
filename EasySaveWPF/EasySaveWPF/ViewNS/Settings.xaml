@@ -1,0 +1,62 @@
+﻿<Page x:Class="EasySaveWPF.ViewNS.Settings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EasySaveWPF.ViewNS"
+      mc:Ignorable="d" 
+      Height="600" d:DesignWidth="920"
+      Title="Settings">
+    <Page.Resources>
+        <Style TargetType="ComboBox" x:Key="Flat_ComboBox">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="MinWidth" Value="60"/>
+            <Setter Property="UIElement.SnapsToDevicePixels" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="TextElement.Foreground" Value="Black"/>
+            <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="White" />
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightSkyBlue" />
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="340"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" 
+            Text="{DynamicResource SettingsMenuItem_txt}" 
+            Foreground="#87CEFA" 
+            FontSize="28" 
+            HorizontalAlignment="Left" 
+            Margin="0,0,0,10"/>
+        
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
+            <TextBlock Text="{DynamicResource LanguageMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+            <ComboBox SelectionChanged="ComboBox_LanguageChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
+                <ComboBoxItem Content="English"/>
+                <ComboBoxItem Content="Francais"/>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Row="2"  HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
+            <TextBlock Text="{DynamicResource LogFormatMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+            <ComboBox SelectionChanged="ComboBox_LogFormatChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center"  Style="{DynamicResource Flat_ComboBox}">
+                <ComboBoxItem Content="Json"/>
+                <ComboBoxItem Content="XML"/>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</Page>

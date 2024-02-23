@@ -24,14 +24,12 @@ namespace EasySaveWPF.ViewNS
     {
         MainWindow _mainWindow;
         MainViewModel _mainViewModel;
-        PlayBreak _playBreak;
-        public Home(MainWindow mainWindow, PlayBreak playBreak)
+        public Home(MainWindow mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
             _mainViewModel = _mainWindow.mainViewModel;
             DataContext = _mainViewModel;
-            _playBreak = playBreak;
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)

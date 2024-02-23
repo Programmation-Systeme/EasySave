@@ -1,37 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasySaveClasses.ViewModelNS
+﻿namespace EasySaveClasses.ViewModelNS
 {
-    public class LogEntry
-    {
-        public string Name { get; set; }
-        public string FileSource { get; set; }
-        public string FileDestination { get; set; }
-        public long FileSize { get; set; }
-        public float FileTransferTime { get; set; }
-        public string Date { get; set; }
-
-        protected string timestamp, saveName, sourcePath, targetPath;
-        protected float directorySize, transferTime;
-
-    internal LogEntry(string sourcePath, string targetPath, float transferTime)
-    {
-        this.timestamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-        this.saveName = Path.GetFileName(sourcePath);
-        this.sourcePath = sourcePath;
-        this.targetPath = targetPath;
-        this.directorySize = 0;
-        this.transferTime = transferTime;
-    }
-    }
-
-
     public interface ILog
     {
-        void AddLog(List<int> indexes);
+        string AddLog(string sourcePath, string targetPath, float transferTime);
+
+        public static long CalculateDirectorySize(DirectoryInfo directory)
+        {
+            long size = 0;
+            FileInfo[] files = directory.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                size += file.Length;
+            }
+
+            DirectoryInfo[] subDirectories = directory.GetDirectories();
+
+            foreach (DirectoryInfo subDirectory in subDirectories)
+            {
+                size += CalculateDirectorySize(subDirectory);
+            }
+
+            return size;
+        }
+    }
+    public class LogEntry
+    {
+        public string Timestamp { get; set; }
+        public string Name { get; set; }
+        public string SourcePath { get; set; }
+        public string TargetPath { get; set; }
+        public float DirSize { get; set; }
+        public float DirTransferTime { get; set; }
+        public int CryptingTime { get; set; }
+
     }
 }

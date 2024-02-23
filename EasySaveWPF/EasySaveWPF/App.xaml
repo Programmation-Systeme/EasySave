@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:EasySaveWPF"            
              StartupUri="ViewNS/MainWindow.xaml" ShutdownMode="OnMainWindowClose">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ViewNS/Theme/MenuButtonTheme.xaml" />
+                <ResourceDictionary Source="ViewNS/Theme/TextBoxTheme.xaml" />
+                <ResourceDictionary Source="ViewNS/Theme/ModernButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

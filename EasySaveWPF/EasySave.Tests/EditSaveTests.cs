@@ -41,9 +41,10 @@ namespace EasySave.Tests
             // Arrange
             string sourceFolder = "source";
             string destinationDirectory = "nonexistent_directory";
+            int saveType = 1;
 
             // Act
-            string result = EditSave.Create(sourceFolder, destinationDirectory);
+            string result = EditSave.Create(sourceFolder, destinationDirectory, saveType);
 
             // Assert
             Assert.Null(result);

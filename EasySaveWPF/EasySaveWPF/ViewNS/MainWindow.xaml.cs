@@ -1,20 +1,7 @@
-﻿using System.Text;
-using System.Windows;
-using System;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using EasySaveClasses.ViewModelNS;
-using System.Globalization;
-using System.Windows.Resources;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
 using System.Windows.Threading;
 
 namespace EasySaveWPF.ViewNS
@@ -25,52 +12,46 @@ namespace EasySaveWPF.ViewNS
     public partial class MainWindow : Window
     {
         public MainViewModel mainViewModel;
-        PlayBreak _playBreak;
+        Home home;
+        Create create;
+        PlayBreak playBreak;
+        Execution execution;
+        Settings settings;
         public MainWindow()
         {
             InitializeComponent();
             LoadLanguage_En();
-            Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
             mainViewModel = new MainViewModel();
-            PlayBreak playBreak = new PlayBreak(this);
-            Home.Navigate(new Home(this, playBreak));
-            Create.Navigate(new Create(this));
-            PlayBreak.Navigate(new Execution(this));
+
+            home = new Home(this);
+            create =  new Create(this);
+            Frame.Navigate(home);
+            Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
+            execution = new Execution(this);
+            settings = new Settings(this);
+
         }
-        private void ComboBox_LanguageChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox comboBox = sender as ComboBox;
-            ComboBoxItem selectedItem = comboBox.SelectedItem as ComboBoxItem;
-            if (selectedItem != null)
-            {
-                if (selectedItem.Content.ToString() == "Francais")
-                {
-                    LoadLanguage_Fr();
-                }
-                if (selectedItem.Content.ToString() == "English")
-                {
-                    LoadLanguage_En();
-                }
-            }
-        }
+
+        /// <summary>
+        /// Loads a language resource dictionary from the specified relative path and applies it to the application's resources.
+        /// </summary>
+        /// <param name="relativePath">The relative path to the language resource dictionary file.</param>
         private void LoadLanguage(string relativePath)
         {
             Application.Current.Resources.MergedDictionaries.Clear();
-            Uri uri = new Uri(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath), UriKind.Absolute);
-            using (FileStream fs = new FileStream(uri.LocalPath, FileMode.Open))
-            {
-                System.Windows.Markup.XamlReader reader = new System.Windows.Markup.XamlReader();
-                ResourceDictionary myResourceDictionary = (ResourceDictionary)reader.LoadAsync(fs);
-                Application.Current.Resources.MergedDictionaries.Add(myResourceDictionary);
-            }
+            Uri uri = new(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath), UriKind.Absolute);
+            using FileStream fs = new(uri.LocalPath, FileMode.Open);
+            System.Windows.Markup.XamlReader reader = new System.Windows.Markup.XamlReader();
+            ResourceDictionary myResourceDictionary = (ResourceDictionary)reader.LoadAsync(fs);
+            Application.Current.Resources.MergedDictionaries.Add(myResourceDictionary);
         }
 
-        private void LoadLanguage_Fr()
+        public void LoadLanguage_Fr()
         {
             LoadLanguage("../../../Properties/French.xaml");
         }
 
-        private void LoadLanguage_En()
+        public void LoadLanguage_En()
         {
             LoadLanguage("../../../Properties/English.xaml");
         }
@@ -84,5 +65,24 @@ namespace EasySaveWPF.ViewNS
         {
             LoadLanguage_Fr();
         }
+
+        private void RadioButtonHome_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(home);
+        }
+        private void RadioButtonCreate_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(create);
+        }
+
+        private void RadioButtonSetting_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(settings);
+        }
+        private void RadioButtonExecution_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(execution);
+        }
+        
     }
 }
