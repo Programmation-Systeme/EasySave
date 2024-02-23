@@ -45,7 +45,6 @@ namespace EasySaveClasses.ViewModelNS
             {
                 return " Pas trouvé le JSON";
             }
-
         }
 
         public void AddLog(List<int> indexes)
