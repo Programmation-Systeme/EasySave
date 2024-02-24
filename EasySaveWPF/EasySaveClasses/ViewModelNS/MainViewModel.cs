@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Diagnostics;
 using System.Security.AccessControl;
 using static System.Net.Mime.MediaTypeNames;
+using static EasySaveClasses.ViewModelNS.EditSave;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -153,41 +154,27 @@ namespace EasySaveClasses.ViewModelNS
             Stopwatch stopwatch = new Stopwatch();
 
             stopwatch.Start();
-            bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType);
-            Thread.Sleep(3000);
-            WaitHandle.WaitAny(new WaitHandle[] { manualEvent, cancelEvent.Token.WaitHandle });
-            if(cancelEvent.Token.IsCancellationRequested)
-            {
-                syncContext.Post(state =>
-                {
-                    if (res)
-                    {
-                        save.State = "CANCELED";
-                        ErrorText = "ABORT SAVE";
-                        //ErrorText = LogManager.Instance.AddLog(save.SourceFilePath, save.TargetFilePath, stopwatch.ElapsedMilliseconds);
-                        CurrentSave.Remove(save.Name);
-                        Save.Serialize(_model.Datas);
-                    }
-                }, null);
-                threadsManualResetEvent.Remove(save.Name);
-                threadsDictionary.Remove(save.Name);
-                threadsCancelEvent.Remove(save.Name);
-                return;
-            }
-
-            Thread.Sleep(3000);
-            //manualEvent.WaitOne();
+            ResultUpdate res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType, manualEvent, cancelEvent);
             stopwatch.Stop();
-
             syncContext.Post(state =>
             {
-                if (res)
+                if (res.Success)
                 {
-                    save.State = "FINI";
+                    save.State = "END";
                     ErrorText = LogManager.Instance.AddLog(save.SourceFilePath, save.TargetFilePath, stopwatch.ElapsedMilliseconds);
                     CurrentSave.Remove(save.Name);
+                    save.Progression = res.Progression;
                     Save.Serialize(_model.Datas);
-                }  
+                }
+                else
+                {
+                    save.State = "ABORTED";
+                    ErrorText = "ABORT SAVE";
+                    ErrorText = LogManager.Instance.AddLog(save.SourceFilePath, save.TargetFilePath, stopwatch.ElapsedMilliseconds);
+                    CurrentSave.Remove(save.Name);
+                    save.Progression = res.Progression;
+                    Save.Serialize(_model.Datas);
+                }
             }, null);
             threadsManualResetEvent.Remove(save.Name);
             threadsDictionary.Remove(save.Name);
