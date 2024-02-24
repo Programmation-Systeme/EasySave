@@ -1,19 +1,5 @@
 ﻿using EasySaveClasses.ViewModelNS;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -49,5 +35,15 @@ namespace EasySaveWPF.ViewNS
             }
         }
 
+        private void ComboBox_LogFormatChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            ComboBoxItem selectedItem = comboBox.SelectedItem as ComboBoxItem;
+            if (selectedItem != null && _mainWindow != null)
+            {
+                LogManager.Instance.LogStrategyType = selectedItem.Content.ToString();
+            }
+        }
+        
     }
 }

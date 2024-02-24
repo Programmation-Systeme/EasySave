@@ -92,29 +92,29 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="260"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{DynamicResource ChooseSave}" Foreground="#87CEFA" FontSize="28" HorizontalAlignment="Left" Margin="0,0,0,10"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource CreateSave_txt}" Foreground="#87CEFA" FontSize="28" HorizontalAlignment="Left" Margin="0,0,0,10"/>
 
         <!-- select parth source -->
         <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="1" VerticalAlignment="Center">
-            <TextBox Text="{DynamicResource SelectSourceFolderButton}" BorderThickness="0"  />
+            <TextBlock Text="{DynamicResource SelectSourceFolderButton_txt}" />
             <Button Style="{StaticResource Flat_Button}" Margin="3" Name="btnOpenFile" Click="OpenFolderSource_Click" Content="..." />
-            <TextBox Text="{Binding OpenFileSrc, Mode=TwoWay}" BorderThickness="0"  />
+            <TextBlock Text="{Binding OpenFileSrc, Mode=TwoWay}" />
         </StackPanel>
         
         <!-- select parth target -->
         <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="2" VerticalAlignment="Center">
-            <TextBox Text="{DynamicResource SelectDestinationFolderButton}" BorderThickness="0"  />
+            <TextBox Text="{DynamicResource SelectDestinationFolderButton_txt}" BorderThickness="0"  />
             <Button Style="{StaticResource Flat_Button}" Margin="3" Name="btnOpenFile2" Click="OpenFolderDest_Click" Content="..." />
             <TextBox Text="{Binding OpenFileDest, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel> 
 
         <StackPanel Margin="20" Grid.Row="3"  HorizontalAlignment="Left" Orientation="Horizontal">
-            <TextBlock Text="Format de sauvgarde" Margin="0,0,5,0"  VerticalAlignment="Center" />
-            <ComboBox x:Name="saveTypeComboBox" 
-                      Style="{StaticResource Flat_ComboBox}" 
-                      SelectedItem="{Binding SaveType}"
+            <TextBlock Text="{DynamicResource SaveFormat_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+            <ComboBox x:Name="saveTypeComboBox"
+                Style="{StaticResource Flat_ComboBox}" 
                       Width="100" Grid.Row="3" 
                       VerticalAlignment="Center"
+                      SelectedIndex="0"
                       SelectionChanged="SaveTypeComboBox_SelectionChanged">
                 <ComboBoxItem Content="Différentiel"/>
                 <ComboBoxItem Content="Complète"/>
@@ -123,7 +123,7 @@
 
         <!-- Boutons en bas -->
         <StackPanel  Margin="20" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
-            <Button Style="{DynamicResource ModernButton}" Content="{DynamicResource AddButton}" Name="btnAddSave" Click="btnAddSave_Click" Margin="5"/>
+            <Button Style="{DynamicResource ModernButton}" Content="{DynamicResource AddButton_txt}" Name="btnAddSave" Click="btnAddSave_Click" Margin="5"/>
         </StackPanel>
     </Grid>
 </Page>

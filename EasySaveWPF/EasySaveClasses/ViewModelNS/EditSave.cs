@@ -19,20 +19,17 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="destinationDirectory">The directory where the folder will be saved.</param>
         public static string Create(string sourceFolder, string destinationDirectory, int saveType)
         {
-            // Generate formatted date-time string for unique identifier
-            string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-            if (sourceFolder == null || destinationDirectory == null)
-            { return "source directory or target directory unselected"; }
-            // Form a dynamic path for the folder
-            string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
-
-            // Check if the destination directory already exists
-            bool destinationDirectoryExists = Directory.Exists(destinationDirectory);
-            if (!destinationDirectoryExists)
-                return null;
+            if (sourceFolder == null || destinationDirectory == null || saveType == 0 || !Directory.Exists(destinationDirectory))
+            { return ""; }
 
             try
             {
+                // Generate formatted date-time string for unique identifier
+                string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
+
+                // Form a dynamic path for the folder
+                string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
+
                 // Create the new directory
                 Directory.CreateDirectory(pathWithId);
 
@@ -40,10 +37,9 @@ namespace EasySaveClasses.ViewModelNS
                 Update(sourceFolder, pathWithId, saveType);
                 return pathWithId;
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Error occurred: " + ex.Message);
-                return null;
+                return "";
             }
         }
 
@@ -53,13 +49,10 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="destinationFolder">The folder to be deleted.</param>
         public static bool Delete(string destinationFolder)
         {
-            // Check if the folder exists
-            bool folderExists = Directory.Exists(destinationFolder);
-
             try
             {
                 // Delete the folder if it exists
-                if (folderExists)
+                if (Directory.Exists(destinationFolder))
                 {
                     Directory.Delete(destinationFolder, true);
                     return true;
@@ -69,9 +62,8 @@ namespace EasySaveClasses.ViewModelNS
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Error occurred: " + ex.Message);
                 return false;
             }
         }
@@ -165,10 +157,9 @@ namespace EasySaveClasses.ViewModelNS
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 // Handle the exception (you might want to log it or perform other actions)
-                Console.WriteLine("An error occurred: " + ex.Message);
                 return false; // Return false indicating error
             }
         }
@@ -200,26 +191,23 @@ namespace EasySaveClasses.ViewModelNS
                 }
 
                 string command = "/c cd " + CryptoSoftPath + " && CryptoSoft.exe -e " + FilteredFilesPath;
-                Process process2 = new Process();
-                process2.StartInfo.FileName = "cmd.exe";
-                process2.StartInfo.Arguments = command;
-                process2.StartInfo.RedirectStandardOutput = true;
-                process2.StartInfo.RedirectStandardError = true;
-                process2.StartInfo.CreateNoWindow = true;
-                process2.Start();
-                // Lire la sortie standard
-                string output2 = process2.StandardOutput.ReadToEnd();
-                string error2 = process2.StandardError.ReadToEnd();
-                process2.WaitForExit();
-                // Afficher la sortie
-                Console.WriteLine(output2);
+                Process process = new Process();
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Arguments = command;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.CreateNoWindow = true;
+                process.Start();
+                // Read response from process
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+                process.WaitForExit();
             }
         }
 
         private static bool IsFileWithExtension(string filePath, string extension)
         {
-            string fileExtension = Path.GetExtension(filePath);
-            return string.Equals(fileExtension, extension, StringComparison.OrdinalIgnoreCase);
+            return Path.GetExtension(filePath).Equals(extension, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

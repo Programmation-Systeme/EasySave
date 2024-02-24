@@ -34,14 +34,14 @@ namespace EasySaveWPF.ViewNS
                 if(selectedItem.Foreground == Brushes.Red)
                 {
                     selectedItem.Foreground = Brushes.Black;
-                    _mainViewModel.ResumeSave(saveName: CurrentSave.SelectedItem.ToString());
+                    //_mainViewModel.ResumeSave(saveName: CurrentSave.SelectedItem.ToString());
 
                     Play.Content = "▶";
                 }
                 else if(selectedItem.Foreground == Brushes.Black)
                 {
                     selectedItem.Foreground = Brushes.Red;
-                    _mainViewModel.PauseSave(saveName: CurrentSave.SelectedItem.ToString());
+                    //_mainViewModel.PauseSave(saveName: CurrentSave.SelectedItem.ToString());
 
                     Play.Content = "⏸";
                 }
@@ -51,7 +51,7 @@ namespace EasySaveWPF.ViewNS
         {
             if (CurrentSave.SelectedItem != null)
             {
-                _mainViewModel.AbortSave(saveName: CurrentSave.SelectedItem.ToString());
+                //_mainViewModel.AbortSave(saveName: CurrentSave.SelectedItem.ToString());
                 _mainViewModel.CurrentSave.Remove((string)CurrentSave.SelectedItem);
             }
         }

@@ -1,0 +1,38 @@
+[
+  {
+    "Timestamp": "24/02/2024 10:35:01",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-23-2024-3-06-49",
+    "DirSize": 747.0,
+    "DirTransferTime": 5167.0,
+    "CryptingTime": 2888
+  },
+  {
+    "Timestamp": "24/02/2024 10:36:03",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-23-2024-3-06-49",
+    "DirSize": 747.0,
+    "DirTransferTime": 5072.0,
+    "CryptingTime": 5541
+  },
+  {
+    "Timestamp": "24/02/2024 10:36:15",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-23-2024-3-06-49",
+    "DirSize": 747.0,
+    "DirTransferTime": 5075.0,
+    "CryptingTime": 4845
+  },
+  {
+    "Timestamp": "24/02/2024 10:36:25",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-23-2024-3-06-49",
+    "DirSize": 747.0,
+    "DirTransferTime": 5072.0,
+    "CryptingTime": 4138
+  }
+]

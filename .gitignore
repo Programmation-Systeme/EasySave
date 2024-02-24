@@ -9,6 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+LogDirectory/Logs.json
+LogDirectory/Logs.xml
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

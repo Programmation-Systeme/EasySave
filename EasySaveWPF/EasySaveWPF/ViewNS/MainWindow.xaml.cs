@@ -1,20 +1,7 @@
-﻿using System.Text;
-using System.Windows;
-using System;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using EasySaveClasses.ViewModelNS;
-using System.Globalization;
-using System.Windows.Resources;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
 using System.Windows.Threading;
 
 namespace EasySaveWPF.ViewNS
@@ -36,24 +23,27 @@ namespace EasySaveWPF.ViewNS
             LoadLanguage_En();
             mainViewModel = new MainViewModel();
 
-            home = new Home(this);
+            execution = new Execution(this);
+            home = new Home(this, execution);
             create =  new Create(this);
             Frame.Navigate(home);
             Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
-            execution = new Execution(this);
             settings = new Settings(this);
 
         }
+
+        /// <summary>
+        /// Loads a language resource dictionary from the specified relative path and applies it to the application's resources.
+        /// </summary>
+        /// <param name="relativePath">The relative path to the language resource dictionary file.</param>
         private void LoadLanguage(string relativePath)
         {
             Application.Current.Resources.MergedDictionaries.Clear();
-            Uri uri = new Uri(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath), UriKind.Absolute);
-            using (FileStream fs = new FileStream(uri.LocalPath, FileMode.Open))
-            {
-                System.Windows.Markup.XamlReader reader = new System.Windows.Markup.XamlReader();
-                ResourceDictionary myResourceDictionary = (ResourceDictionary)reader.LoadAsync(fs);
-                Application.Current.Resources.MergedDictionaries.Add(myResourceDictionary);
-            }
+            Uri uri = new(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath), UriKind.Absolute);
+            using FileStream fs = new(uri.LocalPath, FileMode.Open);
+            System.Windows.Markup.XamlReader reader = new System.Windows.Markup.XamlReader();
+            ResourceDictionary myResourceDictionary = (ResourceDictionary)reader.LoadAsync(fs);
+            Application.Current.Resources.MergedDictionaries.Add(myResourceDictionary);
         }
 
         public void LoadLanguage_Fr()

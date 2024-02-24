@@ -38,22 +38,22 @@
             <RowDefinition Height="340"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" 
-            Text="{DynamicResource SettingsMenuItem}" 
+            Text="{DynamicResource SettingsMenuItem_txt}" 
             Foreground="#87CEFA" 
             FontSize="28" 
             HorizontalAlignment="Left" 
             Margin="0,0,0,10"/>
         
         <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
-            <TextBlock Text="{DynamicResource LanguageMenuItem}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+            <TextBlock Text="{DynamicResource LanguageMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
             <ComboBox SelectionChanged="ComboBox_LanguageChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
                 <ComboBoxItem Content="English"/>
                 <ComboBoxItem Content="Francais"/>
             </ComboBox>
         </StackPanel>
         <StackPanel Grid.Row="2"  HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
-            <TextBlock Text="{DynamicResource LogFormatMenuItem}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-            <ComboBox SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
+            <TextBlock Text="{DynamicResource LogFormatMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+            <ComboBox SelectionChanged="ComboBox_LogFormatChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center"  Style="{DynamicResource Flat_ComboBox}">
                 <ComboBoxItem Content="Json"/>
                 <ComboBoxItem Content="XML"/>
             </ComboBox>
