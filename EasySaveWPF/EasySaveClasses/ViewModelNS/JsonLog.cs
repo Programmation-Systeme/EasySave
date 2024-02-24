@@ -6,7 +6,7 @@ using System.IO;
 
 public class JsonLog : ILog
 {
-    private static readonly string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Logs.json");
+    private static readonly string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/Logs.json");
 
     public string AddLog(string sourcePath, string targetPath, float transferTime)
     {

@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 public class XmlLog : ILog
 {
-    private static readonly string XmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Logs.xml");
+    private static readonly string XmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/Logs.xml");
 
     public string AddLog(string sourcePath, string targetPath, float transferTime)
     {
