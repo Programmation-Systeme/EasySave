@@ -16,7 +16,11 @@ namespace EasySaveClasses.ViewModelNS
         public event PropertyChangedEventHandler? PropertyChanged;
 
         readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
-        readonly List<Thread> workersList = [];
+        private readonly Dictionary<string, Thread> threadsDictionary = new Dictionary<string, Thread>();
+        private readonly Dictionary<string, ManualResetEvent> threadsManualResetEvent = new Dictionary<string, ManualResetEvent>();
+        private readonly Dictionary<string, CancellationTokenSource> threadsCancelEvent = new Dictionary<string, CancellationTokenSource>();
+
+
         static readonly Mutex mutex = new();
 
         /// <summary>
@@ -143,33 +147,72 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="save">The save object containing details of the save operation.</param>
         /// <param name="syncContext">The synchronization context for UI updates.</param>
         /// <param name="time">The time for which to sleep the thread.</param>
-        private void ExecuteWork(Save save, SynchronizationContext syncContext,int time)
+        private void ExecuteWork(Save save, SynchronizationContext syncContext, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
         {
 
             Stopwatch stopwatch = new Stopwatch();
 
             stopwatch.Start();
             bool res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType);
-            Thread.Sleep(time*5000);
+            Thread.Sleep(3000);
+            WaitHandle.WaitAny(new WaitHandle[] { manualEvent, cancelEvent.Token.WaitHandle });
+            if(cancelEvent.Token.IsCancellationRequested)
+            {
+                syncContext.Post(state =>
+                {
+                    if (res)
+                    {
+                        save.State = "CANCELED";
+                        ErrorText = "ABORT SAVE";
+                        //ErrorText = LogManager.Instance.AddLog(save.SourceFilePath, save.TargetFilePath, stopwatch.ElapsedMilliseconds);
+                        CurrentSave.Remove(save.Name);
+                        Save.Serialize(_model.Datas);
+                    }
+                }, null);
+                threadsManualResetEvent.Remove(save.Name);
+                threadsDictionary.Remove(save.Name);
+                threadsCancelEvent.Remove(save.Name);
+                return;
+            }
+
+            Thread.Sleep(3000);
+            //manualEvent.WaitOne();
             stopwatch.Stop();
 
             syncContext.Post(state =>
             {
-                mutex.WaitOne();
                 if (res)
                 {
                     save.State = "FINI";
-                    LogManager.Instance.AddLog(save.SourceFilePath, save.TargetFilePath, stopwatch.ElapsedMilliseconds);
+                    ErrorText = LogManager.Instance.AddLog(save.SourceFilePath, save.TargetFilePath, stopwatch.ElapsedMilliseconds);
                     CurrentSave.Remove(save.Name);
                     Save.Serialize(_model.Datas);
-                }
-                
-                mutex.ReleaseMutex();
-
+                }  
             }, null);
-               
+            threadsManualResetEvent.Remove(save.Name);
+            threadsDictionary.Remove(save.Name);
+            threadsCancelEvent.Remove(save.Name);
         }
 
+        public void AbortSave(string saveName) 
+        {
+            CancellationTokenSource cancelEvent;
+            Thread work;
+            threadsCancelEvent.TryGetValue(saveName, out cancelEvent);
+            cancelEvent.Cancel();      
+        }
+        public void PauseSave(string saveName) 
+        {
+            ManualResetEvent manualReset;
+            threadsManualResetEvent.TryGetValue(saveName, out manualReset);
+            manualReset.Reset();
+        }
+        public void ResumeSave(string saveName) 
+        {
+            ManualResetEvent manualReset;
+            threadsManualResetEvent.TryGetValue(saveName, out manualReset);
+            manualReset.Set();
+        }
         /// <summary>
         /// Adds a new save operation.
         /// </summary>
@@ -221,8 +264,16 @@ namespace EasySaveClasses.ViewModelNS
                     //ErrorText = _log.AddLog();
 
                     i++;
-                    Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, i));
-                    workersList.Add(newWork);
+                    ManualResetEvent manualEvent = new ManualResetEvent(true);
+                    CancellationTokenSource cancelEvent = new CancellationTokenSource();
+                    threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
+                    threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
+
+                    Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
+
+                    threadsDictionary.Add(selectedSave.Name,newWork);
+
+
                     newWork.Start();
                 }
             }
