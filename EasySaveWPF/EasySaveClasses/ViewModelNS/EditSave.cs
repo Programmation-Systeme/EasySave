@@ -1,11 +1,7 @@
 using EasySaveClasses.ModelNS;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Diagnostics;
 using System.IO;
-using System.Security.AccessControl;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -208,7 +204,7 @@ namespace EasySaveClasses.ViewModelNS
                 if (!Directory.Exists(destDir))
                     Directory.CreateDirectory(destDir);
 
-                DirectoryInfo destDirInfo = new DirectoryInfo(destDir);
+                DirectoryInfo destDirInfo = new(destDir);
 
                 // Get the files in the source directory
                 FileInfo[] sourceFiles = sourceDirInfo.GetFiles();
@@ -216,14 +212,28 @@ namespace EasySaveClasses.ViewModelNS
 
                 List<string> sourceFilesNames = [];
 
+                // Adding to a list the name of each file
                 foreach (FileInfo sourceFile in sourceFiles)
                 {
                     sourceFilesNames.Add(sourceFile.Name);
                 }
 
+
+
+                // Deleting every file that is not in source directory
                 foreach (FileInfo destFile in destFiles)
                 {
-                    if (!sourceFilesNames.Contains(destFile.Name))
+
+                    if(destFile.Extension == ".hash" || destFile.Extension == ".encrypted")
+                    {
+                        FileInfo? correspondingSourceFile = sourceFiles.FirstOrDefault(sourceFile => sourceFile.Name == Path.GetFileNameWithoutExtension(destFile.FullName));
+                        
+                        if(correspondingSourceFile == null)
+                        {
+                            destFile.Delete();
+                        }
+                    }
+                    else if(!sourceFilesNames.Contains(destFile.Name))
                     {
                         File.Delete(destFile.FullName);
                     }
@@ -241,14 +251,34 @@ namespace EasySaveClasses.ViewModelNS
                     // Differential save
                     else if (saveType == 2)
                     {
-                        // Compare metadata (last write time) of source and destination files
-                        DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
-                        DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
-
-                        // If the metadata differs, update the destination file with the source file
-                        if (sourceLastWriteTime != destLastWriteTime)
+                        if(File.Exists(destFilePath + ".encrypted"))
                         {
-                            sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
+                            if(File.Exists(destFilePath + ".hash"))
+                            {
+                                string sourceFileHash = File.ReadAllText(destFilePath + ".hash");
+                                if (sourceFileHash != CalculateFileHash(sourceFile.FullName))
+                                {
+                                    File.Delete(destFilePath + ".hash");
+                                    File.Delete(destFilePath + ".encrypted");
+                                    sourceFile.CopyTo(destFilePath, true);
+                                }
+                            }
+                            else
+                            {
+                                File.Delete(destFilePath + ".encrypted");
+                            }
+                        }
+                        else
+                        {
+                            // Compare metadata (last write time) of source and destination files
+                            DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
+                            DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
+
+                            // If the metadata differs, update the destination file with the source file
+                            if (sourceLastWriteTime != destLastWriteTime)
+                            {
+                                sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
+                            }
                         }
                     }
                     // If saveType is not full or differential, error
@@ -257,10 +287,12 @@ namespace EasySaveClasses.ViewModelNS
                         return false;
                     }
                 }
+
                 destDirInfo = new DirectoryInfo(destDir);
                 DirectoryInfo[] destSubDirs = destDirInfo.GetDirectories();
                 destFiles = destDirInfo.GetFiles();
-                // encrypt
+
+                // encryption
                 List<string> listFilesPath = [];
                 foreach (FileInfo file in destFiles)
                 {
@@ -319,10 +351,12 @@ namespace EasySaveClasses.ViewModelNS
                 foreach (string fileCrypt in filteredFiles)
                 {
                     FilteredFilesPath += fileCrypt + " ";
+                    File.WriteAllText(fileCrypt + ".hash", CalculateFileHash(fileCrypt));
+                    File.SetAttributes(fileCrypt + ".hash", File.GetAttributes(fileCrypt + ".hash") | FileAttributes.Hidden);
                 }
 
                 string command = "/c cd " + CryptoSoftPath + " && CryptoSoft.exe -e " + FilteredFilesPath;
-                Process process = new Process();
+                Process process = new();
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = command;
                 process.StartInfo.RedirectStandardOutput = true;
@@ -339,6 +373,14 @@ namespace EasySaveClasses.ViewModelNS
         private static bool IsFileWithExtension(string filePath, string extension)
         {
             return Path.GetExtension(filePath).Equals(extension, StringComparison.OrdinalIgnoreCase);
+        }
+
+        static string CalculateFileHash(string filePath)
+        {
+            using var sha256 = System.Security.Cryptography.SHA256.Create();
+            using var stream = File.OpenRead(filePath);
+            byte[] hashBytes = sha256.ComputeHash(stream);
+            return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
         }
     }
 }
