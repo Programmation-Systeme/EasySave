@@ -17,7 +17,7 @@ namespace EasySaveClasses.ModelNS
         private string _currentSourceFile;
         private string _destinationFile;
         private int _totalFilesToCopy;
-        private int _totalFilesSize;
+        private long _totalFilesSize;
         private int _nbFilesLeftToDo;
         private int _progression;
         private int _saveType;
@@ -27,16 +27,16 @@ namespace EasySaveClasses.ModelNS
         public string State { get => _state; set => _state = value; }
 
         [JsonProperty(nameof(TotalFilesToCopy))]
-        public int TotalFilesToCopy { get => _totalFilesToCopy; set => _totalFilesToCopy = 0; }
+        public int TotalFilesToCopy { get => _totalFilesToCopy; set => _totalFilesToCopy = value; }
 
         [JsonProperty(nameof(TotalFilesSize))]
-        public int TotalFilesSize { get => _totalFilesSize; set => _totalFilesSize = 0; }
+        public long TotalFilesSize { get => _totalFilesSize; set => _totalFilesSize = value; }
 
         [JsonProperty(nameof(NbFilesLeftToDo))]
-        public int NbFilesLeftToDo { get => _nbFilesLeftToDo; set => _nbFilesLeftToDo = 0; }
+        public int NbFilesLeftToDo { get => _nbFilesLeftToDo; set => _nbFilesLeftToDo = value; }
 
         [JsonProperty(nameof(Progression))]
-        public int Progression { get => _progression; set => _progression = 0; }
+        public int Progression { get => _progression; set => _progression = value; }
 
         [JsonProperty(nameof(Name))]
         public string Name { get => _fileName; set => _fileName = value; }
@@ -72,7 +72,7 @@ namespace EasySaveClasses.ModelNS
             _currentSourceFile = currentSourceFile;
             _destinationFile = destinationFile;
             _totalFilesToCopy = numberOfFiles;
-            _totalFilesSize = Convert.ToInt32(totalSize);
+            _totalFilesSize = Convert.ToInt64(totalSize);
             _nbFilesLeftToDo = nbFilesLeftToDo;
             _progression = progression;
             _saveType = saveType;
@@ -115,19 +115,6 @@ namespace EasySaveClasses.ModelNS
 
                     if (saveSaveArray != null && saveSaveArray.Count > 0)
                     {
-                        // If the save destination directory doesn't exists anymore then it has been deleted outside the software, so we remove that save
-
-                        // Copy of SaveArray
-                        List<Save> saveSaveArrayCopy = [.. saveSaveArray];
-
-                        foreach (Save save in saveSaveArrayCopy)
-                        {
-                            if (!Directory.Exists(save.TargetFilePath))
-                            {
-                                saveSaveArray.Remove(save);
-                            }
-                        }
-
                         Serialize(saveSaveArray);
                         // Return the deserialized Save array
                         return saveSaveArray;

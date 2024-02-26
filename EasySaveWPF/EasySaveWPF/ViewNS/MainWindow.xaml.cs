@@ -23,11 +23,11 @@ namespace EasySaveWPF.ViewNS
             LoadLanguage_En();
             mainViewModel = new MainViewModel();
 
-            home = new Home(this);
+            execution = new Execution(this);
+            home = new Home(this, execution);
             create =  new Create(this);
             Frame.Navigate(home);
             Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
-            execution = new Execution(this);
             settings = new Settings(this);
 
         }

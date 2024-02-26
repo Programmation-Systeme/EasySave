@@ -1,98 +1,43 @@
-﻿using EasySaveClasses.ModelNS;
+﻿using EasySaveClasses.ViewModelNS;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Xml.Serialization;
 
-namespace EasySaveClasses.ViewModelNS
+public class XmlLog : ILog
 {
-    internal class XmlLog : ILog
+    private static readonly string XmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/Logs.xml");
+
+    public string AddLog(string sourcePath, string targetPath, float transferTime)
     {
-        private readonly Model _model;
-
-        private static readonly string XmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../LogsDirectory/Logs.xml");
-
-        public XmlLog(Model model)
+        var logEntry = new LogEntry
         {
-            _model = model;
-        }
+            Timestamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
+            Name = Path.GetFileName(sourcePath),
+            SourcePath = sourcePath,
+            TargetPath = targetPath,
+            CryptingTime = new Random().Next(1, 9999),
+            DirSize = EasySaveClasses.ViewModelNS.ILog.CalculateDirectorySize(new DirectoryInfo(sourcePath)),
+            DirTransferTime = transferTime
+        };
 
-        public void AddLog(List<int> indexes)
+        var existingLogs = new List<LogEntry>();
+        if (File.Exists(XmlPath))
         {
-            foreach (int index in indexes)
+            XmlSerializer serializer = new XmlSerializer(typeof(List<LogEntry>));
+            using (FileStream fs = new FileStream(XmlPath, FileMode.Open))
             {
-                string NameFile = _model.Datas[index - 1].Name;
-                string SourcePath = _model.Datas[index - 1].SourceFilePath;
-                string DestinationPath = _model.Datas[index - 1].TargetFilePath;
-
-                DirectoryInfo diSource = new DirectoryInfo(SourcePath);
-                long DirectorySize = CalculateDirectorySize(diSource);
-                float fileTransferTime = 256;
-
-                string date = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
-                //LogEntry newLogEntry = new LogEntry()
-                //{
-                //    Name = NameFile,
-                //    FileSource = SourcePath,
-                //    FileDestination = DestinationPath,
-                //    FileSize = DirectorySize,
-                //    FileTransferTime = fileTransferTime,
-                //    Date = date
-                //};
-
-                List<LogEntry> existingLogs = ReadFromFile();
-                //existingLogs.Add(newLogEntry);
-                WriteToFile(existingLogs);
-
-                Console.WriteLine("Logs ajoutés avec succès");
+                existingLogs = (List<LogEntry>)serializer.Deserialize(fs);
             }
         }
 
-        private static long CalculateDirectorySize(DirectoryInfo directory)
+        existingLogs.Add(logEntry);
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<LogEntry>));
+        using (FileStream fs = new FileStream(XmlPath, FileMode.Create))
         {
-            long size = 0;
-            FileInfo[] files = directory.GetFiles();
-
-            foreach (FileInfo file in files)
-            {
-                size += file.Length;
-            }
-
-            DirectoryInfo[] subDirectories = directory.GetDirectories();
-
-            foreach (DirectoryInfo subDirectory in subDirectories)
-            {
-                size += CalculateDirectorySize(subDirectory);
-            }
-
-            return size;
+            xmlSerializer.Serialize(fs, existingLogs);
         }
 
-        private static void WriteToFile(List<LogEntry> data)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<LogEntry>));
-            using (StreamWriter writer = new(XmlPath))
-            {
-                xmlSerializer.Serialize(writer, data);
-            }
-        }
-
-        private static List<LogEntry> ReadFromFile()
-        {
-            if (File.Exists(XmlPath))
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<LogEntry>));
-                using StreamReader reader = new(XmlPath);
-                return (List<LogEntry>)xmlSerializer.Deserialize(reader);
-            }
-            else
-            {
-                return new List<LogEntry>();
-            }
-        }
+        return "Log added successfully in XML format";
     }
-
 }

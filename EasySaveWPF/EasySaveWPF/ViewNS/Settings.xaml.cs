@@ -101,5 +101,15 @@ namespace EasySaveWPF.ViewNS
 
         }
 
+        private void ComboBox_LogFormatChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            ComboBoxItem selectedItem = comboBox.SelectedItem as ComboBoxItem;
+            if (selectedItem != null && _mainWindow != null)
+            {
+                LogManager.Instance.LogStrategyType = selectedItem.Content.ToString();
+            }
+        }
+        
     }
 }

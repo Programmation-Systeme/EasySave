@@ -116,8 +116,8 @@
                       VerticalAlignment="Center"
                       SelectedIndex="0"
                       SelectionChanged="SaveTypeComboBox_SelectionChanged">
-                <ComboBoxItem Content="Différentiel"/>
                 <ComboBoxItem Content="Complète"/>
+                <ComboBoxItem Content="Différentiel"/>
             </ComboBox>
         </StackPanel>
 
