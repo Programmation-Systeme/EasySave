@@ -65,25 +65,40 @@ namespace EasySaveWPF.ViewNS
         private void AddNewItem()
         {
             string newItem = NewItemTextBox.Text.Trim();
-
-            // Vérification que l'entrée ne contient que des chiffres et des lettres
+            // Vérifie si 'newItem' est non vide, non nul et alphanumérique
             if (!string.IsNullOrWhiteSpace(newItem) && Regex.IsMatch(newItem, @"^[a-zA-Z0-9]+$"))
             {
-                // Vérification si l'élément existe déjà dans la liste
-                if (!items.Contains(newItem))
+                switch (newItem.ToLower())
                 {
-                    items.Add(newItem);
-                    NewItemTextBox.Text = ""; // Efface le TextBox après l'ajout
-                }
-                else
-                {
-                    MessageBox.Show("Cet élément existe déjà.", "Erreur de saisie", MessageBoxButton.OK, MessageBoxImage.Error);
+                    case "hash":
+                    case "encrypted":
+                        // Affiche un message d'erreur si 'newItem' est "hash" ou "encrypted"
+                        MessageBox.Show("L'utilisation de '.hash' ou '.encrypted' est interdite.", "Erreur de saisie", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+
+                    default:
+                        // Exécute le code suivant si 'newItem' n'est ni "hash" ni "encrypted"
+                        // Vérifie si l'élément existe déjà dans la liste
+                        if (!items.Contains(newItem))
+                        {
+                            // Ajoute 'newItem' à la liste si ce n'est pas un doublon
+                            items.Add(newItem);
+                            NewItemTextBox.Text = ""; // Efface le contenu de 'NewItemTextBox' après l'ajout
+                        }
+                        else
+                        {
+                            // Affiche un message d'erreur si l'élément existe déjà dans la liste
+                            MessageBox.Show("Cet élément existe déjà.", "Erreur de saisie", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        break;
                 }
             }
             else
             {
+                // Affiche un message d'erreur si 'newItem' ne respecte pas le format alphanumérique
                 MessageBox.Show("L'entrée doit contenir uniquement des lettres et des chiffres.", "Erreur de saisie", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
 
     }
