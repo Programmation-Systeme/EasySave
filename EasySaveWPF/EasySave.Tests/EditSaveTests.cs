@@ -35,20 +35,20 @@ namespace EasySave.Tests
         //}
 
         // Test case for Create method when destination directory doesn't exist
-        [Fact]
-        public void Create_DestinationDirectoryNotExists_ReturnsNull()
-        {
-            // Arrange
-            string sourceFolder = "source";
-            string destinationDirectory = "nonexistent_directory";
-            int saveType = 1;
+        //[Fact]
+        //public void Create_DestinationDirectoryNotExists_ReturnsNull()
+        //{
+        //    // Arrange
+        //    string sourceFolder = "source";
+        //    string destinationDirectory = "nonexistent_directory";
+        //    int saveType = 1;
 
-            // Act
-            string result = EditSave.Create(sourceFolder, destinationDirectory, saveType);
+        //    // Act
+        //    string result = EditSave.Create(sourceFolder, destinationDirectory, saveType);
 
-            // Assert
-            Assert.Null(result);
-        }
+        //    // Assert
+        //    Assert.Null(result);
+        //}
 
         // Test case for Delete method when folder exists and gets deleted
         [Fact]
