@@ -246,21 +246,7 @@ namespace EasySaveClasses.ViewModelNS
                     threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
                     threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
 
-                    Thread newWork = new Thread(() =>
-                    {
-                        while (!cancelEvent.IsCancellationRequested)
-                        {
-                            // Attend que le logiciel métier soit en cours d'exécution
-                            while (!IsMetierSoftwareRunning())
-                            {
-                                manualEvent.Reset();  // Met le thread en pause
-                                Thread.Sleep(1000);  // Vérifie toutes les secondes
-                            }
-                            manualEvent.Set();  // Reprend le thread
-
-                            ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent);
-                        }
-                    });
+                    Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
 
                     threadsDictionary.Add(selectedSave.Name, newWork);
 
@@ -301,7 +287,7 @@ namespace EasySaveClasses.ViewModelNS
         private bool IsMetierSoftwareRunning()
         {
             // Name of the business software process
-            string metierSoftwareProcessName = "CalculatorApp";
+            string metierSoftwareProcessName = "Notepad.exe";
 
             // Check if the process is running
             Process[] processes = Process.GetProcessesByName(metierSoftwareProcessName);
