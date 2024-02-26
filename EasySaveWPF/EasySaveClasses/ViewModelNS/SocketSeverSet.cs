@@ -6,7 +6,7 @@ namespace EasySaveClasses.ViewModelNS
 {
     internal class SocketSeverSet
     {
-        static void LaunchServer(string[] args)
+        static string LaunchServer(string[] args)
         {
             Console.WriteLine("Démarrage du serveur...");
             Socket serverSocket = Connection();
@@ -15,9 +15,11 @@ namespace EasySaveClasses.ViewModelNS
             Socket clientSocket = AllowConnection(serverSocket);
 
             Console.WriteLine("Connexion établie !");
-            ListenClient(clientSocket);
+            string serverMessage = ListenClient(clientSocket);
 
             ServerLogOff(serverSocket);
+
+            return serverMessage;
         }
 
         private static Socket Connection()
@@ -40,7 +42,7 @@ namespace EasySaveClasses.ViewModelNS
             return clientSocket;
         }
 
-        private static void ListenClient(Socket clientSocket)
+        private static string ListenClient(Socket clientSocket)
         {
             byte[] buffer = new byte[1024];
             int bytesRead;
@@ -60,8 +62,10 @@ namespace EasySaveClasses.ViewModelNS
 
                 Console.Write("Server: ");
                 string message = "auto response";
-                clientSocket.Send(Encoding.ASCII.GetBytes(message));
+                clientSocket.Send(Encoding.ASCII.GetBytes(message)); 
+
             }
+            return "end";
         }
 
         private static void ServerLogOff(Socket socket)
