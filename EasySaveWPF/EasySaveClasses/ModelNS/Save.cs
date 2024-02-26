@@ -115,19 +115,6 @@ namespace EasySaveClasses.ModelNS
 
                     if (saveSaveArray != null && saveSaveArray.Count > 0)
                     {
-                        // If the save destination directory doesn't exists anymore then it has been deleted outside the software, so we remove that save
-
-                        // Copy of SaveArray
-                        List<Save> saveSaveArrayCopy = [.. saveSaveArray];
-
-                        foreach (Save save in saveSaveArrayCopy)
-                        {
-                            if (!Directory.Exists(save.TargetFilePath))
-                            {
-                                saveSaveArray.Remove(save);
-                            }
-                        }
-
                         Serialize(saveSaveArray);
                         // Return the deserialized Save array
                         return saveSaveArray;
