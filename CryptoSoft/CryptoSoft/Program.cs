@@ -11,14 +11,15 @@ namespace CryptoSoft
 {
     internal class CryptoSoft
     {
-        private static readonly string _key = "20sur20SVP";
+        private static readonly string _KEY = "20sur20SVP";
+        private static readonly string _ENCRYPTEDEXTENSION = ".encrypted";
 
         public static void Main(string[] args)
         {
-            if(args.Length > 1)
+            if (args.Length > 1)
             {
                 string EncryptionDelaysInMs = "";
-                for (int i  = 1; i < args.Length;i++)
+                for (int i = 1; i < args.Length; i++)
                 {
                     FileInfo fileInfo = new(args[i]);
 
@@ -27,7 +28,8 @@ namespace CryptoSoft
                         // Encryption
                         if (args[0] == "-e")
                         {
-                            string encryptedFileName = Path.Join(fileInfo.DirectoryName, Path.GetFileNameWithoutExtension(fileInfo.FullName)) + "_encrypted" + fileInfo.Extension;
+                            
+                            string encryptedFileName = Path.Join(fileInfo.DirectoryName, fileInfo.Name + _ENCRYPTEDEXTENSION);
 
                             byte[] bytes = File.ReadAllBytes(fileInfo.FullName);
 
@@ -36,20 +38,20 @@ namespace CryptoSoft
                             byte[] encryptedBytes = UseXorOnFile(bytes);
                             sw.Stop();
 
-                            long encryptionTime = sw.ElapsedMilliseconds;
+                            long encryptionTime = sw.ElapsedMilliseconds + 1;
                             // The encryption time of each file is added to the final string
                             EncryptionDelaysInMs += $"{fileInfo.Name}:{encryptionTime};";
 
+
                             // Writing of the encrypted content in a new file
                             File.WriteAllBytes(encryptedFileName, encryptedBytes);
-
+                            
                             fileInfo.Delete();
                         }
                         // Decryption
                         else if (args[0] == "-d")
                         {
-                            string decryptedFileName =  Path.Join(fileInfo.DirectoryName, Path.GetFileNameWithoutExtension(fileInfo.FullName).Replace("_encrypted","_decrypted")) + fileInfo.Extension;
-
+                            string decryptedFileName = Path.Join(fileInfo.DirectoryName, fileInfo.Name.Replace(_ENCRYPTEDEXTENSION,""));
                             byte[] bytes = File.ReadAllBytes(fileInfo.FullName);
                             byte[] decryptedBytes = UseXorOnFile(bytes);
 
@@ -87,7 +89,7 @@ namespace CryptoSoft
         /// <returns></returns>
         private static byte[] XORCipher(byte[] str)
         {
-            byte[] keyBytes = Encoding.UTF8.GetBytes(_key);
+            byte[] keyBytes = Encoding.UTF8.GetBytes(_KEY);
 
             byte[] resultBytes = new byte[str.Length];
 
@@ -98,5 +100,6 @@ namespace CryptoSoft
 
             return resultBytes;
         }
+
     }
 }
