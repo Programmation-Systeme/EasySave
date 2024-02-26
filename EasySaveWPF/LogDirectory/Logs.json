@@ -1447,5 +1447,194 @@
     "DirSize": 4.2480003E+09,
     "DirTransferTime": 9519.0,
     "CryptingTime": 3951
+  },
+  {
+    "Timestamp": "26/02/2024 10:12:35",
+    "Name": "Visual Studio 2022",
+    "SourcePath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022",
+    "TargetPath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022-02-26-2024-9-43-08",
+    "DirSize": 8351.0,
+    "DirTransferTime": 2831.0,
+    "CryptingTime": 1381
+  },
+  {
+    "Timestamp": "26/02/2024 10:12:48",
+    "Name": "Visual Studio 2022",
+    "SourcePath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022",
+    "TargetPath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022-02-26-2024-9-43-08",
+    "DirSize": 8351.0,
+    "DirTransferTime": 2543.0,
+    "CryptingTime": 689
+  },
+  {
+    "Timestamp": "26/02/2024 10:12:58",
+    "Name": "Visual Studio 2022",
+    "SourcePath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022",
+    "TargetPath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022-02-26-2024-9-43-08",
+    "DirSize": 8351.0,
+    "DirTransferTime": 2087.0,
+    "CryptingTime": 3558
+  },
+  {
+    "Timestamp": "26/02/2024 10:14:15",
+    "Name": "Visual Studio 2022",
+    "SourcePath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022",
+    "TargetPath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022-02-26-2024-9-43-08",
+    "DirSize": 5875.0,
+    "DirTransferTime": 2137.0,
+    "CryptingTime": 1817
+  },
+  {
+    "Timestamp": "26/02/2024 10:14:27",
+    "Name": "Visual Studio 2022",
+    "SourcePath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022",
+    "TargetPath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022-02-26-2024-9-43-08",
+    "DirSize": 5875.0,
+    "DirTransferTime": 7616.0,
+    "CryptingTime": 4008
+  },
+  {
+    "Timestamp": "26/02/2024 10:15:52",
+    "Name": "Visual Studio 2022",
+    "SourcePath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022",
+    "TargetPath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022-02-26-2024-9-43-08",
+    "DirSize": 5875.0,
+    "DirTransferTime": 2197.0,
+    "CryptingTime": 9710
+  },
+  {
+    "Timestamp": "26/02/2024 10:18:24",
+    "Name": "Visual Studio 2022",
+    "SourcePath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022",
+    "TargetPath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022-02-26-2024-9-43-08",
+    "DirSize": 5875.0,
+    "DirTransferTime": 34435.0,
+    "CryptingTime": 454
+  },
+  {
+    "Timestamp": "26/02/2024 10:29:23",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-28-44",
+    "DirSize": 838860800.0,
+    "DirTransferTime": 20562.0,
+    "CryptingTime": 5814
+  },
+  {
+    "Timestamp": "26/02/2024 10:29:51",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-28-44",
+    "DirSize": 838860800.0,
+    "DirTransferTime": 16763.0,
+    "CryptingTime": 359
+  },
+  {
+    "Timestamp": "26/02/2024 10:49:26",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-48-28",
+    "DirSize": 2.5165824E+09,
+    "DirTransferTime": 84.0,
+    "CryptingTime": 5920
+  },
+  {
+    "Timestamp": "26/02/2024 10:49:34",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-48-28",
+    "DirSize": 2.5165824E+09,
+    "DirTransferTime": 147.0,
+    "CryptingTime": 7153
+  },
+  {
+    "Timestamp": "26/02/2024 10:52:03",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-50-17",
+    "DirSize": 2.5165824E+09,
+    "DirTransferTime": 73.0,
+    "CryptingTime": 1264
+  },
+  {
+    "Timestamp": "26/02/2024 10:52:30",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-50-17",
+    "DirSize": 2.5165824E+09,
+    "DirTransferTime": 68.0,
+    "CryptingTime": 5285
+  },
+  {
+    "Timestamp": "26/02/2024 10:52:37",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-50-17",
+    "DirSize": 2.5165824E+09,
+    "DirTransferTime": 70.0,
+    "CryptingTime": 2258
+  },
+  {
+    "Timestamp": "26/02/2024 10:53:31",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-50-17",
+    "DirSize": 2.5165824E+09,
+    "DirTransferTime": 4156.0,
+    "CryptingTime": 2765
+  },
+  {
+    "Timestamp": "26/02/2024 10:59:02",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-10-57-52",
+    "DirSize": 1.6777216E+09,
+    "DirTransferTime": 180.0,
+    "CryptingTime": 3226
+  },
+  {
+    "Timestamp": "26/02/2024 11:06:04",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-11-05-19",
+    "DirSize": 1.6777216E+09,
+    "DirTransferTime": 82.0,
+    "CryptingTime": 8449
+  },
+  {
+    "Timestamp": "26/02/2024 11:11:44",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-11-09-14",
+    "DirSize": 1.6777216E+09,
+    "DirTransferTime": 1495.0,
+    "CryptingTime": 1335
+  },
+  {
+    "Timestamp": "26/02/2024 11:18:50",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-11-09-14",
+    "DirSize": 1.6777216E+09,
+    "DirTransferTime": 31152.0,
+    "CryptingTime": 7709
+  },
+  {
+    "Timestamp": "26/02/2024 11:26:09",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-11-09-14",
+    "DirSize": 1.6777216E+09,
+    "DirTransferTime": 128448.0,
+    "CryptingTime": 6141
+  },
+  {
+    "Timestamp": "26/02/2024 11:26:10",
+    "Name": "src2",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src2",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest2\\src2-02-26-2024-11-22-44",
+    "DirSize": 1.6777216E+09,
+    "DirTransferTime": 129482.0,
+    "CryptingTime": 7125
   }
 ]

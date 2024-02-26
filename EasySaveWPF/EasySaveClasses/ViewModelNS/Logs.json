@@ -1,0 +1,29 @@
+[
+  {
+    "Timestamp": "23/02/2024 15:43:04",
+    "Name": "RapportEtonnement-02-23-2024-3-38-12",
+    "sourcePath": "D:\\CESI\\RapportEtonnement",
+    "targetPath": "D:\\\\RapportEtonnement-02-23-2024-3-38-12",
+    "DirSize": 4616997.0,
+    "DirTransferTime": 0.0,
+    "CryptingTime": 8815
+  },
+  {
+    "Timestamp": "23/02/2024 15:49:40",
+    "Name": "RapportEtonnement-02-23-2024-3-38-12",
+    "sourcePath": "D:\\CESI\\RapportEtonnement",
+    "targetPath": "D:\\\\RapportEtonnement-02-23-2024-3-38-12",
+    "DirSize": 4616997.0,
+    "DirTransferTime": 0.0,
+    "CryptingTime": 1454
+  },
+  {
+    "Timestamp": "26/02/2024 09:52:16",
+    "Name": "Visual Studio 2022-02-26-2024-9-43-08",
+    "sourcePath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022",
+    "targetPath": "C:\\Users\\aure8\\OneDrive\\Documents\\Visual Studio 2022-02-26-2024-9-43-08",
+    "DirSize": 8351.0,
+    "DirTransferTime": 0.0,
+    "CryptingTime": 6664
+  }
+]
