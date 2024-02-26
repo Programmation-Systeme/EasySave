@@ -36,10 +36,10 @@ namespace EasySaveClasses.ViewModelNS
             clientSocket.Send(Encoding.ASCII.GetBytes(choice));
  
             bytesRead = clientSocket.Receive(buffer);
-            string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-            Console.WriteLine($"Client: {dataReceived}");
+            string listSaves = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            Console.WriteLine($"Server: {listSaves}");
 
-            return dataReceived;
+            return listSaves;
             
         }
 
