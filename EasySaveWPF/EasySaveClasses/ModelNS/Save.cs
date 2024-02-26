@@ -55,8 +55,11 @@ namespace EasySaveClasses.ModelNS
 
         public Save(string fileName, string state, string currentSourceFile, string destinationFile, int saveType, int nbFilesLeftToDo =0, int progression =0)
         {
-
-            string[] files = Directory.GetFiles(currentSourceFile);
+            string[] files = [];
+            if (currentSourceFile != null)
+            {
+                files = Directory.GetFiles(currentSourceFile);
+            }
             int numberOfFiles = files.Length;
 
             // Calculer la taille du dossier
