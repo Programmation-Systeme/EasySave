@@ -27,16 +27,16 @@ namespace EasySaveClasses.ModelNS
         public string State { get => _state; set => _state = value; }
 
         [JsonProperty(nameof(TotalFilesToCopy))]
-        public int TotalFilesToCopy { get => _totalFilesToCopy; set => _totalFilesToCopy = 0; }
+        public int TotalFilesToCopy { get => _totalFilesToCopy; set => _totalFilesToCopy = value; }
 
         [JsonProperty(nameof(TotalFilesSize))]
-        public int TotalFilesSize { get => _totalFilesSize; set => _totalFilesSize = 0; }
+        public int TotalFilesSize { get => _totalFilesSize; set => _totalFilesSize = value; }
 
         [JsonProperty(nameof(NbFilesLeftToDo))]
-        public int NbFilesLeftToDo { get => _nbFilesLeftToDo; set => _nbFilesLeftToDo = 0; }
+        public int NbFilesLeftToDo { get => _nbFilesLeftToDo; set => _nbFilesLeftToDo = value; }
 
         [JsonProperty(nameof(Progression))]
-        public int Progression { get => _progression; set => _progression = 0; }
+        public int Progression { get => _progression; set => _progression = value; }
 
         [JsonProperty(nameof(Name))]
         public string Name { get => _fileName; set => _fileName = value; }

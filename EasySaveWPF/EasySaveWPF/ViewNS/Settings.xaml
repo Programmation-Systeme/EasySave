@@ -53,7 +53,7 @@
         </StackPanel>
         <StackPanel Grid.Row="2"  HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
             <TextBlock Text="{DynamicResource LogFormatMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-            <ComboBox SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
+            <ComboBox SelectionChanged="ComboBox_LogFormatChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center"  Style="{DynamicResource Flat_ComboBox}">
                 <ComboBoxItem Content="Json"/>
                 <ComboBoxItem Content="XML"/>
             </ComboBox>
