@@ -214,29 +214,29 @@ namespace EasySaveClasses.ViewModelNS
             Items.Add(save.Name);
         }
 
+
         /// <summary>
         /// Executes save operation for selected items.
         /// </summary>
         /// <param name="list">List of selected items.</param>
         public void ExecuteSave_Click(List<string> list)
         {
-
-            // // Verify if the calculator is open
+            // Vérifie si le logiciel métier est ouvert
             if (!IsMetierSoftwareRunning())
             {
                 return;
             }
 
-            List<ModelNS.Save> selectedSaves = [];
+            List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
 
-            // Iterate through selected items
+            // Itère à travers les éléments sélectionnés
             foreach (string selectedItemName in list)
             {
                 CurrentSave.Add(selectedItemName);
-                // Use LINQ to find the corresponding item in your data model
+                // Utilise LINQ pour trouver l'élément correspondant dans votre modèle de données
                 Save? selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
-                // Check if the item is found (it might be null if no match is found)
+                // Vérifie si l'élément est trouvé (il peut être null si aucun match n'est trouvé)
                 if (selectedSave != null)
                 {
                     selectedSave.State = "ACTIVATE";
@@ -246,21 +246,29 @@ namespace EasySaveClasses.ViewModelNS
                     threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
                     threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
 
-                    Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
-
-                    string str = selectedSave.Name;
-                    if (!IsMetierSoftwareRunning())
+                    Thread newWork = new Thread(() =>
                     {
-                        PauseSave(str);
-                    }
+                        while (!cancelEvent.IsCancellationRequested)
+                        {
+                            // Attend que le logiciel métier soit en cours d'exécution
+                            while (!IsMetierSoftwareRunning())
+                            {
+                                manualEvent.Reset();  // Met le thread en pause
+                                Thread.Sleep(1000);  // Vérifie toutes les secondes
+                            }
+                            manualEvent.Set();  // Reprend le thread
 
-                    threadsDictionary.Add(selectedSave.Name,newWork);
+                            ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent);
+                        }
+                    });
 
+                    threadsDictionary.Add(selectedSave.Name, newWork);
 
                     newWork.Start();
                 }
             }
         }
+
 
         /// <summary>
         /// Deletes selected save operations.
