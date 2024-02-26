@@ -105,22 +105,39 @@ namespace EasySaveClasses.ViewModelNS
                 foreach (FileInfo destFile in destFiles)
                 {
 
-                    if(destFile.Extension == ".hash" || destFile.Extension == ".encrypted")
+                    if (destFile.Extension == ".hash" || destFile.Extension == ".encrypted")
                     {
                         FileInfo? correspondingSourceFile = sourceFiles.FirstOrDefault(sourceFile => sourceFile.Name == Path.GetFileNameWithoutExtension(destFile.FullName));
-                        
-                        if(correspondingSourceFile == null)
+
+                        if (correspondingSourceFile == null)
                         {
                             destFile.Delete();
                         }
                     }
-                    else if(!sourceFilesNames.Contains(destFile.Name))
+                    else if (!sourceFilesNames.Contains(destFile.Name))
                     {
                         File.Delete(destFile.FullName);
                     }
                 }
 
+                List<string> tempExtPriority = [".xlsx"];
+                List<FileInfo> filteredSourceFiles = [];
+                List<FileInfo> othersSourceFiles = [];
                 foreach (FileInfo sourceFile in sourceFiles)
+                {
+                    if (tempExtPriority.Contains(sourceFile.Extension))
+                    {
+                        filteredSourceFiles.Add(sourceFile);
+                    }
+                    else
+                    {
+                        othersSourceFiles.Add(sourceFile);
+                    }
+                }
+                filteredSourceFiles.AddRange(othersSourceFiles);
+
+                // Copy files from source folder to destination folder
+                foreach (FileInfo sourceFile in filteredSourceFiles)
                 {
                     string destFilePath = Path.Combine(destDir, sourceFile.Name);
 
