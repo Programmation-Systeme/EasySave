@@ -1447,5 +1447,113 @@
     "DirSize": 4.2480003E+09,
     "DirTransferTime": 9519.0,
     "CryptingTime": 3951
+  },
+  {
+    "Timestamp": "26/02/2024 10:13:27",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-26-2024-10-11-23",
+    "DirSize": 747.0,
+    "DirTransferTime": 382.0,
+    "CryptingTime": 5915
+  },
+  {
+    "Timestamp": "26/02/2024 10:13:55",
+    "Name": "Riot Client",
+    "SourcePath": "C:\\01-src\\Riot Client",
+    "TargetPath": "C:\\01-src\\Target\\Riot Client-02-26-2024-10-12-00",
+    "DirSize": 4.2480003E+09,
+    "DirTransferTime": 33663.0,
+    "CryptingTime": 7286
+  },
+  {
+    "Timestamp": "26/02/2024 10:24:35",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-26-2024-10-24-08",
+    "DirSize": 747.0,
+    "DirTransferTime": 167.0,
+    "CryptingTime": 3811
+  },
+  {
+    "Timestamp": "26/02/2024 10:24:45",
+    "Name": "Riot Client",
+    "SourcePath": "C:\\01-src\\Riot Client",
+    "TargetPath": "C:\\01-src\\Target\\Riot Client-02-26-2024-10-24-22",
+    "DirSize": 4.2480003E+09,
+    "DirTransferTime": 10179.0,
+    "CryptingTime": 5289
+  },
+  {
+    "Timestamp": "26/02/2024 10:24:56",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-26-2024-10-24-08",
+    "DirSize": 747.0,
+    "DirTransferTime": 82.0,
+    "CryptingTime": 4019
+  },
+  {
+    "Timestamp": "26/02/2024 10:26:16",
+    "Name": "Riot Client",
+    "SourcePath": "C:\\01-src\\Riot Client",
+    "TargetPath": "C:\\01-src\\Target\\Riot Client-02-26-2024-10-24-22",
+    "DirSize": 4.2480003E+09,
+    "DirTransferTime": 80176.0,
+    "CryptingTime": 4881
+  },
+  {
+    "Timestamp": "26/02/2024 10:29:21",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-26-2024-10-24-08",
+    "DirSize": 747.0,
+    "DirTransferTime": 73.0,
+    "CryptingTime": 6120
+  },
+  {
+    "Timestamp": "26/02/2024 10:29:35",
+    "Name": "Riot Client",
+    "SourcePath": "C:\\01-src\\Riot Client",
+    "TargetPath": "C:\\01-src\\Target\\Riot Client-02-26-2024-10-24-22",
+    "DirSize": 4.2480003E+09,
+    "DirTransferTime": 8880.0,
+    "CryptingTime": 8313
+  },
+  {
+    "Timestamp": "26/02/2024 10:30:41",
+    "Name": "Riot Client",
+    "SourcePath": "C:\\01-src\\Riot Client",
+    "TargetPath": "C:\\01-src\\Target\\Riot Client-02-26-2024-10-24-22",
+    "DirSize": 4.2480003E+09,
+    "DirTransferTime": 59035.0,
+    "CryptingTime": 8327
+  },
+  {
+    "Timestamp": "26/02/2024 10:31:44",
+    "Name": "Riot Client",
+    "SourcePath": "C:\\01-src\\Riot Client",
+    "TargetPath": "C:\\01-src\\Target\\Riot Client-02-26-2024-10-24-22",
+    "DirSize": 4.2480003E+09,
+    "DirTransferTime": 58474.0,
+    "CryptingTime": 3788
+  },
+  {
+    "Timestamp": "26/02/2024 10:54:45",
+    "Name": "finaltest",
+    "SourcePath": "C:\\01-src\\finaltest",
+    "TargetPath": "C:\\01-src\\Target\\finaltest-02-26-2024-10-32-08",
+    "DirSize": 0.0,
+    "DirTransferTime": 211.0,
+    "CryptingTime": 5513
+  },
+  {
+    "Timestamp": "26/02/2024 10:54:45",
+    "Name": "archive",
+    "SourcePath": "C:\\01-src\\archive",
+    "TargetPath": "C:\\01-src\\Target\\archive-02-26-2024-10-24-08",
+    "DirSize": 747.0,
+    "DirTransferTime": 275.0,
+    "CryptingTime": 4858
   }
 ]
