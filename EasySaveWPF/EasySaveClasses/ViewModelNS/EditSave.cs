@@ -283,8 +283,7 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-
-        private static void EncryptFiles(List<string> listFilesPath)
+        private static List<string> ReadExtensions()
         {
             string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
             List<string> listExt = [];
@@ -302,6 +301,18 @@ namespace EasySaveClasses.ViewModelNS
                         listExt.Add(extension.ToString());
                     }
                 }
+            }
+            return listExt;
+        }
+
+        private static void EncryptFiles(List<string> listFilesPath)
+        {
+            List<string> listExt = ReadExtensions();
+
+            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
+            if (File.Exists(configPath))
+            {
+                
                 List<string> filteredFiles = listFilesPath.Where(file => listExt.Any(ext => IsFileWithExtension(file, ext))).ToList();
                 string CryptoSoftPath = "../../../../../CryptoSoft/CryptoSoft/bin/Debug/net8.0";
                 string FilteredFilesPath = "";

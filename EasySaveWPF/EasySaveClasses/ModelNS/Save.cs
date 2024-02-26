@@ -17,7 +17,7 @@ namespace EasySaveClasses.ModelNS
         private string _currentSourceFile;
         private string _destinationFile;
         private int _totalFilesToCopy;
-        private int _totalFilesSize;
+        private long _totalFilesSize;
         private int _nbFilesLeftToDo;
         private int _progression;
         private int _saveType;
@@ -30,7 +30,7 @@ namespace EasySaveClasses.ModelNS
         public int TotalFilesToCopy { get => _totalFilesToCopy; set => _totalFilesToCopy = value; }
 
         [JsonProperty(nameof(TotalFilesSize))]
-        public int TotalFilesSize { get => _totalFilesSize; set => _totalFilesSize = value; }
+        public long TotalFilesSize { get => _totalFilesSize; set => _totalFilesSize = value; }
 
         [JsonProperty(nameof(NbFilesLeftToDo))]
         public int NbFilesLeftToDo { get => _nbFilesLeftToDo; set => _nbFilesLeftToDo = value; }
@@ -72,7 +72,7 @@ namespace EasySaveClasses.ModelNS
             _currentSourceFile = currentSourceFile;
             _destinationFile = destinationFile;
             _totalFilesToCopy = numberOfFiles;
-            _totalFilesSize = Convert.ToInt32(totalSize);
+            _totalFilesSize = Convert.ToInt64(totalSize);
             _nbFilesLeftToDo = nbFilesLeftToDo;
             _progression = progression;
             _saveType = saveType;

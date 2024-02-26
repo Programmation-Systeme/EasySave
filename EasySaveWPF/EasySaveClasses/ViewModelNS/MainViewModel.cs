@@ -248,6 +248,12 @@ namespace EasySaveClasses.ViewModelNS
 
                     Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
 
+                    string str = selectedSave.Name;
+                    if (!IsMetierSoftwareRunning())
+                    {
+                        PauseSave(str);
+                    }
+
                     threadsDictionary.Add(selectedSave.Name,newWork);
 
 
