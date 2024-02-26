@@ -208,13 +208,8 @@ namespace EasySaveClasses.ViewModelNS
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
             string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
 
-            Save save = new(Path.GetFileName(targetPath), "ACTIVE", OpenFileSrc, targetPath, SaveType);
+            Save save = new(Path.GetFileName(targetPath), "NEW", OpenFileSrc, targetPath, SaveType);
             _model.Datas.Add(save);
-            CurrentSave.Add(save.Name);
-            
-            EditSave.Create(OpenFileSrc, OpenFileDest, SaveType);
-            CurrentSave.Remove(save.Name);
-
             Save.Serialize(_model.Datas);
             Items.Add(save.Name);
         }
@@ -235,7 +230,6 @@ namespace EasySaveClasses.ViewModelNS
             List<ModelNS.Save> selectedSaves = [];
 
             // Iterate through selected items
-            int i = 0;
             foreach (string selectedItemName in list)
             {
                 CurrentSave.Add(selectedItemName);
@@ -245,12 +239,8 @@ namespace EasySaveClasses.ViewModelNS
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
-                    // Write in log
-
-                    //_log = new Log(selectedSave.Name, selectedSave.SourceFilePath, selectedSave.TargetFilePath, selectedSave.TotalFilesSize);
-                    //ErrorText = _log.AddLog();
-
-                    i++;
+                    selectedSave.State = "ACTIVATE";
+                    Save.Serialize(_model.Datas);
                     ManualResetEvent manualEvent = new ManualResetEvent(true);
                     CancellationTokenSource cancelEvent = new CancellationTokenSource();
                     threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
