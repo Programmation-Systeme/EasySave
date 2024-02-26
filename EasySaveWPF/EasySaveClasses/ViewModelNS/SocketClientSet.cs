@@ -23,14 +23,21 @@ namespace EasySaveClasses.ViewModelNS
             // Connection successful message
             Console.WriteLine("Connecté au serveur !");
 
+            // Get list saves
+            string listSaves = GetSavesList(clientSocket);
+
             // Sending user's choice to the server and receiving response
             string clientResponse = ListenToNetwork(clientSocket, choice);
+
+            if(listSaves != clientResponse) {
+                listSaves = clientResponse;
+            }
 
             // Closing the connection to the server
             LogOff(clientSocket);
 
             // Returning the response received from the server
-            return clientResponse;
+            return listSaves;
         }
 
         /// <summary>
@@ -70,6 +77,33 @@ namespace EasySaveClasses.ViewModelNS
             // Sending the user's choice to the server
             Console.Write("Client: ");
             clientSocket.Send(Encoding.ASCII.GetBytes(choice));
+
+            // Receiving response from the server
+            bytesRead = clientSocket.Receive(buffer);
+
+            // Converting the received bytes to a string
+            string listSaves = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+
+            // Displaying the received message from the server
+            Console.WriteLine($"Server: {listSaves}");
+
+            // Returning the received message
+            return listSaves;
+        }
+
+                /// <summary>
+        /// Get form server the data list.
+        /// </summary>
+        /// <param name="clientSocket">Connected Socket object.</param>
+        /// <returns>Response received from the server.</returns>
+        private static string GetSavesList(Socket clientSocket)
+        {
+            // Buffer to hold incoming data
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            // Getting updates
+            clientSocket.Send(Encoding.ASCII.GetBytes("getSavesList"));
 
             // Receiving response from the server
             bytesRead = clientSocket.Receive(buffer);
