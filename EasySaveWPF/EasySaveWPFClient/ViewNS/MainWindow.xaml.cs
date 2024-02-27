@@ -24,25 +24,41 @@ namespace EasySaveWPF.ViewNS
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainViewModel mainViewModel;
-        Home home;
-        Create create;
-        PlayBreak playBreak;
-        Execution execution;
-        Settings settings;
+        public MainViewModel _mainViewModel;
         public MainWindow()
         {
             InitializeComponent();
             LoadLanguage_En();
-            mainViewModel = new MainViewModel();
-
-            home = new Home(this);
-            create =  new Create(this);
-            Frame.Navigate(home);
+            _mainViewModel = new MainViewModel();
             Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
-            execution = new Execution(this);
-            settings = new Settings(this);
+            Play.Content = "▶";
 
+        }
+
+        private void Play_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSave.SelectedItem != null)
+            {
+                // Cast de l'élément sélectionné en ListBoxItem
+                ListBoxItem selectedItem = CurrentSave.ItemContainerGenerator.ContainerFromItem(CurrentSave.SelectedItem) as ListBoxItem;
+                if (selectedItem.Foreground == Brushes.Red)
+                {
+                    selectedItem.Foreground = Brushes.Black;
+                    Play.Content = "▶";
+                }
+                else if (selectedItem.Foreground == Brushes.Black)
+                {
+                    selectedItem.Foreground = Brushes.Red;
+                    Play.Content = "⏸";
+                }
+            }
+        }
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSave.SelectedItem != null)
+            {
+                _mainViewModel.CurrentSave.Remove((string)CurrentSave.SelectedItem);
+            }
         }
         private void LoadLanguage(string relativePath)
         {
@@ -74,24 +90,6 @@ namespace EasySaveWPF.ViewNS
         private void MenuItem_Language_Fr(object sender, RoutedEventArgs e)
         {
             LoadLanguage_Fr();
-        }
-
-        private void RadioButtonHome_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(home);
-        }
-        private void RadioButtonCreate_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(create);
-        }
-
-        private void RadioButtonSetting_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(settings);
-        }
-        private void RadioButtonExecution_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(execution);
         }
         
     }

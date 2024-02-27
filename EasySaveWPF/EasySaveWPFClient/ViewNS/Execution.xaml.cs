@@ -21,7 +21,7 @@ namespace EasySaveWPF.ViewNS
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            _mainViewModel = _mainWindow.mainViewModel;
+            _mainViewModel = _mainWindow._mainViewModel;
             DataContext = _mainViewModel;
             Play.Content = "▶";
         }
