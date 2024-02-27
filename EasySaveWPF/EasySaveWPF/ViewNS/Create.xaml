@@ -125,5 +125,6 @@
         <StackPanel  Margin="20" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
             <Button Style="{DynamicResource ModernButton}" Content="{DynamicResource AddButton_txt}" Name="btnAddSave" Click="btnAddSave_Click" Margin="5"/>
         </StackPanel>
+        <TextBlock x:Name="ErrorCreation" Grid.Row="5" Foreground="Red" HorizontalAlignment="Center"/>
     </Grid>
 </Page>
