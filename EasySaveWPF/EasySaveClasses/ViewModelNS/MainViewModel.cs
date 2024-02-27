@@ -196,8 +196,6 @@ namespace EasySaveClasses.ViewModelNS
             _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged; // Abonnement initial
             _priorityExtension = _editSave.Config.ReadExtensionsForEncryptionFromJson(true);
             _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged; // Abonnement initial
-            
-            
         }
         /// <summary>
         /// Handles changes to the ExtensionCrypt collection.

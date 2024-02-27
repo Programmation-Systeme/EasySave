@@ -85,7 +85,7 @@
                                 <TextBlock Text="{Binding}" Grid.Column="0"/>
                                 <!-- Button to remove a file extension -->
                                 <Button Content="X" 
-                                        Click="DeleteItem_Click" 
+                                        Click="DeleteCrypt_Click" 
                                         Grid.Column="1" 
                                         HorizontalAlignment="Right"
                                         Style="{DynamicResource FlatButton}"/>
@@ -145,7 +145,7 @@
                                 <TextBlock Text="{Binding}" Grid.Column="0"/>
                                 <!-- Button to remove a priority file extension -->
                                 <Button Content="X" 
-                                        Click="DeleteItem_Click" 
+                                        Click="DeletePriority_Click" 
                                         Grid.Column="1" 
                                         HorizontalAlignment="Right"
                                         Style="{DynamicResource FlatButton}"/>

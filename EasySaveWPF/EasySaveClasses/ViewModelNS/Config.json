@@ -1,11 +1,9 @@
 {
-    "ExtensionCryptage": [
-      ".txt",
-      ".pdf",
-      ".ll"
-    ],
-    "ExtensionPriority": [
-      ".txt",
-      ".pdf"
-    ]
-  }
+  "ExtensionCryptage": [
+    ".pdf"
+  ],
+  "ExtensionPriority": [
+    ".txt",
+    ".ds"
+  ]
+}

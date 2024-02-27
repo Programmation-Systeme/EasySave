@@ -77,14 +77,15 @@ namespace EasySaveClasses.ViewModelNS
         public void RemoveExtension(string itemToRemove, bool IsPriority)
         {
             string whichExtension = convertBool2String(IsPriority);
+
             // Load the JSON file content
             string jsonString = File.ReadAllText(configPath);
 
-            // Parse the JSON content into a JArray since the root is an array
-            var jsonArray = JArray.Parse(jsonString);
+            // Parse the JSON content into a JObject since the root is an object
+            var jsonObject = JObject.Parse(jsonString);
 
-            // Access the first object in the array and then the "ExtensionCryptage" property within that object
-            JArray extensionsArray = (JArray)jsonArray[whichExtension];
+            // Access the specific extension array within the object
+            JArray extensionsArray = (JArray)jsonObject[whichExtension];
 
             // Remove the specified item from the array
             var itemToRemoveToken = extensionsArray.FirstOrDefault(x => x.ToString() == itemToRemove);
@@ -93,12 +94,13 @@ namespace EasySaveClasses.ViewModelNS
                 extensionsArray.Remove(itemToRemoveToken);
             }
 
-            // Convert the modified JArray back to a string
-            string updatedJsonString = jsonArray.ToString();
+            // Convert the modified JObject back to a string
+            string updatedJsonString = jsonObject.ToString();
 
             // Write the updated JSON string back to the file, overwriting the original content
             File.WriteAllText(configPath, updatedJsonString);
         }
+
 
     }
 }
