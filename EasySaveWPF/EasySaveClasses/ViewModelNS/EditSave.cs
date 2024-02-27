@@ -365,7 +365,7 @@ namespace EasySaveClasses.ViewModelNS
             // Verify if "ExtensionCryptage" exist in the Json
             if (configuration[0]["ExtensionCryptage"] == null)
             {
-                configuration[0]["ExtensionCryptage"] = new JArray();
+                //configuration[0]["ExtensionCryptage"] = new JArray();
             }
 
             // Add the new extension
