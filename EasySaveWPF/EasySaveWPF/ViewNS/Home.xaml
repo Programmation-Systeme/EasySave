@@ -12,6 +12,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Theme/ModernButton.xaml" />
+                <ResourceDictionary Source="Theme/Styles/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -30,8 +31,9 @@
             </ScrollViewer.Resources>
             <ListBox Name="ItemSelecteds" 
              SelectionMode="Extended" 
-             ItemsSource="{Binding Items}"
-             Style="{DynamicResource ModernListBox}"/>
+             ItemsSource="{Binding Items}">
+            </ListBox>
+
         </ScrollViewer>
 
 

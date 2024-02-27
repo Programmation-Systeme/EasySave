@@ -18,6 +18,9 @@
                 <ResourceDictionary Source="Theme/FlatButton.xaml" />
                 <ResourceDictionary Source="Theme/FlatCombobox.xaml" />
                 <ResourceDictionary Source="Theme/ModernButton.xaml" />
+
+
+                <ResourceDictionary Source="Theme/Styles/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
@@ -44,7 +47,7 @@
             <!-- Language ComboBox: Allows user to select application language -->
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
                 <TextBlock Text="{DynamicResource LanguageMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-                <ComboBox SelectionChanged="ComboBox_LanguageChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
+                <ComboBox SelectionChanged="ComboBox_LanguageChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center">
                     <ComboBoxItem Content="English"/>
                     <ComboBoxItem Content="Francais"/>
                 </ComboBox>

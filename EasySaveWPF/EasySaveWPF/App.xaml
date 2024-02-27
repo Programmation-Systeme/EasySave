@@ -11,6 +11,9 @@
                 <ResourceDictionary Source="ViewNS/Theme/FlatCombobox.xaml" />
                 <ResourceDictionary Source="ViewNS/Theme/ModernButton.xaml" />
                 <ResourceDictionary Source="ViewNS/Theme/SettingTextStyle.xaml" />
+
+
+                <ResourceDictionary Source="ViewNS/Theme/Styles/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
