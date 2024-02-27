@@ -77,9 +77,6 @@ namespace EasySaveClasses.ViewModelNS
                 // Get the subdirectories for the specified directory
                 DirectoryInfo sourceDirInfo = new DirectoryInfo(sourceDir);
 
-                if (!sourceDirInfo.Exists)
-                    throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDir);
-
                 DirectoryInfo[] sourceSubDirs = sourceDirInfo.GetDirectories();
                 // If the destination directory doesn't exist, create it
                 if (!Directory.Exists(destDir))

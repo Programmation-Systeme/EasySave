@@ -151,7 +151,7 @@ namespace EasySaveClasses.ViewModelNS
         private void ExecuteWork(Save save, SynchronizationContext syncContext, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
         {
 
-            Stopwatch stopwatch = new Stopwatch();
+            Stopwatch stopwatch = new();
 
             stopwatch.Start();
             ResultUpdate res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType, manualEvent, cancelEvent);
@@ -222,42 +222,54 @@ namespace EasySaveClasses.ViewModelNS
         {
 
             // // Verify if the calculator is open
-            if (!IsMetierSoftwareRunning())
+            if (IsMetierSoftwareRunning())
             {
                 return;
             }
 
-            List<ModelNS.Save> selectedSaves = [];
+            //List<Save> selectedSaves = [];
 
             // Iterate through selected items
             foreach (string selectedItemName in list)
             {
-                CurrentSave.Add(selectedItemName);
                 // Use LINQ to find the corresponding item in your data model
                 Save? selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
-                    selectedSave.State = "ACTIVATE";
-                    Save.Serialize(_model.Datas);
-                    ManualResetEvent manualEvent = new(true);
-                    CancellationTokenSource cancelEvent = new CancellationTokenSource();
-                    threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
-                    threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
-
-                    Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
-
-                    string str = selectedSave.Name;
-                    if (!IsMetierSoftwareRunning())
+                    // If the source folder still exists, launch the backup
+                    if (Directory.Exists(selectedSave.SourceFilePath))
                     {
-                        PauseSave(str);
+                        CurrentSave.Add(selectedItemName);
+                        selectedSave.State = "ACTIVATE";
+                        Save.Serialize(_model.Datas);
+                        ManualResetEvent manualEvent = new(true);
+                        CancellationTokenSource cancelEvent = new CancellationTokenSource();
+                        threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
+                        threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
+
+                        Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
+
+                        string str = selectedSave.Name;
+                        if (IsMetierSoftwareRunning())
+                        {
+                            PauseSave(str);
+                        }
+
+                        threadsDictionary.Add(selectedSave.Name, newWork);
+
+                        newWork.Start();
                     }
-
-                    threadsDictionary.Add(selectedSave.Name,newWork);
-
-
-                    newWork.Start();
+                    // If the source folder no longer exists, delete the backup
+                    else
+                    {
+                        EditSave.Delete(selectedSave.TargetFilePath);
+                        _model.Datas.Remove(selectedSave);
+                        Save.Serialize(_model.Datas);
+                        Items.Remove(selectedSave.Name);
+                        ErrorText = selectedSave.Name + " : Source path doesn't exist anymore (" + selectedSave.SourceFilePath + ")";
+                    }
                 }
             }
         }
@@ -300,12 +312,12 @@ namespace EasySaveClasses.ViewModelNS
             if (processes.Length > 0)
             {
                 ErrorText = "The business software is currently running. Please close it before launching the backup.";
-                return false;
+                return true;
             }
             else
             {
                 ErrorText = "Backup job launched successfully.";
-                return true;
+                return false;
             }
         }
 
