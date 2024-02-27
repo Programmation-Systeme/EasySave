@@ -134,7 +134,7 @@ namespace EasySaveClasses.ViewModelNS
                 }
 
                 //temp
-                List<string> tempExtPriority = [".xlsx"];
+                List<string> tempExtPriority = Config.ReadExtensionsForEncryptionFromJson(false).Select(element => "." + element).ToList();
                 //
 
                 // Get a list of all files from destination directory, filtered by the priorities of extensions defined in configuration.

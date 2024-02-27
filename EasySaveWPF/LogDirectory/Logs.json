@@ -385,5 +385,14 @@
     "DirSize": 104864180.0,
     "DirTransferTime": 3941.0,
     "EncryptingTime": 728
+  },
+  {
+    "Timestamp": "27/02/2024 19:59:27",
+    "Name": "jij",
+    "SourcePath": "C:\\Users\\Elisée\\Downloads\\jij",
+    "TargetPath": "C:\\Users\\Elisée\\Downloads\\jij-02-27-2024-7-59-22",
+    "DirSize": 209715200.0,
+    "DirTransferTime": 1899.0,
+    "EncryptingTime": 0
   }
 ]
