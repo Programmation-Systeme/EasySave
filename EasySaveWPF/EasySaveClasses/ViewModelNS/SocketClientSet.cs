@@ -12,124 +12,70 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="args">Command-line arguments (not used in this method).</param>
         /// <param name="choice">User's choice to send to the server.</param>
         /// <returns>Response received from the server.</returns>
-        public static string LaunchClient(string[] args, string choice)
+        public static void LaunchClient(string[] args, string choice)
         {
-            // Informing the user that the client is starting
-            Console.WriteLine("Démarrage du client...");
+            Console.WriteLine("Client is running...");
 
-            // Establishing a connection with the server
-            Socket clientSocket = Connection();
+            // Connect to the server
+            TcpClient client = new TcpClient("127.0.0.1", 8888);
+            Console.WriteLine("Connected to server.");
 
-            // Connection successful message
-            Console.WriteLine("Connecté au serveur !");
+            // Start a thread to receive options from the server
+            var receiveThread = new System.Threading.Thread(() => ReceiveOptions(client));
+            receiveThread.Start();
 
-            // Get list saves
-            string listSaves = GetSavesList(clientSocket);
+            // Select options from the list
+            while (true)
+            {
+                Console.WriteLine("Select an option (type 'exit' to quit): ");
+                string selectedOption = Console.ReadLine();
 
-            // Sending user's choice to the server and receiving response
-            string clientResponse = ListenToNetwork(clientSocket, choice);
+                if (selectedOption.ToLower() == "exit")
+                {
+                    break;
+                }
 
-            if(listSaves != clientResponse) {
-                listSaves = clientResponse;
+                // Send the selected option to the server
+                SendOption(client, selectedOption);
             }
 
-            // Closing the connection to the server
-            LogOff(clientSocket);
-
-            // Returning the response received from the server
-            return listSaves;
+            // Close the connection
+            client.Close();
         }
 
-        /// <summary>
-        /// Establishes a socket connection to the server.
-        /// </summary>
-        /// <returns>Connected Socket object.</returns>
-        private static Socket Connection()
+        static void ReceiveOptions(TcpClient client)
         {
-            // Server's IP address (localhost in this case)
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
-
-            // Server's endpoint
-            IPEndPoint remoteEP = new IPEndPoint(ipAddress, 8080);
-
-            // Creating a socket using TCP protocol
-            Socket clientSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-            // Connecting the socket to the server
-            clientSocket.Connect(remoteEP);
-
-            // Returning the connected socket
-            return clientSocket;
+            try
+            {
+                while (true)
+                {
+                    NetworkStream stream = client.GetStream();
+                    byte[] buffer = new byte[256];
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    string received = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    Console.WriteLine("Received from server: " + received);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Disconnected from server.");
+            }
         }
 
-        /// <summary>
-        /// Sends user's choice to the server and receives a response.
-        /// </summary>
-        /// <param name="clientSocket">Connected Socket object.</param>
-        /// <param name="choice">User's choice to send to the server.</param>
-        /// <returns>Response received from the server.</returns>
-        private static string ListenToNetwork(Socket clientSocket, string choice)
+        static void SendOption(TcpClient client, string option)
         {
-            // Buffer to hold incoming data
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            // Sending the user's choice to the server
-            Console.Write("Client: ");
-            clientSocket.Send(Encoding.ASCII.GetBytes(choice));
-
-            // Receiving response from the server
-            bytesRead = clientSocket.Receive(buffer);
-
-            // Converting the received bytes to a string
-            string listSaves = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-
-            // Displaying the received message from the server
-            Console.WriteLine($"Server: {listSaves}");
-
-            // Returning the received message
-            return listSaves;
+            try
+            {
+                NetworkStream stream = client.GetStream();
+                byte[] data = Encoding.ASCII.GetBytes(option);
+                stream.Write(data, 0, data.Length);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed to send option to server.");
+            }
         }
 
-                /// <summary>
-        /// Get form server the data list.
-        /// </summary>
-        /// <param name="clientSocket">Connected Socket object.</param>
-        /// <returns>Response received from the server.</returns>
-        private static string GetSavesList(Socket clientSocket)
-        {
-            // Buffer to hold incoming data
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            // Getting updates
-            clientSocket.Send(Encoding.ASCII.GetBytes("getSavesList"));
-
-            // Receiving response from the server
-            bytesRead = clientSocket.Receive(buffer);
-
-            // Converting the received bytes to a string
-            string listSaves = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-
-            // Displaying the received message from the server
-            Console.WriteLine($"Server: {listSaves}");
-
-            // Returning the received message
-            return listSaves;
-        }
-
-        /// <summary>
-        /// Closes the socket connection to the server.
-        /// </summary>
-        /// <param name="socket">Socket object to close.</param>
-        private static void LogOff(Socket socket)
-        {
-            // Shutdown the socket
-            socket.Shutdown(SocketShutdown.Both);
-
-            // Close the socket
-            socket.Close();
-        }
 
     }
 }
