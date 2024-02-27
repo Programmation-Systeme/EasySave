@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace EasySaveClasses.ModelNS
 {
@@ -16,31 +17,49 @@ namespace EasySaveClasses.ModelNS
         private string _currentSourceFile;
         private string _destinationFile;
         private int _totalFilesToCopy;
-        private int _totalFilesSize;
+        private long _totalFilesSize;
         private int _nbFilesLeftToDo;
         private int _progression;
         private int _saveType;
 
         // Properties for accessing the private fields
+        [JsonProperty(nameof(State))]
         public string State { get => _state; set => _state = value; }
-        public int TotalFilesToCopy { get => _totalFilesToCopy; set => _totalFilesToCopy = 0; }
-        public int TotalFilesSize { get => _totalFilesSize; set => _totalFilesSize = 0; }
-        public int NbFilesLeftToDo { get => _nbFilesLeftToDo; set => _nbFilesLeftToDo = 0; }
-        public int Progression { get => _progression; set => _progression = 0; }
+
+        [JsonProperty(nameof(TotalFilesToCopy))]
+        public int TotalFilesToCopy { get => _totalFilesToCopy; set => _totalFilesToCopy = value; }
+
+        [JsonProperty(nameof(TotalFilesSize))]
+        public long TotalFilesSize { get => _totalFilesSize; set => _totalFilesSize = value; }
+
+        [JsonProperty(nameof(NbFilesLeftToDo))]
+        public int NbFilesLeftToDo { get => _nbFilesLeftToDo; set => _nbFilesLeftToDo = value; }
+
+        [JsonProperty(nameof(Progression))]
+        public int Progression { get => _progression; set => _progression = value; }
+
+        [JsonProperty(nameof(Name))]
         public string Name { get => _fileName; set => _fileName = value; }
+
+        [JsonProperty(nameof(SourceFilePath))]
         public string SourceFilePath { get => _currentSourceFile; set => _currentSourceFile = value; }
+
+        [JsonProperty(nameof(TargetFilePath))]
         public string TargetFilePath { get => _destinationFile; set => _destinationFile = value; }
 
+        [JsonProperty(nameof(SaveType))]
         public int SaveType { get => _saveType; set => _saveType = value; }
 
-        // Constructor
-        public Save()
-        {
-        }
-        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int nbFilesLeftToDo =0, int progression =0)
-        {
+        // Constructor required and used for deserialization
+        public Save() {}
 
-            string[] files = Directory.GetFiles(currentSourceFile);
+        public Save(string fileName, string state, string currentSourceFile, string destinationFile, int saveType, int nbFilesLeftToDo =0, int progression =0)
+        {
+            string[] files = [];
+            if (currentSourceFile != null)
+            {
+                files = Directory.GetFiles(currentSourceFile);
+            }
             int numberOfFiles = files.Length;
 
             // Calculer la taille du dossier
@@ -56,9 +75,10 @@ namespace EasySaveClasses.ModelNS
             _currentSourceFile = currentSourceFile;
             _destinationFile = destinationFile;
             _totalFilesToCopy = numberOfFiles;
-            _totalFilesSize = Convert.ToInt32(totalSize);
+            _totalFilesSize = Convert.ToInt64(totalSize);
             _nbFilesLeftToDo = nbFilesLeftToDo;
             _progression = progression;
+            _saveType = saveType;
         }
         // Method to serialize the Save array to JSON and save it to a file
         public static void Serialize(List<Save> dataSaveList)
@@ -72,14 +92,13 @@ namespace EasySaveClasses.ModelNS
                     WriteIndented = true,
                 };
                 // Serialize the Save list to JSON string
-                string jsonSave = JsonSerializer.Serialize(dataSaveList, options);
+                string jsonSave = System.Text.Json.JsonSerializer.Serialize(dataSaveList, options);
                 // Write JSON Save to file
                 File.WriteAllText(fileName, jsonSave);
             }
-            catch (Exception ex)
+            catch
             {
                 // Handle any errors during file creation
-                Console.WriteLine($" Error in file creation : {ex.Message}");
             }
         }
 
@@ -92,27 +111,13 @@ namespace EasySaveClasses.ModelNS
             {
                 string jsonString = File.ReadAllText(fileName);
                 // Check if JSON Save is not empty
-                if (jsonString != "")
+                if (jsonString.Length > 0)
                 {
                     // Deserialize JSON Save to Save array
-                    List<Save> saveSaveArray = JsonSerializer.Deserialize<List<Save>>(jsonString);
+                    List<Save>? saveSaveArray = System.Text.Json.JsonSerializer.Deserialize<List<Save>>(jsonString);
 
-                    if (saveSaveArray.Any())
+                    if (saveSaveArray != null && saveSaveArray.Count > 0)
                     {
-                        List<Save> savesToRemove = new List<Save>();
-                        foreach (Save save in saveSaveArray)
-                        {
-                            if (!Directory.Exists(save.TargetFilePath))
-                            {
-                                savesToRemove.Add(save);
-                            }
-                        }
-
-                        // Supprimer les éléments marqués
-                        foreach (Save saveToRemove in savesToRemove)
-                        {
-                            saveSaveArray.Remove(saveToRemove);
-                        }
                         Serialize(saveSaveArray);
                         // Return the deserialized Save array
                         return saveSaveArray;
@@ -120,7 +125,7 @@ namespace EasySaveClasses.ModelNS
                 }
             }
             // If file doesn't exist or JSON Save is empty, create a new Save array, serialize it and return it
-            List<Save> saveTab = new List<Save>();
+            List<Save> saveTab = [];
             Serialize(saveTab);
             return saveTab;
         }

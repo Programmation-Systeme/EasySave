@@ -1,11 +1,12 @@
-﻿<Page x:Class="EasySaveWPF.ViewNS.Settings"
+﻿
+    <Page x:Class="EasySaveWPF.ViewNS.Settings"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:EasySaveWPF.ViewNS"
       mc:Ignorable="d" 
-      Height="600" d:DesignWidth="920"
+      d:DesignHeight="600" d:DesignWidth="920"
       Title="Settings">
     <Page.Resources>
         <Style TargetType="ComboBox" x:Key="Flat_ComboBox">
@@ -29,34 +30,136 @@
 
         </Style>
     </Page.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="340"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" 
-            Text="{DynamicResource SettingsMenuItem}" 
-            Foreground="#87CEFA" 
-            FontSize="28" 
-            HorizontalAlignment="Left" 
-            Margin="0,0,0,10"/>
-        
-        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
-            <TextBlock Text="{DynamicResource LanguageMenuItem}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-            <ComboBox SelectionChanged="ComboBox_LanguageChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
-                <ComboBoxItem Content="English"/>
-                <ComboBoxItem Content="Francais"/>
-            </ComboBox>
-        </StackPanel>
-        <StackPanel Grid.Row="2"  HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
-            <TextBlock Text="{DynamicResource LogFormatMenuItem}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-            <ComboBox SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
-                <ComboBoxItem Content="Json"/>
-                <ComboBoxItem Content="XML"/>
-            </ComboBox>
-        </StackPanel>
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+
+
+                <!-- Titre des paramètres -->
+                <TextBlock Grid.Row="0" 
+                       Text="{DynamicResource SettingsMenuItem_txt}" 
+                       Foreground="#87CEFA" 
+                       FontSize="28" 
+                       HorizontalAlignment="Left" 
+                       Margin="20,0,0,10"/>
+
+                <!-- Choix de la langue -->
+                <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
+                    <TextBlock Text="{DynamicResource LanguageMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+                    <ComboBox SelectionChanged="ComboBox_LanguageChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
+                        <ComboBoxItem Content="English"/>
+                        <ComboBoxItem Content="Francais"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Format de log -->
+                <StackPanel Grid.Row="2" HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
+                    <TextBlock Text="{DynamicResource LogFormatMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
+                    <ComboBox SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
+                        <ComboBoxItem Content="Json"/>
+                        <ComboBoxItem Content="XML"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Titre de la liste des extensions -->
+            <TextBlock Grid.Row="3" 
+                       Text="File Extensions" 
+                       Foreground="#87CEFA" 
+                       FontSize="16" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Left"
+                       Margin="20,10,0,0"/>
+
+            <StackPanel Orientation="Vertical" Grid.Row="4" >
+                <ItemsControl Width="600" x:Name="ItemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="525"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding}" Grid.Column="0"/>
+                                <Button Content="X" Click="DeleteItem_Click" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <StackPanel Margin="0,10,0,0" Width="600" Orientation="Horizontal">
+                    <TextBox x:Name="NewItemTextBox" Width="550"/>
+                    <Button Content="Ajouter" Click="AddItem_Click"/>
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock Grid.Row="5" 
+                       Text="Logiciel metier" 
+                       Foreground="#87CEFA" 
+                       FontSize="16" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Left"
+                       Margin="20,10,0,0"/>
+
+
+            <StackPanel Grid.Row="6" Margin="0,10,0,0" Width="600" Orientation="Horizontal">
+                <TextBlock Text="Nom du logiciel metier"  Width="300"/>
+                <TextBox  Width="300"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="7" 
+                       Text="Information fichier" 
+                       Foreground="#87CEFA" 
+                       FontSize="16" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Left"
+                       Margin="20,10,0,0"/>
+
+
+            <StackPanel Grid.Row="8" Margin="0,10,0,0" Width="600" Orientation="Horizontal">
+                <TextBlock Text="Taille fichier max"  Width="300"/>
+                <TextBox Width="300"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="9" 
+                       Text="fichier prioritaire"
+                       FontSize="14" 
+                       HorizontalAlignment="Left"
+                       Margin="40,10,0,0"/>
+
+            <StackPanel Orientation="Vertical" Grid.Row="10">
+                <ItemsControl Width="600" x:Name="ItemsControl2">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="525"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding}" Grid.Column="0"/>
+                                <Button Content="X" Click="DeleteItem_Click" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <StackPanel Margin="0,10,0,0" Width="600" Orientation="Horizontal">
+                    <TextBox x:Name="NewItemTextBox2" Width="550"/>
+                    <Button Content="Ajouter" Click="AddItem_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>

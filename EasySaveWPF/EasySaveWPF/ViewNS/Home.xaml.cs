@@ -24,11 +24,13 @@ namespace EasySaveWPF.ViewNS
     {
         MainWindow _mainWindow;
         MainViewModel _mainViewModel;
-        public Home(MainWindow mainWindow)
+        Execution _execution;
+        public Home(MainWindow mainWindow, Execution execution)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
             _mainViewModel = _mainWindow.mainViewModel;
+            _execution = execution;
             DataContext = _mainViewModel;
         }
 
@@ -46,6 +48,10 @@ namespace EasySaveWPF.ViewNS
             foreach (string element in ItemSelecteds.SelectedItems)
             { list.Add(element); }
             _mainViewModel.ExecuteSave_Click(list);
+            
+            //Execution executionPage = new Execution(_mainWindow);
+            _mainWindow.Frame.Navigate(_execution);
+            _mainWindow.ExecRadioButton.IsChecked = true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
