@@ -45,6 +45,32 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private ObservableCollection<string> _priorityExtension;
+        public ObservableCollection<string> PriorityExtension
+        {
+            get { return _priorityExtension; }
+            set
+            {
+                _priorityExtension = value;
+                OnPropertyChanged(nameof(PriorityExtension));
+                if (_priorityExtension != null)
+                    _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged;
+            }
+        }
+
+        private ObservableCollection<string> _extensionCrypt;
+        public ObservableCollection<string> ExtensionCrypt
+        {
+            get { return _extensionCrypt; }
+            set
+            {
+                _extensionCrypt = value;
+                OnPropertyChanged(nameof(ExtensionCrypt));
+                if (_extensionCrypt != null)
+                    _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged;
+            }
+        }
+
         private string _errorText;
         public string ErrorText
         {
@@ -140,6 +166,65 @@ namespace EasySaveClasses.ViewModelNS
             List<string> saveList = _model.GetSaveList();
             foreach (string save in saveList) { Items.Add(save); }
 
+            _extensionCrypt = EditSave.ReadExtensions();
+            _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged; // Abonnement initial
+            _priorityExtension = EditSave.ReadExtensions();
+            _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged; // Abonnement initial
+        }
+        /// <summary>
+        /// Handles changes to the ExtensionCrypt collection.
+        /// This method is automatically called when the ExtensionCrypt collection changes.
+        /// </summary>
+        /// <param name="sender">The object that triggered the event (in this case, the ExtensionCrypt collection).</param>
+        /// <param name="e">Details about the modification to the collection.</param>
+        private void ExtensionCrypt_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            // Check if an item was added to the collection
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                // Perform an action for each new item added
+                foreach (var newItem in e.NewItems)
+                {
+                    // Add the extension (you may need to adjust this line to suit your needs)
+                    EditSave.InsertExtensions("." + newItem.ToString());
+                }
+            }
+            // Check if an item was removed from the collection
+            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                // Perform an action for each removed item
+                foreach (var oldItem in e.OldItems)
+                {
+                    // Remove the extension or perform another action
+                    EditSave.RemoveExtension("." + oldItem.ToString());
+                }
+            }
+            // You can also handle other action types here (Replace, Move, Reset) if necessary
+        }
+
+        private void PriorityExtension_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            // Check if an item was added to the collection
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                // Perform an action for each new item added
+                foreach (var newItem in e.NewItems)
+                {
+                    // Add the extension (you may need to adjust this line to suit your needs)
+                    EditSave.InsertExtensions("." + newItem.ToString());
+                }
+            }
+            // Check if an item was removed from the collection
+            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                // Perform an action for each removed item
+                foreach (var oldItem in e.OldItems)
+                {
+                    // Remove the extension or perform another action
+                    EditSave.RemoveExtension("." + oldItem.ToString());
+                }
+            }
+            // You can also handle other action types here (Replace, Move, Reset) if necessary
         }
 
         /// <summary>

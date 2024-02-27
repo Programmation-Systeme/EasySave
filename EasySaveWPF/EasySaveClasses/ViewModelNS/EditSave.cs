@@ -1,5 +1,7 @@
 using EasySaveClasses.ModelNS;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -315,10 +317,10 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private static List<string> ReadExtensions()
+        public static ObservableCollection<string> ReadExtensions()
         {
             string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
-            List<string> listExt = [];
+            ObservableCollection<string> listExt = [];
             if (File.Exists(configPath))
             {
                 string jsonContent = File.ReadAllText(configPath);
@@ -330,7 +332,8 @@ namespace EasySaveClasses.ViewModelNS
                 {
                     foreach (var extension in firstConfig.ExtensionCryptage)
                     {
-                        listExt.Add(extension.ToString());
+                        string extensionWithoutFirstChar = extension.ToString().Substring(1);
+                        listExt.Add(extensionWithoutFirstChar);
                     }
                 }
             }
@@ -339,7 +342,10 @@ namespace EasySaveClasses.ViewModelNS
 
         private static void EncryptFiles(List<string> listFilesPath)
         {
-            List<string> listExt = ReadExtensions();
+            ObservableCollection<string> observableCollection = ReadExtensions();
+
+            // Conversion de ObservableCollection<string> en List<string>
+            List<string> listExt = new List<string>(observableCollection);
 
             string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
             if (File.Exists(configPath))
@@ -381,6 +387,56 @@ namespace EasySaveClasses.ViewModelNS
             using var stream = File.OpenRead(filePath);
             byte[] hashBytes = sha256.ComputeHash(stream);
             return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+        }
+
+        public static void InsertExtensions(string newExt)
+        {
+            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
+            // Load the JSON
+            string json = File.ReadAllText(configPath);
+
+            dynamic configuration = JsonConvert.DeserializeObject(json);
+
+            // Verify if "ExtensionCryptage" exist in the Json
+            if (configuration[0]["ExtensionCryptage"] == null)
+            {
+                configuration[0]["ExtensionCryptage"] = new JArray();
+            }
+
+            // Add the new extension
+            configuration[0]["ExtensionCryptage"].Add(newExt);
+
+            string nouveauJson = JsonConvert.SerializeObject(configuration, Formatting.Indented);
+
+            // Write the new Json file with the new changements
+            File.WriteAllText(configPath, nouveauJson);
+        }
+
+        public static void RemoveExtension(string itemToRemove)
+        {
+            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
+
+            // Load the JSON file content
+            string jsonString = File.ReadAllText(configPath);
+
+            // Parse the JSON content into a JArray since the root is an array
+            var jsonArray = JArray.Parse(jsonString);
+
+            // Access the first object in the array and then the "ExtensionCryptage" property within that object
+            JArray extensionsArray = (JArray)jsonArray[0]["ExtensionCryptage"];
+
+            // Remove the specified item from the array
+            var itemToRemoveToken = extensionsArray.FirstOrDefault(x => x.ToString() == itemToRemove);
+            if (itemToRemoveToken != null)
+            {
+                extensionsArray.Remove(itemToRemoveToken);
+            }
+
+            // Convert the modified JArray back to a string
+            string updatedJsonString = jsonArray.ToString();
+
+            // Write the updated JSON string back to the file, overwriting the original content
+            File.WriteAllText(configPath, updatedJsonString);
         }
     }
 }

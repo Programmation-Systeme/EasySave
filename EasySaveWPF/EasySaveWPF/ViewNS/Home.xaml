@@ -9,30 +9,11 @@
       Height="600" d:DesignWidth="920"
       Title="Home">
     <Page.Resources>
-        <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="#87CEFA"/>
-            <Setter Property="Foreground" Value="black"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Width="100" Height="40">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E0E0E0"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#BDBDBD"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/ModernButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
