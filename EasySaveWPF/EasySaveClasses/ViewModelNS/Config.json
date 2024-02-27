@@ -1,9 +1,12 @@
-[
-  {
+{
     "ExtensionCryptage": [
+      ".txt",
+      ".pdf",
+      ".ll"
+    ],
+    "ExtensionPriority": [
       ".txt",
       ".pdf",
       ".ll"
     ]
   }
-]
