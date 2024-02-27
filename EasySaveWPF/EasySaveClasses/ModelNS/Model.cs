@@ -20,7 +20,11 @@ namespace EasySaveClasses.ModelNS
             _datas = Save.UnSerialize();
         }
 
-        public List<string> GetSaveList()
+        /// <summary>
+        /// Get a saves names list from the saves.
+        /// </summary>
+        /// <returns>A list containing saves' names</returns>
+        public List<string> GetSavesNamesList()
         {
             List<string> saveList = [];
             foreach (var save in _datas) 

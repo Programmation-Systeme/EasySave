@@ -142,7 +142,7 @@ namespace EasySaveClasses.ViewModelNS
                 Directory.CreateDirectory(cheminDossier);
             }
             LogManager.Instance.LogStrategyType = "Json";
-            List<string> saveList = _model.GetSaveList();
+            List<string> saveList = _model.GetSavesNamesList();
             foreach (string save in saveList) { Items.Add(save); }
 
         }
@@ -156,7 +156,7 @@ namespace EasySaveClasses.ViewModelNS
         private void ExecuteWork(Save save, SynchronizationContext syncContext, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
         {
 
-            Stopwatch stopwatch = new Stopwatch();
+            Stopwatch stopwatch = new();
 
             stopwatch.Start();
             ResultUpdate res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType, manualEvent, cancelEvent);
@@ -226,36 +226,55 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="list">List of selected items.</param>
         public void ExecuteSave_Click(List<string> list)
         {
-            // Vérifie si le logiciel métier est ouvert
-            if (!IsMetierSoftwareRunning())
+            // // Verify if the calculator is open
+            if (IsMetierSoftwareRunning())
             {
                 return;
             }
 
-            List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
+            //List<Save> selectedSaves = [];
 
             // Itère à travers les éléments sélectionnés
             foreach (string selectedItemName in list)
             {
-                CurrentSave.Add(selectedItemName);
-                // Utilise LINQ pour trouver l'élément correspondant dans votre modèle de données
+                // Use LINQ to find the corresponding item in your data model
                 Save? selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
                 // Vérifie si l'élément est trouvé (il peut être null si aucun match n'est trouvé)
                 if (selectedSave != null)
                 {
-                    selectedSave.State = "ACTIVATE";
-                    Save.Serialize(_model.Datas);
-                    ManualResetEvent manualEvent = new ManualResetEvent(true);
-                    CancellationTokenSource cancelEvent = new CancellationTokenSource();
-                    threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
-                    threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
+                    // If the source folder still exists, launch the backup
+                    if (Directory.Exists(selectedSave.SourceFilePath))
+                    {
+                        CurrentSave.Add(selectedItemName);
+                        selectedSave.State = "ACTIVATE";
+                        Save.Serialize(_model.Datas);
+                        ManualResetEvent manualEvent = new(true);
+                        CancellationTokenSource cancelEvent = new CancellationTokenSource();
+                        threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
+                        threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
 
-                    Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
+                        Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
 
-                    threadsDictionary.Add(selectedSave.Name, newWork);
+                        string str = selectedSave.Name;
+                        if (IsMetierSoftwareRunning())
+                        {
+                            PauseSave(str);
+                        }
 
-                    newWork.Start();
+                        threadsDictionary.Add(selectedSave.Name, newWork);
+
+                        newWork.Start();
+                    }
+                    // If the source folder no longer exists, delete the backup
+                    else
+                    {
+                        EditSave.Delete(selectedSave.TargetFilePath);
+                        _model.Datas.Remove(selectedSave);
+                        Save.Serialize(_model.Datas);
+                        Items.Remove(selectedSave.Name);
+                        ErrorText = selectedSave.Name + " : Source path doesn't exist anymore (" + selectedSave.SourceFilePath + ")";
+                    }
                 }
             }
         }
@@ -299,12 +318,12 @@ namespace EasySaveClasses.ViewModelNS
             if (processes.Length > 0)
             {
                 ErrorText = "The business software is currently running. Please close it before launching the backup.";
-                return false;
+                return true;
             }
             else
             {
                 ErrorText = "Backup job launched successfully.";
-                return true;
+                return false;
             }
         }
 
