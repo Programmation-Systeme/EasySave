@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Security.AccessControl;
 using static System.Net.Mime.MediaTypeNames;
 using static EasySaveClasses.ViewModelNS.EditSave;
+using System.Formats.Asn1;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -169,16 +170,17 @@ namespace EasySaveClasses.ViewModelNS
         private void ExecuteWork(Save save, SynchronizationContext syncContext, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
         {
             Stopwatch stopwatch = new();
+            int totalEncryptionTime = 0;
             stopwatch.Start();
-
-            ResultUpdate res = EditSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, manualEvent, cancelEvent);
+            ResultUpdate res = EditSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, ref totalEncryptionTime, manualEvent, cancelEvent);
             stopwatch.Stop();
+            save.EncryptionTime = totalEncryptionTime;
             syncContext.Post(state =>
             {
                 if (res.Success)
                 {
                     save.State = "END";
-                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds);
+                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds, save.EncryptionTime);
                     CurrentRunningSaves.Remove(save.Name);
                     save.Progression = res.Progression;
                     Save.Serialize(_model.Datas);
@@ -187,7 +189,7 @@ namespace EasySaveClasses.ViewModelNS
                 {
                     save.State = "ABORTED";
                     ErrorText = "ABORT SAVE";
-                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds);
+                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds, save.EncryptionTime);
                     CurrentRunningSaves.Remove(save.Name);
                     save.Progression = res.Progression;
                     Save.Serialize(_model.Datas);

@@ -8,7 +8,7 @@ public class JsonLog : ILog
 {
     private static readonly string JsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/Logs.json");
 
-    public string AddLog(string sourcePath, string targetPath, float transferTime)
+    public string AddLog(string sourcePath, string targetPath, float transferTime, int encryptingTime)
     {
         var logEntry = new LogEntry
         {
@@ -17,7 +17,8 @@ public class JsonLog : ILog
             SourcePath = sourcePath,
             TargetPath = targetPath,
             DirSize = EasySaveClasses.ViewModelNS.ILog.CalculateDirectorySize(new DirectoryInfo(sourcePath)),
-            CryptingTime = new Random().Next(1, 9999),
+            //EncryptingTime = new Random().Next(1, 9999),
+            EncryptingTime = encryptingTime,
             DirTransferTime = transferTime
         };
 
