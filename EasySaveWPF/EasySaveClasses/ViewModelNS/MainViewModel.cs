@@ -17,7 +17,6 @@ namespace EasySaveClasses.ViewModelNS
         public event PropertyChangedEventHandler? PropertyChanged;
 
         readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
-        private readonly Dictionary<string, Thread> threadsDictionary = new Dictionary<string, Thread>();
         private readonly Dictionary<string, ManualResetEvent> threadsManualResetEvent = new Dictionary<string, ManualResetEvent>();
         private readonly Dictionary<string, CancellationTokenSource> threadsCancelEvent = new Dictionary<string, CancellationTokenSource>();
 
@@ -125,6 +124,7 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private bool IsNewWorkDone = false;
 
         /// <summary>
         /// Constructor initializes necessary properties and loads data.
@@ -177,7 +177,6 @@ namespace EasySaveClasses.ViewModelNS
                 }
             }, null);
             threadsManualResetEvent.Remove(save.Name);
-            threadsDictionary.Remove(save.Name);
             threadsCancelEvent.Remove(save.Name);
         }
 
@@ -247,20 +246,38 @@ namespace EasySaveClasses.ViewModelNS
                     threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
 
                     Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
-
-                    string str = selectedSave.Name;
-                    if (!IsMetierSoftwareRunning())
-                    {
-                        PauseSave(str);
-                    }
-
-                    threadsDictionary.Add(selectedSave.Name,newWork);
+                    Thread checkSoftwareRunning = new(() => checkCakcukator(selectedSave));
 
 
                     newWork.Start();
+                    checkSoftwareRunning.Start();
+
+                  /*  newWork.Join();
+                    IsNewWorkDone = true;
+                    checkSoftwareRunning.Join();*/
                 }
             }
         }
+
+      
+        private void checkCakcukator(Save save)
+        {
+            while (!IsNewWorkDone)
+            {
+                if (IsMetierSoftwareRunning())
+                {
+                    // Resume the curent save
+                    ResumeSave(save.Name);
+                }
+                else
+                {
+                    // pause the current save
+                    PauseSave(save.Name);
+                }
+                Thread.Sleep(500); // Vérify every 500 ms
+            }
+        }
+
 
         /// <summary>
         /// Deletes selected save operations.

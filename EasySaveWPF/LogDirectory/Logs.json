@@ -1,2 +1,11 @@
 [
+  {
+    "Timestamp": "26/02/2024 16:18:50",
+    "Name": "src",
+    "SourcePath": "D:\\CESI\\ProgSys\\Projet\\testSave\\src",
+    "TargetPath": "D:\\CESI\\ProgSys\\Projet\\testSave\\dest\\src-02-26-2024-4-15-49",
+    "DirSize": 1.6777216E+09,
+    "DirTransferTime": 166340.0,
+    "CryptingTime": 8024
+  }
 ]
