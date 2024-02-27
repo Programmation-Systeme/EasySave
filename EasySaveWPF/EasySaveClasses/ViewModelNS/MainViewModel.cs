@@ -137,7 +137,7 @@ namespace EasySaveClasses.ViewModelNS
             Items = [];
             _model = new Model();
             LogManager.Instance.LogStrategyType = "Json";
-            List<string> saveList = _model.GetSaveList();
+            List<string> saveList = _model.GetSavesNamesList();
             foreach (string save in saveList) { Items.Add(save); }
 
         }
@@ -241,7 +241,7 @@ namespace EasySaveClasses.ViewModelNS
                 {
                     selectedSave.State = "ACTIVATE";
                     Save.Serialize(_model.Datas);
-                    ManualResetEvent manualEvent = new ManualResetEvent(true);
+                    ManualResetEvent manualEvent = new(true);
                     CancellationTokenSource cancelEvent = new CancellationTokenSource();
                     threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
                     threadsCancelEvent.Add(selectedSave.Name, cancelEvent);

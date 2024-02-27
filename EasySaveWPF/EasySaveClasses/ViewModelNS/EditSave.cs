@@ -5,45 +5,26 @@ using System.IO;
 
 namespace EasySaveClasses.ViewModelNS
 {
+    public class ResultUpdate
+    {
+        /// <summary>
+        /// True if update is successfull and false otherwise.
+        /// </summary>
+        public bool Success { get; set; }
+
+        /// <summary>
+        /// The actual progression of the update operation.
+        /// </summary>
+        public int Progression { get; set; }
+    }
+
     public class EditSave
     {
         /// <summary>
-        /// Creates a new save folder and returns routes when saved.
-        /// Creates a dedicated folder for each saved folder, ensuring a structured organizational, preventing data overwrite, facilitating folder identification, 
-        /// and enhancing data integrity and traceability. 
-        /// </summary>
-        /// <param name="sourceFolder">The folder chosen by the user to be saved.</param>
-        /// <param name="destinationDirectory">The directory where the folder will be saved.</param>
-        public static string Create(string sourceFolder, string destinationDirectory, int saveType)
-        {
-            if (sourceFolder == null || destinationDirectory == null || saveType == 0 || !Directory.Exists(destinationDirectory))
-            { return ""; }
-
-            try
-            {
-                // Generate formatted date-time string for unique identifier
-                string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-
-                // Form a dynamic path for the folder
-                string pathWithId = Path.Combine(destinationDirectory, Path.GetFileName(sourceFolder) + "-" + formattedDateTime);
-
-                // Create the new directory
-                Directory.CreateDirectory(pathWithId);
-
-                // Copy the entire source folder to the destination
-                Update(sourceFolder, pathWithId, saveType);
-                return pathWithId;
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
         /// Deletes a specified folder and returns true when deleted.
         /// </summary>
-        /// <param name="destinationFolder">The folder to be deleted.</param>
+        /// <param name="destinationFolder">The path of the folder to be deleted.</param>
+        /// <returns>True if folder has been deleted, false if not.</returns>
         public static bool Delete(string destinationFolder)
         {
             try
@@ -65,7 +46,13 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private static bool wait_abortThread(ManualResetEvent manualEvent, CancellationTokenSource cancelEvent) {
+        /// <summary>
+        /// Checks if the pause or cancellation was requested by the user.
+        /// </summary>
+        /// <param name="manualEvent"></param>
+        /// <param name="cancelEvent"></param>
+        /// <returns></returns>
+        private static bool Wait_AbortThread(ManualResetEvent manualEvent, CancellationTokenSource cancelEvent) {
 
             WaitHandle.WaitAny(new WaitHandle[] { manualEvent, cancelEvent.Token.WaitHandle });
             if (cancelEvent.Token.IsCancellationRequested)
@@ -76,11 +63,7 @@ namespace EasySaveClasses.ViewModelNS
 
         }
 
-        public class ResultUpdate
-        {
-            public bool Success { get; set; }
-            public int Progression { get; set; }
-        }
+        
         /// <summary>
         /// Copies the entire contents of a directory to another directory.
         /// And we check if files had been change to update them
@@ -104,30 +87,54 @@ namespace EasySaveClasses.ViewModelNS
 
                 DirectoryInfo destDirInfo = new DirectoryInfo(destDir);
 
-                // Get the files in the source directory
+                // Get the files from the source directory
                 FileInfo[] sourceFiles = sourceDirInfo.GetFiles();
+
+                // Get the files from the destination directory
                 FileInfo[] destFiles = destDirInfo.GetFiles();
 
+                // Adding to a list the name of each file
                 List<string> sourceFilesNames = [];
-
                 foreach (FileInfo sourceFile in sourceFiles)
                 {
                     sourceFilesNames.Add(sourceFile.Name);
                 }
 
+                // Deleting every file that is not in source directory or for encrypted files, those whose source file hash has changed (cleaning of the destination file)
                 foreach (FileInfo destFile in destFiles)
                 {
-                    if(wait_abortThread(manualEvent, cancelEvent)) return new ResultUpdate { Success = false, Progression = 2 }; ;
-                    if (!sourceFilesNames.Contains(destFile.Name))
+                    if(Wait_AbortThread(manualEvent, cancelEvent)) return new ResultUpdate { Success = false, Progression = 2 }; ;
+
+                    //Operation for encrypted/hash files
+                    if (destFile.Extension == ".hash" || destFile.Extension == ".encrypted")
+                    {
+                        //If the source file associated with the encrypted file/hash file does not exist, the encrypted file/hash file is deleted.
+                        FileInfo? correspondingSourceFile = sourceFiles.FirstOrDefault(sourceFile => sourceFile.Name == Path.GetFileNameWithoutExtension(destFile.FullName));
+                        if (correspondingSourceFile == null)
+                        {
+                            destFile.Delete();
+                        }
+                    }
+                    // Otherwise we delete the file from the destination folder if its name is not the name of a file in the source folder.
+                    else if (!sourceFilesNames.Contains(destFile.Name))
                     {
                         File.Delete(destFile.FullName);
                     }
                 }
+
+                //temp
+                List<string> tempExtPriority = [".xlsx"];
+                //
+
+                // Get a list of all files from destination directory, filtered by the priorities of extensions defined in configuration.
+                List<FileInfo> filteredSourceFiles = GetFilteredFilesByPriority(sourceFiles, tempExtPriority);
+
+                // Copy files from source folder to destination folder
                 int i = 0;
-                foreach (FileInfo sourceFile in sourceFiles)
+                foreach (FileInfo sourceFile in filteredSourceFiles)
                 {
                     i++;
-                    if (wait_abortThread(manualEvent, cancelEvent)) return new ResultUpdate { Success = false, Progression = i * 30/ sourceFiles.Length };
+                    if (Wait_AbortThread(manualEvent, cancelEvent)) return new ResultUpdate { Success = false, Progression = i * 30/ sourceFiles.Length };
 
                     string destFilePath = Path.Combine(destDir, sourceFile.Name);
 
@@ -139,15 +146,7 @@ namespace EasySaveClasses.ViewModelNS
                     // Differential save
                     else if (saveType == 2)
                     {
-                        // Compare metadata (last write time) of source and destination files
-                        DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
-                        DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
-
-                        // If the metadata differs, update the destination file with the source file
-                        if (sourceLastWriteTime != destLastWriteTime)
-                        {
-                            sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
-                        }
+                        DifferentialSave(destFilePath, sourceFile);
                     }
                     // If saveType is not full or differential, error
                     else
@@ -158,19 +157,21 @@ namespace EasySaveClasses.ViewModelNS
                 destDirInfo = new DirectoryInfo(destDir);
                 DirectoryInfo[] destSubDirs = destDirInfo.GetDirectories();
                 destFiles = destDirInfo.GetFiles();
-                // encrypt
+                
+                // Encryption operation on all files
                 List<string> listFilesPath = [];
                 foreach (FileInfo file in destFiles)
                 {
                     listFilesPath.Add(file.FullName);
                 }
                 EncryptFiles(listFilesPath);
-                int y = 0;
+
                 // Update subdirectories and their contents recursively
+                int y = 0;
                 foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
                 {
                     y++;
-                    if (wait_abortThread(manualEvent, cancelEvent)) return new ResultUpdate { Success = false, Progression = 30 + y * 70 / sourceFiles.Length };
+                    if (Wait_AbortThread(manualEvent, cancelEvent)) return new ResultUpdate { Success = false, Progression = 30 + y * 70 / sourceFiles.Length };
                     string destSubDirPath = Path.Combine(destDir, sourceSubDir.Name);
                     Update(sourceSubDir.FullName, destSubDirPath, saveType, manualEvent, cancelEvent);
                 }
@@ -183,156 +184,81 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        /// <summary>
+        /// Returns files filtered by extension priorities.
+        /// </summary>
+        /// <param name="sourceFiles"></param>
+        /// <param name="extensionsPriority"></param>
+        /// <returns>Returns the list of filtered files.</returns>
+        private static List<FileInfo> GetFilteredFilesByPriority(FileInfo[] sourceFiles, List<string> extensionsPriority)
+        {
+            List<FileInfo> filteredSourceFiles = [];
+            List<FileInfo> othersSourceFiles = [];
 
+            // Separation of all source files into 2 lists
+            foreach (FileInfo sourceFile in sourceFiles)
+            {
+                // A list of priority files
+                if (extensionsPriority.Contains(sourceFile.Extension))
+                {
+                    filteredSourceFiles.Add(sourceFile);
+                }
+                // A list of non-priority files
+                else
+                {
+                    othersSourceFiles.Add(sourceFile);
+                }
+            }
+            // Merging the 2 lists
+            filteredSourceFiles.AddRange(othersSourceFiles);
+            return filteredSourceFiles;
+        }
 
         /// <summary>
-        /// ///////////////////////
+        /// Make a differential backup taking into account encrypted files.
         /// </summary>
-        /// <param name=""></param>
-        public static bool Update(string sourceDir, string destDir, int saveType)
+        /// <param name="destFilePath">The path to which the file should be copied.</param>
+        /// <param name="sourceFile">The file to be copied.</param>
+        private static void DifferentialSave(string destFilePath, FileInfo sourceFile)
         {
-            try
+            // Management of encrypted files
+            if (File.Exists(destFilePath + ".encrypted"))
             {
-                // Get the subdirectories for the specified directory
-                DirectoryInfo sourceDirInfo = new DirectoryInfo(sourceDir);
-
-                if (!sourceDirInfo.Exists)
-                    throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDir);
-
-                DirectoryInfo[] sourceSubDirs = sourceDirInfo.GetDirectories();
-                // If the destination directory doesn't exist, create it
-                if (!Directory.Exists(destDir))
-                    Directory.CreateDirectory(destDir);
-
-                DirectoryInfo destDirInfo = new(destDir);
-
-                // Get the files in the source directory
-                FileInfo[] sourceFiles = sourceDirInfo.GetFiles();
-                FileInfo[] destFiles = destDirInfo.GetFiles();
-
-                List<string> sourceFilesNames = [];
-
-                // Adding to a list the name of each file
-                foreach (FileInfo sourceFile in sourceFiles)
+                if (File.Exists(destFilePath + ".hash"))
                 {
-                    sourceFilesNames.Add(sourceFile.Name);
-                }
-
-
-
-                // Deleting every file that is not in source directory
-                foreach (FileInfo destFile in destFiles)
-                {
-
-                    if (destFile.Extension == ".hash" || destFile.Extension == ".encrypted")
+                    string sourceFileHash = File.ReadAllText(destFilePath + ".hash");
+                    if (sourceFileHash != CalculateFileHash(sourceFile.FullName))
                     {
-                        FileInfo? correspondingSourceFile = sourceFiles.FirstOrDefault(sourceFile => sourceFile.Name == Path.GetFileNameWithoutExtension(destFile.FullName));
-
-                        if (correspondingSourceFile == null)
-                        {
-                            destFile.Delete();
-                        }
-                    }
-                    else if (!sourceFilesNames.Contains(destFile.Name))
-                    {
-                        File.Delete(destFile.FullName);
-                    }
-                }
-
-                List<string> tempExtPriority = [".xlsx"];
-                List<FileInfo> filteredSourceFiles = [];
-                List<FileInfo> othersSourceFiles = [];
-                foreach (FileInfo sourceFile in sourceFiles)
-                {
-                    if (tempExtPriority.Contains(sourceFile.Extension))
-                    {
-                        filteredSourceFiles.Add(sourceFile);
-                    }
-                    else
-                    {
-                        othersSourceFiles.Add(sourceFile);
-                    }
-                }
-                filteredSourceFiles.AddRange(othersSourceFiles);
-
-                // Copy files from source folder to destination folder
-                foreach (FileInfo sourceFile in filteredSourceFiles)
-                {
-                    string destFilePath = Path.Combine(destDir, sourceFile.Name);
-
-                    // Full save
-                    if (saveType == 1)
-                    {
+                        File.Delete(destFilePath + ".hash");
+                        File.Delete(destFilePath + ".encrypted");
                         sourceFile.CopyTo(destFilePath, true);
                     }
-                    // Differential save
-                    else if (saveType == 2)
-                    {
-                        if(File.Exists(destFilePath + ".encrypted"))
-                        {
-                            if(File.Exists(destFilePath + ".hash"))
-                            {
-                                string sourceFileHash = File.ReadAllText(destFilePath + ".hash");
-                                if (sourceFileHash != CalculateFileHash(sourceFile.FullName))
-                                {
-                                    File.Delete(destFilePath + ".hash");
-                                    File.Delete(destFilePath + ".encrypted");
-                                    sourceFile.CopyTo(destFilePath, true);
-                                }
-                            }
-                            else
-                            {
-                                File.Delete(destFilePath + ".encrypted");
-                            }
-                        }
-                        else
-                        {
-                            // Compare metadata (last write time) of source and destination files
-                            DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
-                            DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
-
-                            // If the metadata differs, update the destination file with the source file
-                            if (sourceLastWriteTime != destLastWriteTime)
-                            {
-                                sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
-                            }
-                        }
-                    }
-                    // If saveType is not full or differential, error
-                    else
-                    {
-                        return false;
-                    }
                 }
-
-                destDirInfo = new DirectoryInfo(destDir);
-                DirectoryInfo[] destSubDirs = destDirInfo.GetDirectories();
-                destFiles = destDirInfo.GetFiles();
-
-                // encryption
-                List<string> listFilesPath = [];
-                foreach (FileInfo file in destFiles)
+                else
                 {
-                    listFilesPath.Add(file.FullName);
+                    File.Delete(destFilePath + ".encrypted");
                 }
-                EncryptFiles(listFilesPath);
-
-                // Update subdirectories and their contents recursively
-                foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
-                {
-                    string destSubDirPath = Path.Combine(destDir, sourceSubDir.Name);
-                    Update(sourceSubDir.FullName, destSubDirPath, saveType);
-                }
-                return true;
             }
-            catch
+            // Management of others files
+            else
             {
-                // Handle the exception (you might want to log it or perform other actions)
-                return false; // Return false indicating error
+                // Compare metadata (last write time) of source and destination files
+                DateTime sourceLastWriteTime = sourceFile.LastWriteTime;
+                DateTime destLastWriteTime = File.GetLastWriteTime(destFilePath);
+
+                // If the metadata differs, update the destination file with the source file
+                if (sourceLastWriteTime != destLastWriteTime)
+                {
+                    sourceFile.CopyTo(destFilePath, true); // Overwrite existing file
+                }
             }
         }
 
-        private static List<string> ReadExtensions()
+        /// <summary>
+        /// Read the extensions to encrypt from the json configuration file and return the list of extensions.
+        /// </summary>
+        /// <returns>The list of extensions</returns>
+        private static List<string> ReadExtensionsForEncryptionFromJson()
         {
             string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
             List<string> listExt = [];
@@ -354,18 +280,21 @@ namespace EasySaveClasses.ViewModelNS
             return listExt;
         }
 
+        /// <summary>
+        /// Filters by extensions the files to be encrypted and creates an instance of CryptoSoft to encrypt the files.
+        /// </summary>
+        /// <param name="listFilesPath">Files that need to be filtered by extension before encryption</param>
         private static void EncryptFiles(List<string> listFilesPath)
         {
-            List<string> listExt = ReadExtensions();
+            List<string> listExt = ReadExtensionsForEncryptionFromJson();
 
             string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
             if (File.Exists(configPath))
             {
-                
-                List<string> filteredFiles = listFilesPath.Where(file => listExt.Any(ext => IsFileWithExtension(file, ext))).ToList();
+                List<string> filteredFilesToEncrypt = listFilesPath.Where(file => listExt.Any(ext => IsFileWithExtension(file, ext))).ToList();
                 string CryptoSoftPath = "../../../../../CryptoSoft/CryptoSoft/bin/Debug/net8.0";
                 string FilteredFilesPath = "";
-                foreach (string fileCrypt in filteredFiles)
+                foreach (string fileCrypt in filteredFilesToEncrypt)
                 {
                     FilteredFilesPath += fileCrypt + " ";
                     File.WriteAllText(fileCrypt + ".hash", CalculateFileHash(fileCrypt));
@@ -387,12 +316,23 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        /// <summary>
+        /// Checks if the file has the specified extension.
+        /// </summary>
+        /// <param name="filePath">Path to the file</param>
+        /// <param name="extension">Extension to check</param>
+        /// <returns>True if file has specified extension, false if not.</returns>
         private static bool IsFileWithExtension(string filePath, string extension)
         {
             return Path.GetExtension(filePath).Equals(extension, StringComparison.OrdinalIgnoreCase);
         }
 
-        static string CalculateFileHash(string filePath)
+        /// <summary>
+        /// Calculates the hash of the source file and writes it to a hidden file .hash, in order to read it and check during a differential backup if the source file has had changes since it was encrypted.
+        /// </summary>
+        /// <param name="filePath">Path to the file to calculate the hash.</param>
+        /// <returns>The hash of the source file</returns>
+        private static string CalculateFileHash(string filePath)
         {
             using var sha256 = System.Security.Cryptography.SHA256.Create();
             using var stream = File.OpenRead(filePath);
