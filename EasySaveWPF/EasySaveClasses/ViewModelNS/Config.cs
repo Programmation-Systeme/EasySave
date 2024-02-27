@@ -23,14 +23,16 @@ namespace EasySaveClasses.ViewModelNS
             ObservableCollection<string> listExt = [];
             if (File.Exists(configPath))
             {
+
+                string whichExtension = convertBool2String(IsPriority);
                 string jsonContent = File.ReadAllText(configPath);
 
                 dynamic jsonObject = JsonConvert.DeserializeObject(jsonContent);
-                dynamic firstConfig = jsonObject[Convert.ToInt32(IsPriority)];
+                dynamic firstConfig = jsonObject[whichExtension];
 
-                if (firstConfig.ExtensionCryptage != null)
+                if (firstConfig != null)
                 {
-                    foreach (var extension in firstConfig.ExtensionCryptage)
+                    foreach (var extension in firstConfig)
                     {
                         string extensionWithoutFirstChar = extension.ToString().Substring(1);
                         listExt.Add(extensionWithoutFirstChar);
@@ -40,21 +42,31 @@ namespace EasySaveClasses.ViewModelNS
             return listExt;
         }
 
+        public string convertBool2String(bool IsPriority)
+        {
+            if (IsPriority)
+            {
+                return "ExtensionPriority";
+            }
+            return "ExtensionCryptage";
+        }
+
         public void InsertExtensions(string newExt, bool IsPriority)
         {
             // Load the JSON
             string json = File.ReadAllText(configPath);
+            string whichExtension = convertBool2String(IsPriority);
 
             dynamic configuration = JsonConvert.DeserializeObject(json);
 
             // Verify if "ExtensionCryptage" exist in the Json
-            if (configuration[Convert.ToInt32(IsPriority)] == null)
+            if (configuration[whichExtension] == null)
             {
-                configuration[Convert.ToInt32(IsPriority)] = new JArray();
+                configuration[whichExtension] = new JArray();
             }
 
             // Add the new extension
-            configuration[Convert.ToInt32(IsPriority)].Add(newExt);
+            configuration[whichExtension].Add(newExt);
 
             string nouveauJson = JsonConvert.SerializeObject(configuration, Formatting.Indented);
 
@@ -64,6 +76,7 @@ namespace EasySaveClasses.ViewModelNS
 
         public void RemoveExtension(string itemToRemove, bool IsPriority)
         {
+            string whichExtension = convertBool2String(IsPriority);
             // Load the JSON file content
             string jsonString = File.ReadAllText(configPath);
 
@@ -71,7 +84,7 @@ namespace EasySaveClasses.ViewModelNS
             var jsonArray = JArray.Parse(jsonString);
 
             // Access the first object in the array and then the "ExtensionCryptage" property within that object
-            JArray extensionsArray = (JArray)jsonArray[Convert.ToInt32(IsPriority)];
+            JArray extensionsArray = (JArray)jsonArray[whichExtension];
 
             // Remove the specified item from the array
             var itemToRemoveToken = extensionsArray.FirstOrDefault(x => x.ToString() == itemToRemove);

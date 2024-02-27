@@ -31,7 +31,7 @@ namespace EasySaveClasses.ViewModelNS
 
         public EditSave()
         {
-            //_config = new Config();
+            _config = new Config();
         }
 
         /// <summary>

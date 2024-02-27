@@ -19,7 +19,6 @@
                 <ResourceDictionary Source="Theme/FlatCombobox.xaml" />
                 <ResourceDictionary Source="Theme/ModernButton.xaml" />
 
-
                 <ResourceDictionary Source="Theme/Styles/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -134,7 +133,7 @@
             <!-- Priority File Extensions Section: Allows managing priority file extensions -->
             <StackPanel Orientation="Vertical">
                 <!-- Dynamic list for priority file extensions -->
-                <ItemsControl Width="600" x:Name="ItemsControl2"  ItemsSource="{Binding ExtensionCrypt}">
+                <ItemsControl Width="600" x:Name="ItemsControl2"  ItemsSource="{Binding PriorityExtension}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>

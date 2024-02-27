@@ -6,7 +6,6 @@
     ],
     "ExtensionPriority": [
       ".txt",
-      ".pdf",
-      ".ll"
+      ".pdf"
     ]
   }
