@@ -58,10 +58,19 @@ namespace EasySaveWPF.ViewNS
 
         private void btnAddSave_Click(object sender, RoutedEventArgs e)
         {
-            _mainViewModel.AddSave_Click();
-            _mainViewModel.OpenFileSrc = null;
-            _mainViewModel.OpenFileDest = null;
-            saveTypeComboBox.SelectedIndex = 0;
+            if (_mainViewModel.OpenFileSrc == null || _mainViewModel.OpenFileDest == null)
+            {
+                ErrorCreation.Text = "Paths are missing to add a backup job.";
+            }
+            else
+            {
+                _mainViewModel.AddSave_Click();
+                _mainViewModel.OpenFileSrc = null;
+                _mainViewModel.OpenFileDest = null;
+                saveTypeComboBox.SelectedIndex = 0;
+                ErrorCreation.Text = "";
+
+            }
         }
     }
 }

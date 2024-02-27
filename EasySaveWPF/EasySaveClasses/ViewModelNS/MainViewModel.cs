@@ -136,6 +136,11 @@ namespace EasySaveClasses.ViewModelNS
             CurrentSave = [];
             Items = [];
             _model = new Model();
+            string cheminDossier = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/");
+            if (!Directory.Exists(cheminDossier))
+            {
+                Directory.CreateDirectory(cheminDossier);
+            }
             LogManager.Instance.LogStrategyType = "Json";
             List<string> saveList = _model.GetSavesNamesList();
             foreach (string save in saveList) { Items.Add(save); }
@@ -214,13 +219,13 @@ namespace EasySaveClasses.ViewModelNS
             Items.Add(save.Name);
         }
 
+
         /// <summary>
         /// Executes save operation for selected items.
         /// </summary>
         /// <param name="list">List of selected items.</param>
         public void ExecuteSave_Click(List<string> list)
         {
-
             // // Verify if the calculator is open
             if (IsMetierSoftwareRunning())
             {
@@ -229,13 +234,13 @@ namespace EasySaveClasses.ViewModelNS
 
             //List<Save> selectedSaves = [];
 
-            // Iterate through selected items
+            // Itère à travers les éléments sélectionnés
             foreach (string selectedItemName in list)
             {
                 // Use LINQ to find the corresponding item in your data model
                 Save? selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
-                // Check if the item is found (it might be null if no match is found)
+                // Vérifie si l'élément est trouvé (il peut être null si aucun match n'est trouvé)
                 if (selectedSave != null)
                 {
                     // If the source folder still exists, launch the backup
@@ -274,6 +279,7 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+
         /// <summary>
         /// Deletes selected save operations.
         /// </summary>
@@ -305,7 +311,7 @@ namespace EasySaveClasses.ViewModelNS
         private bool IsMetierSoftwareRunning()
         {
             // Name of the business software process
-            string metierSoftwareProcessName = "CalculatorApp";
+            string metierSoftwareProcessName = "Notepad.exe";
 
             // Check if the process is running
             Process[] processes = Process.GetProcessesByName(metierSoftwareProcessName);

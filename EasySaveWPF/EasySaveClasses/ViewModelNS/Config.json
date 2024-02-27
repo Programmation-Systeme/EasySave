@@ -1,5 +1,8 @@
 [
-    {
-      "ExtensionCryptage": [".txt", ".pdf"]
-    }
-  ]
+  {
+    "ExtensionCryptage": [
+      ".txt",
+      ".pdf"
+    ]
+  }
+]
