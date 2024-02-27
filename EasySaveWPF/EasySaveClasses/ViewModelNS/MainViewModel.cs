@@ -136,6 +136,11 @@ namespace EasySaveClasses.ViewModelNS
             CurrentSave = [];
             Items = [];
             _model = new Model();
+            string cheminDossier = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/");
+            if (!Directory.Exists(cheminDossier))
+            {
+                Directory.CreateDirectory(cheminDossier);
+            }
             LogManager.Instance.LogStrategyType = "Json";
             List<string> saveList = _model.GetSaveList();
             foreach (string save in saveList) { Items.Add(save); }
