@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Newtonsoft.Json;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -53,12 +54,17 @@ namespace EasySaveClasses.ViewModelNS
                     byte[] buffer = new byte[256];
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     string received = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    Console.WriteLine("Received from server: " + received);
+
+                    string[] outputs = JsonConvert.DeserializeObject<string[]>(received);
+                    foreach (string output in outputs)
+                    {
+                        Console.WriteLine("Received from server: " + output);
+                    }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Disconnected from server.");
+                Console.WriteLine("Disconnected from server." + e);
             }
         }
 

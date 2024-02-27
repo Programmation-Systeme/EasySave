@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Newtonsoft.Json;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -9,17 +10,15 @@ namespace EasySaveClasses.ViewModelNS
         static string options = "null";
         static string clientChoice = null;
         static ManualResetEvent dataReceived = new ManualResetEvent(false);
+        static string[] listSaves = { "1", "2", "3" };
 
         /// <summary>
         /// Launches the server, waits for a client connection, receives client's data, and sends a response.
         /// </summary>
-        /// <param name="args">Command-line arguments (not used in this method).</param>
         /// <param name="listSaves">Data to send to the client.</param>
         /// <returns>Message indicating the end of communication.</returns>
-        static void LaunchServer(string[] args, string listSaves)
+        static void LaunchServer( string listSavesXXX)
         {
-            Console.WriteLine("Server is running...");
-
             // Start the server
             StartServer((choice) =>
             {
@@ -80,13 +79,15 @@ namespace EasySaveClasses.ViewModelNS
 
             int i;
 
+            string output = JsonConvert.SerializeObject(listSaves);
+
             try
             {
                 // Send options to the client continuously
                 while (true)
                 {
                     // Send the option to the client
-                    byte[] msg = Encoding.ASCII.GetBytes(options);
+                    byte[] msg = Encoding.ASCII.GetBytes(output);
                     stream.Write(msg, 0, msg.Length);
                     Console.WriteLine($"Sent: {options}");
 
