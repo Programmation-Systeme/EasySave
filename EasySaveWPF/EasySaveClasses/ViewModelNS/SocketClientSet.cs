@@ -7,6 +7,9 @@ namespace EasySaveClasses.ViewModelNS
 {
     internal class SocketClientSet
     {
+        // Property to hold the received outputs
+        public static string[] Outputs { get; private set; }
+
         /// <summary>
         /// Launches the client, connects to the server, sends user choice, and receives response.
         /// </summary>
@@ -55,8 +58,8 @@ namespace EasySaveClasses.ViewModelNS
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     string received = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
-                    string[] outputs = JsonConvert.DeserializeObject<string[]>(received);
-                    foreach (string output in outputs)
+                    Outputs = JsonConvert.DeserializeObject<string[]>(received);
+                    foreach (string output in Outputs)
                     {
                         Console.WriteLine("Received from server: " + output);
                     }
