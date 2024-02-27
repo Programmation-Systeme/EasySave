@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace EasySaveClasses.ModelNS
 {
+    /// <summary>
+    /// Model component of the MVVM allowing the centralization of application data.
+    /// </summary>
     public class Model
     {
         private List<Save> _datas = [];
         internal List<Save> Datas { get => _datas; set => _datas = value; }
 
         /// <summary>
-        /// Entry point of the model
+        /// Initializes a new instance of the model, allowing centralization of application data.
         /// </summary>
         public Model()
         {

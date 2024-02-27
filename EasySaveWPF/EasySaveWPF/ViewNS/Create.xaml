@@ -98,14 +98,14 @@
         <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="1" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource SelectSourceFolderButton_txt}" />
             <Button Style="{StaticResource Flat_Button}" Margin="3" Name="btnOpenFile" Click="OpenFolderSource_Click" Content="..." />
-            <TextBlock Text="{Binding OpenFileSrc, Mode=TwoWay}" />
+            <TextBlock Text="{Binding OpenFolderSrc, Mode=TwoWay}" />
         </StackPanel>
         
         <!-- select parth target -->
         <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="2" VerticalAlignment="Center">
             <TextBox Text="{DynamicResource SelectDestinationFolderButton_txt}" BorderThickness="0"  />
             <Button Style="{StaticResource Flat_Button}" Margin="3" Name="btnOpenFile2" Click="OpenFolderDest_Click" Content="..." />
-            <TextBox Text="{Binding OpenFileDest, Mode=TwoWay}" BorderThickness="0"  />
+            <TextBox Text="{Binding OpenFolderDest, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel> 
 
         <StackPanel Margin="20" Grid.Row="3"  HorizontalAlignment="Left" Orientation="Horizontal">
