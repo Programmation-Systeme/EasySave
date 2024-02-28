@@ -27,7 +27,7 @@ namespace EasySaveWPF.ViewNS
             openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFolderDialog.ShowDialog() == true)
             {
-                _mainViewModel.OpenFileSrc = openFolderDialog.FolderName;
+                _mainViewModel.OpenFolderSrc = openFolderDialog.FolderName;
             }
         }
         private void OpenFolderDest_Click(object sender, RoutedEventArgs e)
@@ -37,7 +37,7 @@ namespace EasySaveWPF.ViewNS
             openFolderDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFolderDialog.ShowDialog() == true)
             {
-                _mainViewModel.OpenFileDest = openFolderDialog.FolderName;
+                _mainViewModel.OpenFolderDest = openFolderDialog.FolderName;
             }
         }
         private void SaveTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -58,10 +58,19 @@ namespace EasySaveWPF.ViewNS
 
         private void btnAddSave_Click(object sender, RoutedEventArgs e)
         {
-            _mainViewModel.AddSave_Click();
-            _mainViewModel.OpenFileSrc = null;
-            _mainViewModel.OpenFileDest = null;
-            saveTypeComboBox.SelectedIndex = 0;
+            if (_mainViewModel.OpenFolderSrc == null || _mainViewModel.OpenFolderDest == null)
+            {
+                ErrorCreation.Text = "Paths are missing to add a backup job.";
+            }
+            else
+            {
+                _mainViewModel.AddSave_Click();
+                _mainViewModel.OpenFolderSrc = null;
+                _mainViewModel.OpenFolderDest = null;
+                saveTypeComboBox.SelectedIndex = 0;
+                ErrorCreation.Text = "";
+
+            }
         }
     }
 }

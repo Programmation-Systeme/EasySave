@@ -2,10 +2,7 @@
   {
     "ExtensionCryptage": [
       ".txt",
-      ".pdf",
-      ".d",
-      ".a",
-      ".dfs"
+      ".pdf"
     ]
   }
 ]

@@ -10,7 +10,7 @@ using static EasySaveClasses.ViewModelNS.EditSave;
 namespace EasySaveClasses.ViewModelNS
 {
     /// <summary>
-    /// ViewModel for the main functionality of the application.
+    /// Component ViewModel of the MVVM, allows to manage the entire application and to make the link between back and front (binding with the UI for example).
     /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
@@ -21,6 +21,10 @@ namespace EasySaveClasses.ViewModelNS
         private readonly Dictionary<string, ManualResetEvent> threadsManualResetEvent = new Dictionary<string, ManualResetEvent>();
         private readonly Dictionary<string, CancellationTokenSource> threadsCancelEvent = new Dictionary<string, CancellationTokenSource>();
 
+        /// <summary>
+        /// Model object allowing the link with the application data.
+        /// </summary>
+        private readonly Model _model;
 
         static readonly Mutex mutex = new();
 
@@ -33,15 +37,14 @@ namespace EasySaveClasses.ViewModelNS
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private readonly Model _model;
-        private ObservableCollection<string> _items;
-        public ObservableCollection<string> Items
+        private ObservableCollection<string> _allSavesNames;
+        public ObservableCollection<string> AllSavesNames
         {
-            get { return _items; }
+            get { return _allSavesNames; }
             set
             {
-                _items = value;
-                OnPropertyChanged(nameof(Items));
+                _allSavesNames = value;
+                OnPropertyChanged(nameof(AllSavesNames));
             }
         }
 
@@ -72,6 +75,9 @@ namespace EasySaveClasses.ViewModelNS
         }
 
         private string _errorText;
+        /// <summary>
+        /// Getter/Setter of the error handling message displayed in the UI
+        /// </summary>
         public string ErrorText
         {
             get { return _errorText; }
@@ -83,6 +89,9 @@ namespace EasySaveClasses.ViewModelNS
         }
 
         private string _selectedItem;
+        /// <summary>
+        /// Getter/Setter of the backup selected in the UI
+        /// </summary>
         public string SelectedItem
         {
             get { return _selectedItem; }
@@ -93,25 +102,28 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private string _openFileSrc;
-        public string OpenFileSrc
+        private string _openFolderSrc;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string OpenFolderSrc
         {
-            get { return _openFileSrc; }
+            get { return _openFolderSrc; }
             set
             {
-                _openFileSrc = value;
-                OnPropertyChanged(nameof(OpenFileSrc));
+                _openFolderSrc = value;
+                OnPropertyChanged(nameof(OpenFolderSrc));
             }
         }
 
-        private string _openFileDest;
-        public string OpenFileDest
+        private string _openFolderDest;
+        public string OpenFolderDest
         {
-            get { return _openFileDest; }
+            get { return _openFolderDest; }
             set
             {
-                _openFileDest = value;
-                OnPropertyChanged(nameof(OpenFileDest));
+                _openFolderDest = value;
+                OnPropertyChanged(nameof(OpenFolderDest));
             }
         }
 
@@ -129,28 +141,30 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private ObservableCollection<string> _currentSave;
-        private string _currentSaveSelected;
-        public ObservableCollection<string> CurrentSave
+        private ObservableCollection<string> _currentRunningSaves;
+        /// <summary>
+        /// Collection of saves being run now.
+        /// </summary>
+        public ObservableCollection<string> CurrentRunningSaves
         {
-            get { return _currentSave; }
+            get { return _currentRunningSaves; }
             set
             {
-                _currentSave = value;
-                OnPropertyChanged(nameof(CurrentSave));
+                _currentRunningSaves = value;
+                OnPropertyChanged(nameof(CurrentRunningSaves));
             }
         }
 
-        public string CurrentSaveSelected
+        private string _currentRunningSaveSelected;
+        public string CurrentRunningSaveSelected
         {
-            get { return _currentSaveSelected; }
+            get { return _currentRunningSaveSelected; }
             set
             {
-                _currentSaveSelected = value;
-                OnPropertyChanged(nameof(CurrentSaveSelected));
+                _currentRunningSaveSelected = value;
+                OnPropertyChanged(nameof(CurrentRunningSaveSelected));
             }
         }
-
 
         /// <summary>
         /// Constructor initializes necessary properties and loads data.
@@ -159,17 +173,26 @@ namespace EasySaveClasses.ViewModelNS
         public MainViewModel()
         {
             SaveType = 1;
-            CurrentSave = [];
-            Items = [];
+            CurrentRunningSaves = [];
+            AllSavesNames = [];
             _model = new Model();
+            string cheminDossier = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/");
+            if (!Directory.Exists(cheminDossier))
+            {
+                Directory.CreateDirectory(cheminDossier);
+            }
             LogManager.Instance.LogStrategyType = "Json";
             List<string> saveList = _model.GetSaveList();
             foreach (string save in saveList) { Items.Add(save); }
 
-            _extensionCrypt = EditSave.ReadExtensions();
+            _extensionCrypt = EditSave.ReadExtensionsForEncryptionFromJson();
             _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged; // Abonnement initial
-            _priorityExtension = EditSave.ReadExtensions();
+            _priorityExtension = EditSave.ReadExtensionsForEncryptionFromJson();
             _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged; // Abonnement initial
+            
+            
+            List<string> saveList = _model.GetSavesNamesList();
+            foreach (string save in saveList) { AllSavesNames.Add(save); }
         }
         /// <summary>
         /// Handles changes to the ExtensionCrypt collection.
@@ -224,7 +247,6 @@ namespace EasySaveClasses.ViewModelNS
                     EditSave.RemoveExtension("." + oldItem.ToString());
                 }
             }
-            // You can also handle other action types here (Replace, Move, Reset) if necessary
         }
 
         /// <summary>
@@ -235,19 +257,18 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="time">The time for which to sleep the thread.</param>
         private void ExecuteWork(Save save, SynchronizationContext syncContext, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
         {
-
-            Stopwatch stopwatch = new Stopwatch();
-
+            Stopwatch stopwatch = new();
             stopwatch.Start();
-            ResultUpdate res = EditSave.Update(save.SourceFilePath, save.TargetFilePath, save.SaveType, manualEvent, cancelEvent);
+
+            ResultUpdate res = EditSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, manualEvent, cancelEvent);
             stopwatch.Stop();
             syncContext.Post(state =>
             {
                 if (res.Success)
                 {
                     save.State = "END";
-                    ErrorText = LogManager.Instance.AddLog(save.SourceFilePath, save.TargetFilePath, stopwatch.ElapsedMilliseconds);
-                    CurrentSave.Remove(save.Name);
+                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds);
+                    CurrentRunningSaves.Remove(save.Name);
                     save.Progression = res.Progression;
                     Save.Serialize(_model.Datas);
                 }
@@ -255,34 +276,46 @@ namespace EasySaveClasses.ViewModelNS
                 {
                     save.State = "ABORTED";
                     ErrorText = "ABORT SAVE";
-                    ErrorText = LogManager.Instance.AddLog(save.SourceFilePath, save.TargetFilePath, stopwatch.ElapsedMilliseconds);
-                    CurrentSave.Remove(save.Name);
+                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds);
+                    CurrentRunningSaves.Remove(save.Name);
                     save.Progression = res.Progression;
                     Save.Serialize(_model.Datas);
                 }
             }, null);
+
             threadsManualResetEvent.Remove(save.Name);
             threadsDictionary.Remove(save.Name);
             threadsCancelEvent.Remove(save.Name);
         }
 
+        /// <summary>
+        /// Cancel the specified save.
+        /// </summary>
+        /// <param name="saveName">The save to cancel</param>
         public void AbortSave(string saveName) 
         {
-            CancellationTokenSource cancelEvent;
-            Thread work;
-            threadsCancelEvent.TryGetValue(saveName, out cancelEvent);
+            threadsCancelEvent.TryGetValue(saveName, out CancellationTokenSource cancelEvent);
             cancelEvent.Cancel();      
         }
+
+        /// <summary>
+        /// Pause the specified save.
+        /// </summary>
+        /// <param name="saveName">The save to pause</param>
         public void PauseSave(string saveName) 
         {
             ManualResetEvent manualReset;
             threadsManualResetEvent.TryGetValue(saveName, out manualReset);
             manualReset.Reset();
         }
+
+        /// <summary>
+        /// Resume the specified save.
+        /// </summary>
+        /// <param name="saveName">The save to resume</param>
         public void ResumeSave(string saveName) 
         {
-            ManualResetEvent manualReset;
-            threadsManualResetEvent.TryGetValue(saveName, out manualReset);
+            threadsManualResetEvent.TryGetValue(saveName, out ManualResetEvent manualReset);
             manualReset.Set();
         }
         /// <summary>
@@ -291,12 +324,12 @@ namespace EasySaveClasses.ViewModelNS
         public void AddSave_Click()
         {
             string formattedDateTime = DateTime.Now.ToString("MM-dd-yyyy-h-mm-ss");
-            string targetPath = OpenFileDest + "\\" + Path.GetFileName(OpenFileSrc) + "-" + formattedDateTime;
+            string targetPath = OpenFolderDest + "\\" + Path.GetFileName(OpenFolderSrc) + "-" + formattedDateTime;
 
-            Save save = new(Path.GetFileName(targetPath), "NEW", OpenFileSrc, targetPath, SaveType);
+            Save save = new(Path.GetFileName(targetPath), "NEW", OpenFolderSrc, targetPath, SaveType);
             _model.Datas.Add(save);
             Save.Serialize(_model.Datas);
-            Items.Add(save.Name);
+            AllSavesNames.Add(save.Name);
         }
 
 
@@ -306,40 +339,57 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="list">List of selected items.</param>
         public void ExecuteSave_Click(List<string> list)
         {
-            // Vérifie si le logiciel métier est ouvert
-            if (!IsMetierSoftwareRunning())
+            // // Verify if the calculator is open
+            if (IsBusinessSoftwareRunning())
             {
                 return;
             }
 
-            List<ModelNS.Save> selectedSaves = new List<ModelNS.Save>();
-
-            // Itère à travers les éléments sélectionnés
+            // Iteration through all selected backups
             foreach (string selectedItemName in list)
             {
-                CurrentSave.Add(selectedItemName);
-                // Utilise LINQ pour trouver l'élément correspondant dans votre modèle de données
+                // Use LINQ to find the corresponding item in the data model
                 Save? selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
 
-                // Vérifie si l'élément est trouvé (il peut être null si aucun match n'est trouvé)
+                // Checks if the element is found (it can be null if no match is found)
                 if (selectedSave != null)
                 {
-                    selectedSave.State = "ACTIVATE";
-                    Save.Serialize(_model.Datas);
-                    ManualResetEvent manualEvent = new ManualResetEvent(true);
-                    CancellationTokenSource cancelEvent = new CancellationTokenSource();
-                    threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
-                    threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
+                    // If the source folder still exists, launch the backup
+                    if (Directory.Exists(selectedSave.SourceFolderPath))
+                    {
+                        CurrentRunningSaves.Add(selectedItemName);
+                        selectedSave.State = "ACTIVATE";
+                        Save.Serialize(_model.Datas);
+                        ManualResetEvent manualEvent = new(true);
+                        CancellationTokenSource cancelEvent = new CancellationTokenSource();
+                        threadsManualResetEvent.Add(selectedSave.Name, manualEvent);
+                        threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
 
-                    Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
+                        // Creation of a new thread for the current save
+                        Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
 
-                    threadsDictionary.Add(selectedSave.Name, newWork);
+                        string str = selectedSave.Name;
+                        if (IsBusinessSoftwareRunning())
+                        {
+                            PauseSave(str);
+                        }
 
-                    newWork.Start();
+                        threadsDictionary.Add(selectedSave.Name, newWork);
+                        newWork.Start();
+                    }
+                    // If the source folder no longer exists, delete the backup
+                    else
+                    {
+                        EditSave.Delete(selectedSave.TargetFolderPath);
+                        _model.Datas.Remove(selectedSave);
+                        Save.Serialize(_model.Datas);
+                        AllSavesNames.Remove(selectedSave.Name);
+                        // Display error on UI
+                        ErrorText = selectedSave.Name + " : Source path doesn't exist anymore (" + selectedSave.SourceFolderPath + ")";
+                    }
                 }
             }
         }
-
 
         /// <summary>
         /// Deletes selected save operations.
@@ -358,10 +408,10 @@ namespace EasySaveClasses.ViewModelNS
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
-                    EditSave.Delete(selectedSave.TargetFilePath);
+                    EditSave.Delete(selectedSave.TargetFolderPath);
                     _model.Datas.Remove(selectedSave);
                     Save.Serialize(_model.Datas);
-                    Items.Remove(selectedSave.Name);
+                    AllSavesNames.Remove(selectedSave.Name);
                 }
             }
         }
@@ -369,22 +419,22 @@ namespace EasySaveClasses.ViewModelNS
         /// <summary>
         /// Checks if the business software is running.
         /// </summary>
-        private bool IsMetierSoftwareRunning()
+        private bool IsBusinessSoftwareRunning()
         {
-            // Name of the business software process
-            string metierSoftwareProcessName = "Notepad.exe";
+            // Name of the business process
+            string businessSoftwareProcessName = "Notepad.exe";
 
             // Check if the process is running
-            Process[] processes = Process.GetProcessesByName(metierSoftwareProcessName);
+            Process[] processes = Process.GetProcessesByName(businessSoftwareProcessName);
             if (processes.Length > 0)
             {
                 ErrorText = "The business software is currently running. Please close it before launching the backup.";
-                return false;
+                return true;
             }
             else
             {
                 ErrorText = "Backup job launched successfully.";
-                return true;
+                return false;
             }
         }
 

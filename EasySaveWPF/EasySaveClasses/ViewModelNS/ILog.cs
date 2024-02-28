@@ -7,6 +7,7 @@
         public static long CalculateDirectorySize(DirectoryInfo directory)
         {
             long size = 0;
+
             FileInfo[] files = directory.GetFiles();
 
             foreach (FileInfo file in files)
@@ -22,6 +23,7 @@
             }
 
             return size;
+
         }
     }
     public class LogEntry

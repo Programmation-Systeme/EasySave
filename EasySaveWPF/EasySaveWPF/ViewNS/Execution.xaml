@@ -39,7 +39,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <ScrollViewer Grid.Row="1" Grid.Column="0">
-            <ListBox Foreground="Black"  x:Name="CurrentSave" SelectedItem="{Binding CurrentSaveSelected}" ItemsSource="{Binding CurrentSave}"/>
+            <ListBox Foreground="Black"  x:Name="CurrentSave" SelectedItem="{Binding CurrentRunningSaveSelected}" ItemsSource="{Binding CurrentRunningSaves}"/>
         </ScrollViewer>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Button 
