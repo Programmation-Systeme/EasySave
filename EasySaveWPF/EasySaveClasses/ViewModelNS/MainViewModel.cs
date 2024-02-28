@@ -142,7 +142,7 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private string _businessSoftware;
+        private string _businessSoftware = "CalculatorApp";
         public string BusinessSoftware
         {
             get { return _businessSoftware; }
@@ -435,10 +435,6 @@ namespace EasySaveClasses.ViewModelNS
         {
             // Name of the business process
             string businessSoftwareProcessName = _businessSoftware;
-            if (businessSoftwareProcessName == null)
-            {
-                businessSoftwareProcessName = "CalculatorApp";
-            }
 
             // Check if the process is running
             Process[] processes = Process.GetProcessesByName(businessSoftwareProcessName);
