@@ -10,15 +10,17 @@ namespace EasySaveClasses.ViewModelNS
         static string options = "null";
         static string clientChoice = null;
         static ManualResetEvent dataReceived = new ManualResetEvent(false);
-        public static string[] listSaves { get; set; }
+        public static string listSaves { get; set; }
 
     /// <summary>
     /// Launches the server, waits for a client connection, receives client's data, and sends a response.
     /// </summary>
     /// <param name="listSaves">Data to send to the client.</param>
     /// <returns>Message indicating the end of communication.</returns>
-    static void LaunchServer( string listSavesXXX)
+    public static void LaunchServer( string listSavesFromMain)
         {
+            listSaves = listSavesFromMain;
+
             // Start the server
             StartServer((choice) =>
             {

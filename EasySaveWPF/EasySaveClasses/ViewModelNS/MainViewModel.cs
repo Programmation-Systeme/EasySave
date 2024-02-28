@@ -368,6 +368,7 @@ namespace EasySaveClasses.ViewModelNS
 
                         // Creation of a new thread for the current save
                         Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
+                        Thread SocketServerThread = new(() => SocketServerCall(selectedSave));
 
                         string str = selectedSave.Name;
                         if (IsBusinessSoftwareRunning())
@@ -377,6 +378,8 @@ namespace EasySaveClasses.ViewModelNS
 
                         threadsDictionary.Add(selectedSave.Name, newWork);
                         newWork.Start();
+                        SocketServerThread.Start();
+
                     }
                     // If the source folder no longer exists, delete the backup
                     else
@@ -389,6 +392,15 @@ namespace EasySaveClasses.ViewModelNS
                         ErrorText = selectedSave.Name + " : Source path doesn't exist anymore (" + selectedSave.SourceFolderPath + ")";
                     }
                 }
+            }
+        }
+
+        private void SocketServerCall(Save save)
+        {
+            while (true)
+            {
+                // Send the socket with the saves
+                SocketSeverSet.LaunchServer(save.Name);
             }
         }
 

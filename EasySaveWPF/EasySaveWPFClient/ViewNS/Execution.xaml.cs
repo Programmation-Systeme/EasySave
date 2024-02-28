@@ -47,8 +47,20 @@ namespace EasySaveWPF.ViewNS
         {
             if (CurrentSave.SelectedItem != null)
             {
-                _mainViewModel.CurrentSave.Remove((string)CurrentSave.SelectedItem);
+                _mainViewModel.CurrentRunningSaves.Remove((string)CurrentSave.SelectedItem);
             }
+        }
+
+        private void SocketClient_DataReceived(object sender, string[] outputs)
+        {
+            // Update CurrentSave in MainViewModel with received data
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                foreach (var output in outputs)
+                {
+                    _mainViewModel.CurrentRunningSaves.Add(output);
+                }
+            });
         }
 
     }
