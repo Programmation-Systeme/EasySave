@@ -142,6 +142,17 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private string _businessSoftware;
+        public string BusinessSoftware
+        {
+            get { return _businessSoftware; }
+            set
+            {
+                _businessSoftware = value;
+                OnPropertyChanged(nameof(BusinessSoftware));
+            }
+        }
+
         private ObservableCollection<string> _currentRunningSaves;
         /// <summary>
         /// Collection of saves being run now.
@@ -423,7 +434,11 @@ namespace EasySaveClasses.ViewModelNS
         private bool IsBusinessSoftwareRunning()
         {
             // Name of the business process
-            string businessSoftwareProcessName = "Notepad.exe";
+            string businessSoftwareProcessName = _businessSoftware;
+            if (businessSoftwareProcessName == null)
+            {
+                businessSoftwareProcessName = "CalculatorApp";
+            }
 
             // Check if the process is running
             Process[] processes = Process.GetProcessesByName(businessSoftwareProcessName);
