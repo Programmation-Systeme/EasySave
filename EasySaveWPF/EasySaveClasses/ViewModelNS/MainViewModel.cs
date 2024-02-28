@@ -153,6 +153,17 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private long _maxSizeFile = 50000000;
+        public long MaxSizeFile
+        {
+            get { return _maxSizeFile; }
+            set
+            {
+                _maxSizeFile = value;
+                OnPropertyChanged(nameof(MaxSizeFile));
+            }
+        }
+
         private ObservableCollection<string> _currentRunningSaves;
         /// <summary>
         /// Collection of saves being run now.
