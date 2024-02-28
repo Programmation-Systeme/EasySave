@@ -1,9 +1,11 @@
 {
   "ExtensionCryptage": [
-    ".pdf"
+    ".pdf",
+    ".sos"
   ],
   "ExtensionPriority": [
     ".txt",
-    ".ds"
+    ".ds",
+    ".hihi"
   ]
 }
