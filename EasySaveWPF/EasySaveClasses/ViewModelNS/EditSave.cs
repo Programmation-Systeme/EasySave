@@ -275,13 +275,13 @@ namespace EasySaveClasses.ViewModelNS
         {
             ObservableCollection<string> observableCollection = Config.ReadExtensionsForEncryptionFromJson(false);
 
-            // Conversion de ObservableCollection<string> en List<string>
+            // Conversion of ObservableCollection<string> in List<string>
             List<string> listExt = new List<string>(observableCollection);
 
             string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
             if (File.Exists(configPath))
             {
-                List<string> filteredFilesToEncrypt = listFilesPath.Where(file => listExt.Any(ext => IsFileWithExtension(file, ext))).ToList();
+                List<string> filteredFilesToEncrypt = listFilesPath.Where(file => listExt.Any(ext => IsFileWithExtension(file, '.' + ext))).ToList();
                 string CryptoSoftPath = "../../../../../CryptoSoft/CryptoSoft/bin/Debug/net8.0";
                 string FilteredFilesPath = "";
                 foreach (string fileCrypt in filteredFilesToEncrypt)
