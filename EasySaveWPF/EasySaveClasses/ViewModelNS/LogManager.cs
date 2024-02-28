@@ -25,8 +25,6 @@
         {
             set
             {
-                string a = value.ToLower();   
-                Console.WriteLine($"Setting log strategy to: {value.ToLower()}");
                 switch (value.ToLower())
                 {
                     case "json":
@@ -41,9 +39,9 @@
             }
         }
 
-        public string AddLog(string sourcePath, string targetPath, float transferTime)
+        public string AddLog(string sourcePath, string targetPath, float transferTime, int encryptingTime)
         {
-            return logStrategy.AddLog(sourcePath, targetPath, transferTime);
+            return logStrategy.AddLog(sourcePath, targetPath, transferTime, encryptingTime);
         }
     }
 }

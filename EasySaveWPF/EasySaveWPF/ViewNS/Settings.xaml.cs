@@ -14,7 +14,6 @@ namespace EasySaveWPF.ViewNS
     {
         MainWindow _mainWindow;
         MainViewModel _mainViewModel;
-        ObservableCollection<string> items = new ObservableCollection<string>();
 
         public Settings(MainWindow mainWindow)
         {
@@ -22,17 +21,12 @@ namespace EasySaveWPF.ViewNS
             _mainWindow = mainWindow;
             _mainViewModel = _mainWindow.mainViewModel;
             DataContext = _mainViewModel;
-
-            ItemsControl.ItemsSource = items;
-            // Ajouter quelques éléments initiaux, si nécessaire
-            items.Add("Élément 1");
-            items.Add("Élément 2");
         }
         private void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             string item = button.DataContext as string;
-            items.Remove(item);
+            _mainViewModel.ExtensionCrypt.Remove(item);
         }
 
         private void ComboBox_LanguageChanged(object sender, SelectionChangedEventArgs e)
@@ -51,20 +45,27 @@ namespace EasySaveWPF.ViewNS
                 }
             }
         }
-        private void AddItem_Click(object sender, RoutedEventArgs e)
+        private void AddExtensionCrypt_Click(object sender, RoutedEventArgs e)
         {
-
-            string newItem = NewItemTextBox.Text;
+            string newItem = ExtensionCryptTextBox.Text;
             if (!string.IsNullOrWhiteSpace(newItem))
             {
-                AddNewItem();
-                NewItemTextBox.Text = ""; // Efface le TextBox après l'ajout
+                AddNewItem(ExtensionCryptTextBox.Text.Trim());
+                ExtensionCryptTextBox.Text = ""; // Efface le TextBox après l'ajout
+            }
+        }
+        private void PriorityExtension_Click(object sender, RoutedEventArgs e)
+        {
+            string newItem = PriorityExtensionTextBox.Text;
+            if (!string.IsNullOrWhiteSpace(newItem))
+            {
+                AddNewItem(PriorityExtensionTextBox.Text.Trim());
+                PriorityExtensionTextBox.Text = ""; // Efface le TextBox après l'ajout
             }
         }
 
-        private void AddNewItem()
+        private void AddNewItem(string newItem)
         {
-            string newItem = NewItemTextBox.Text.Trim();
             // Vérifie si 'newItem' est non vide, non nul et alphanumérique
             if (!string.IsNullOrWhiteSpace(newItem) && Regex.IsMatch(newItem, @"^[a-zA-Z0-9]+$"))
             {
@@ -79,11 +80,10 @@ namespace EasySaveWPF.ViewNS
                     default:
                         // Exécute le code suivant si 'newItem' n'est ni "hash" ni "encrypted"
                         // Vérifie si l'élément existe déjà dans la liste
-                        if (!items.Contains(newItem))
+                        if (!_mainViewModel.ExtensionCrypt.Contains(newItem))
                         {
                             // Ajoute 'newItem' à la liste si ce n'est pas un doublon
-                            items.Add(newItem);
-                            NewItemTextBox.Text = ""; // Efface le contenu de 'NewItemTextBox' après l'ajout
+                            _mainViewModel.ExtensionCrypt.Add(newItem);
                         }
                         else
                         {

@@ -37,7 +37,7 @@ namespace EasySaveWPF.ViewNS
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             List<string> list = new List<string>();
-            foreach(string element in ItemSelecteds.SelectedItems)
+            foreach (string element in ItemSelecteds.SelectedItems)
             { list.Add(element); }
             _mainViewModel.DeleteSave_Click(list);
         }
@@ -47,9 +47,8 @@ namespace EasySaveWPF.ViewNS
             List<string> list = new List<string>();
             foreach (string element in ItemSelecteds.SelectedItems)
             { list.Add(element); }
+
             _mainViewModel.ExecuteSave_Click(list);
-            
-            //Execution executionPage = new Execution(_mainWindow);
             _mainWindow.Frame.Navigate(_execution);
             _mainWindow.ExecRadioButton.IsChecked = true;
         }

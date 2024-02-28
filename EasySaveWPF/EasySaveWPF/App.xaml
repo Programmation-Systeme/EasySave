@@ -7,8 +7,13 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ViewNS/Theme/MenuButtonTheme.xaml" />
-                <ResourceDictionary Source="ViewNS/Theme/TextBoxTheme.xaml" />
+                <ResourceDictionary Source="ViewNS/Theme/FlatButton.xaml" />
+                <ResourceDictionary Source="ViewNS/Theme/FlatCombobox.xaml" />
                 <ResourceDictionary Source="ViewNS/Theme/ModernButton.xaml" />
+                <ResourceDictionary Source="ViewNS/Theme/SettingTextStyle.xaml" />
+
+
+                <ResourceDictionary Source="ViewNS/Theme/Styles/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -2,11 +2,12 @@
 {
     public interface ILog
     {
-        string AddLog(string sourcePath, string targetPath, float transferTime);
+        string AddLog(string sourcePath, string targetPath, float transferTime, int encryptingTime);
 
         public static long CalculateDirectorySize(DirectoryInfo directory)
         {
             long size = 0;
+
             FileInfo[] files = directory.GetFiles();
 
             foreach (FileInfo file in files)
@@ -22,6 +23,7 @@
             }
 
             return size;
+
         }
     }
     public class LogEntry
@@ -32,7 +34,7 @@
         public string TargetPath { get; set; }
         public float DirSize { get; set; }
         public float DirTransferTime { get; set; }
-        public int CryptingTime { get; set; }
+        public int EncryptingTime { get; set; }
 
     }
 }
