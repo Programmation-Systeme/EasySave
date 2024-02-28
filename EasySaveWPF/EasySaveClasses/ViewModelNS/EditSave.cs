@@ -258,7 +258,7 @@ namespace EasySaveClasses.ViewModelNS
         /// Read the extensions to encrypt from the json configuration file and return the list of extensions.
         /// </summary>
         /// <returns>The list of extensions</returns>
-        public static List<string> ReadExtensionsForEncryptionFromJson()
+        public static ObservableCollection<string> ReadExtensionsForEncryptionFromJson()
         {
             string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
             ObservableCollection<string> listExt = [];
@@ -279,29 +279,6 @@ namespace EasySaveClasses.ViewModelNS
                 }
             }
             return listExt;
-        }
-
-        private static void InsertExtensions(string newExt)
-        {
-            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
-            // Load the JSON
-            string json = File.ReadAllText(configPath);
-
-            dynamic configuration = JsonConvert.DeserializeObject(json);
-
-            // Verify if "ExtensionCryptage" exist in the Json
-            if (configuration[0]["ExtensionCryptage"] == null)
-            {
-                //configuration[0]["ExtensionCryptage"] = new JArray();
-            }
-
-            // Add the new extension
-            configuration[0]["ExtensionCryptage"].Add(newExt);
-
-            string nouveauJson = JsonConvert.SerializeObject(configuration, Formatting.Indented);
-
-            // Write the new Json file with the new changements
-            File.WriteAllText(configPath, nouveauJson);
         }
 
 	      /// <summary>

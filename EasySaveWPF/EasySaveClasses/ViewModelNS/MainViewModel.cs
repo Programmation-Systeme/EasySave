@@ -183,8 +183,9 @@ namespace EasySaveClasses.ViewModelNS
                 Directory.CreateDirectory(cheminDossier);
             }
             LogManager.Instance.LogStrategyType = "Json";
-            List<string> saveList = _model.GetSaveList();
-            foreach (string save in saveList) { Items.Add(save); }
+
+            List<string> saveList = _model.GetSavesNamesList();
+            foreach (string save in saveList) { AllSavesNames.Add(save); }
 
             _extensionCrypt = EditSave.ReadExtensionsForEncryptionFromJson();
             _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged; // Abonnement initial
@@ -192,8 +193,6 @@ namespace EasySaveClasses.ViewModelNS
             _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged; // Abonnement initial
             
             
-            List<string> saveList = _model.GetSavesNamesList();
-            foreach (string save in saveList) { AllSavesNames.Add(save); }
         }
         /// <summary>
         /// Handles changes to the ExtensionCrypt collection.
