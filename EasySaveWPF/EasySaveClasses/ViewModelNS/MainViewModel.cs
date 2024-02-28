@@ -355,7 +355,7 @@ namespace EasySaveClasses.ViewModelNS
         public void ResumeSave(string saveName) 
         {
             threadsManualResetEvent.TryGetValue(saveName, out ManualResetEvent manualReset);
-            manualReset.Set();
+            if (manualReset != null) { manualReset.Set(); }
         }
         /// <summary>
         /// Adds a new save operation.
