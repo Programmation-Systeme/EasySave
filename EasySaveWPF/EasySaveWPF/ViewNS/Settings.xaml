@@ -19,7 +19,6 @@
                 <ResourceDictionary Source="Theme/FlatCombobox.xaml" />
                 <ResourceDictionary Source="Theme/ModernButton.xaml" />
 
-
                 <ResourceDictionary Source="Theme/Styles/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -86,7 +85,7 @@
                                 <TextBlock Text="{Binding}" Grid.Column="0"/>
                                 <!-- Button to remove a file extension -->
                                 <Button Content="X" 
-                                        Click="DeleteItem_Click" 
+                                        Click="DeleteCrypt_Click" 
                                         Grid.Column="1" 
                                         HorizontalAlignment="Right"
                                         Style="{DynamicResource FlatButton}"/>
@@ -134,7 +133,7 @@
             <!-- Priority File Extensions Section: Allows managing priority file extensions -->
             <StackPanel Orientation="Vertical">
                 <!-- Dynamic list for priority file extensions -->
-                <ItemsControl Width="600" x:Name="ItemsControl2"  ItemsSource="{Binding ExtensionCrypt}">
+                <ItemsControl Width="600" x:Name="ItemsControl2"  ItemsSource="{Binding PriorityExtension}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -146,7 +145,7 @@
                                 <TextBlock Text="{Binding}" Grid.Column="0"/>
                                 <!-- Button to remove a priority file extension -->
                                 <Button Content="X" 
-                                        Click="DeleteItem_Click" 
+                                        Click="DeletePriority_Click" 
                                         Grid.Column="1" 
                                         HorizontalAlignment="Right"
                                         Style="{DynamicResource FlatButton}"/>

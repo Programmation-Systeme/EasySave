@@ -22,12 +22,24 @@ namespace EasySaveClasses.ViewModelNS
 
     public class EditSave
     {
+        private Config _config;
+        public Config Config
+        {
+            get { return _config; }
+            set { _config = value;}
+        }
+
+        public EditSave()
+        {
+            _config = new Config();
+        }
+
         /// <summary>
         /// Deletes a specified folder and returns true when deleted.
         /// </summary>
         /// <param name="destinationFolder">The path of the folder to be deleted.</param>
         /// <returns>True if folder has been deleted, false if not.</returns>
-        public static bool Delete(string destinationFolder)
+        public bool Delete(string destinationFolder)
         {
             try
             {
@@ -54,7 +66,7 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="manualEvent"></param>
         /// <param name="cancelEvent"></param>
         /// <returns></returns>
-        private static bool Wait_AbortThread(ManualResetEvent manualEvent, CancellationTokenSource cancelEvent) {
+        private bool Wait_AbortThread(ManualResetEvent manualEvent, CancellationTokenSource cancelEvent) {
 
             WaitHandle.WaitAny(new WaitHandle[] { manualEvent, cancelEvent.Token.WaitHandle });
             if (cancelEvent.Token.IsCancellationRequested)
@@ -72,7 +84,7 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         /// <param name="sourceDir">The source directory to copy from.</param>
         /// <param name="destDir">The destination directory to copy to.</param>
-        public static ResultUpdate Update(string sourceDir, string destDir, int saveType, ref int totalEncryptionTime, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
+        public ResultUpdate Update(string sourceDir, string destDir, int saveType, ref int totalEncryptionTime, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
         {
             try
             {
@@ -189,7 +201,7 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="sourceFiles"></param>
         /// <param name="extensionsPriority"></param>
         /// <returns>Returns the list of filtered files.</returns>
-        private static List<FileInfo> GetFilteredFilesByPriority(FileInfo[] sourceFiles, List<string> extensionsPriority)
+        private List<FileInfo> GetFilteredFilesByPriority(FileInfo[] sourceFiles, List<string> extensionsPriority)
         {
             List<FileInfo> filteredSourceFiles = [];
             List<FileInfo> othersSourceFiles = [];
@@ -218,7 +230,7 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         /// <param name="destFilePath">The path to which the file should be copied.</param>
         /// <param name="sourceFile">The file to be copied.</param>
-        private static void DifferentialSave(string destFilePath, FileInfo sourceFile)
+        private void DifferentialSave(string destFilePath, FileInfo sourceFile)
         {
             // Management of encrypted files
             if (File.Exists(destFilePath + ".encrypted"))
@@ -254,40 +266,14 @@ namespace EasySaveClasses.ViewModelNS
         }
 
 
-        /// <summary>
-        /// Read the extensions to encrypt from the json configuration file and return the list of extensions.
-        /// </summary>
-        /// <returns>The list of extensions</returns>
-        public static ObservableCollection<string> ReadExtensionsForEncryptionFromJson()
-        {
-            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
-            ObservableCollection<string> listExt = [];
-            if (File.Exists(configPath))
-            {
-                string jsonContent = File.ReadAllText(configPath);
-
-                dynamic jsonObject = JsonConvert.DeserializeObject(jsonContent);
-                dynamic firstConfig = jsonObject[0];
-
-                if (firstConfig.ExtensionCryptage != null)
-                {
-                    foreach (var extension in firstConfig.ExtensionCryptage)
-                    {
-                        string extensionWithoutFirstChar = extension.ToString().Substring(1);
-                        listExt.Add(extensionWithoutFirstChar);
-                    }
-                }
-            }
-            return listExt;
-        }
-
+      
 	      /// <summary>
         /// Filters by extensions the files to be encrypted and creates an instance of CryptoSoft to encrypt the files.
         /// </summary>
         /// <param name="listFilesPath">Files that need to be filtered by extension before encryption</param>
-        private static void EncryptFiles(List<string> listFilesPath, ref int totalEncryptionTime)
+        private void EncryptFiles(List<string> listFilesPath, ref int totalEncryptionTime)
         {
-            ObservableCollection<string> observableCollection = ReadExtensionsForEncryptionFromJson();
+            ObservableCollection<string> observableCollection = Config.ReadExtensionsForEncryptionFromJson(false);
 
             // Conversion of ObservableCollection<string> in List<string>
             List<string> listExt = new List<string>(observableCollection);
@@ -353,7 +339,7 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="filePath">Path to the file</param>
         /// <param name="extension">Extension to check</param>
         /// <returns>True if file has specified extension, false if not.</returns>
-        private static bool IsFileWithExtension(string filePath, string extension)
+        private bool IsFileWithExtension(string filePath, string extension)
         {
             return Path.GetExtension(filePath).Equals(extension, StringComparison.OrdinalIgnoreCase);
         }
@@ -363,7 +349,7 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         /// <param name="filePath">Path to the file to calculate the hash.</param>
         /// <returns>The hash of the source file</returns>
-        private static string CalculateFileHash(string filePath)
+        private string CalculateFileHash(string filePath)
         {
             using var sha256 = System.Security.Cryptography.SHA256.Create();
             using var stream = File.OpenRead(filePath);
@@ -371,54 +357,5 @@ namespace EasySaveClasses.ViewModelNS
             return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
         }
 
-        public static void InsertExtensions(string newExt)
-        {
-            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
-            // Load the JSON
-            string json = File.ReadAllText(configPath);
-
-            dynamic configuration = JsonConvert.DeserializeObject(json);
-
-            // Verify if "ExtensionCryptage" exist in the Json
-            if (configuration[0]["ExtensionCryptage"] == null)
-            {
-                configuration[0]["ExtensionCryptage"] = new JArray();
-            }
-
-            // Add the new extension
-            configuration[0]["ExtensionCryptage"].Add(newExt);
-
-            string nouveauJson = JsonConvert.SerializeObject(configuration, Formatting.Indented);
-
-            // Write the new Json file with the new changements
-            File.WriteAllText(configPath, nouveauJson);
-        }
-
-        public static void RemoveExtension(string itemToRemove)
-        {
-            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
-
-            // Load the JSON file content
-            string jsonString = File.ReadAllText(configPath);
-
-            // Parse the JSON content into a JArray since the root is an array
-            var jsonArray = JArray.Parse(jsonString);
-
-            // Access the first object in the array and then the "ExtensionCryptage" property within that object
-            JArray extensionsArray = (JArray)jsonArray[0]["ExtensionCryptage"];
-
-            // Remove the specified item from the array
-            var itemToRemoveToken = extensionsArray.FirstOrDefault(x => x.ToString() == itemToRemove);
-            if (itemToRemoveToken != null)
-            {
-                extensionsArray.Remove(itemToRemoveToken);
-            }
-
-            // Convert the modified JArray back to a string
-            string updatedJsonString = jsonArray.ToString();
-
-            // Write the updated JSON string back to the file, overwriting the original content
-            File.WriteAllText(configPath, updatedJsonString);
-        }
     }
 }

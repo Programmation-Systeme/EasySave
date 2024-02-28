@@ -22,11 +22,17 @@ namespace EasySaveWPF.ViewNS
             _mainViewModel = _mainWindow.mainViewModel;
             DataContext = _mainViewModel;
         }
-        private void DeleteItem_Click(object sender, RoutedEventArgs e)
+        private void DeleteCrypt_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             string item = button.DataContext as string;
             _mainViewModel.ExtensionCrypt.Remove(item);
+        }
+        private void DeletePriority_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            string item = button.DataContext as string;
+            _mainViewModel.PriorityExtension.Remove(item);
         }
 
         private void ComboBox_LanguageChanged(object sender, SelectionChangedEventArgs e)
@@ -50,7 +56,7 @@ namespace EasySaveWPF.ViewNS
             string newItem = ExtensionCryptTextBox.Text;
             if (!string.IsNullOrWhiteSpace(newItem))
             {
-                AddNewItem(ExtensionCryptTextBox.Text.Trim());
+                AddNewCrypt(ExtensionCryptTextBox.Text.Trim());
                 ExtensionCryptTextBox.Text = ""; // Efface le TextBox après l'ajout
             }
         }
@@ -59,12 +65,48 @@ namespace EasySaveWPF.ViewNS
             string newItem = PriorityExtensionTextBox.Text;
             if (!string.IsNullOrWhiteSpace(newItem))
             {
-                AddNewItem(PriorityExtensionTextBox.Text.Trim());
+                AddNewPriority(PriorityExtensionTextBox.Text.Trim());
                 PriorityExtensionTextBox.Text = ""; // Efface le TextBox après l'ajout
             }
         }
+        private void AddNewPriority(string newItem)
+        {
+            // Vérifie si 'newItem' est non vide, non nul et alphanumérique
+            if (!string.IsNullOrWhiteSpace(newItem) && Regex.IsMatch(newItem, @"^[a-zA-Z0-9]+$"))
+            {
+                switch (newItem.ToLower())
+                {
+                    case "hash":
+                    case "encrypted":
+                        // Affiche un message d'erreur si 'newItem' est "hash" ou "encrypted"
+                        MessageBox.Show("L'utilisation de '.hash' ou '.encrypted' est interdite.", "Erreur de saisie", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
 
-        private void AddNewItem(string newItem)
+                    default:
+                        // Exécute le code suivant si 'newItem' n'est ni "hash" ni "encrypted"
+                        // Vérifie si l'élément existe déjà dans la liste
+                        if (!_mainViewModel.PriorityExtension.Contains(newItem))
+                        {
+                            // Ajoute 'newItem' à la liste si ce n'est pas un doublon
+                            _mainViewModel.PriorityExtension.Add(newItem);
+                        }
+                        else
+                        {
+                            // Affiche un message d'erreur si l'élément existe déjà dans la liste
+                            MessageBox.Show("Cet élément existe déjà.", "Erreur de saisie", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                // Affiche un message d'erreur si 'newItem' ne respecte pas le format alphanumérique
+                MessageBox.Show("L'entrée doit contenir uniquement des lettres et des chiffres.", "Erreur de saisie", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+
+        private void AddNewCrypt(string newItem)
         {
             // Vérifie si 'newItem' est non vide, non nul et alphanumérique
             if (!string.IsNullOrWhiteSpace(newItem) && Regex.IsMatch(newItem, @"^[a-zA-Z0-9]+$"))
