@@ -1,22 +1,21 @@
 ﻿using Newtonsoft.Json;
-using System.Net;
+using System;
 using System.Net.Sockets;
 using System.Text;
 
 namespace EasySaveClasses.ViewModelNS
 {
-    internal class SocketClientSet
+    public class SocketClientSet
     {
-        // Property to hold the received outputs
-        public static string[] Outputs { get; private set; }
+        // Define an event for when data is received
+        public event EventHandler<string[]> DataReceived;
 
         /// <summary>
         /// Launches the client, connects to the server, sends user choice, and receives response.
         /// </summary>
         /// <param name="args">Command-line arguments (not used in this method).</param>
         /// <param name="choice">User's choice to send to the server.</param>
-        /// <returns>Response received from the server.</returns>
-        public static void LaunchClient(string[] args, string choice)
+        public void LaunchClient(string[] args, string choice)
         {
             Console.WriteLine("Client is running...");
 
@@ -47,7 +46,7 @@ namespace EasySaveClasses.ViewModelNS
             client.Close();
         }
 
-        static void ReceiveOptions(TcpClient client)
+        private void ReceiveOptions(TcpClient client)
         {
             try
             {
@@ -58,11 +57,8 @@ namespace EasySaveClasses.ViewModelNS
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     string received = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
-                    Outputs = JsonConvert.DeserializeObject<string[]>(received);
-                    foreach (string output in Outputs)
-                    {
-                        Console.WriteLine("Received from server: " + output);
-                    }
+                    string[] outputs = JsonConvert.DeserializeObject<string[]>(received);
+                    OnDataReceived(outputs); // Raise event when data is received
                 }
             }
             catch (Exception e)
@@ -71,7 +67,7 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        static void SendOption(TcpClient client, string option)
+        private void SendOption(TcpClient client, string option)
         {
             try
             {
@@ -85,6 +81,10 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-
+        // Helper method to raise the event
+        protected virtual void OnDataReceived(string[] outputs)
+        {
+            DataReceived?.Invoke(this, outputs);
+        }
     }
 }
