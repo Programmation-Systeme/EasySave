@@ -8,85 +8,23 @@
       Height="600" d:DesignWidth="920"
       Title="Create">
     <Page.Resources>
-        <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="#87CEFA"/>
-            <Setter Property="Foreground" Value="black"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Width="100" Height="40">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E0E0E0"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#BDBDBD"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="ComboBox" x:Key="Flat_ComboBox">
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="MinWidth" Value="60"/>
-            <Setter Property="UIElement.SnapsToDevicePixels" Value="True"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-            <Setter Property="TextElement.Foreground" Value="Black"/>
-            <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Background" Value="White" />
 
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="LightSkyBlue" />
-                </Trigger>
-            </Style.Triggers>
 
-        </Style>
-        <Style TargetType="Button" x:Key="Flat_Button">
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="LightGray"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="LightSkyBlue"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="LightGray"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/FlatButton.xaml" />
+                <ResourceDictionary Source="Theme/FlatCombobox.xaml" />
+                <ResourceDictionary Source="Theme/ModernButton.xaml" />
+                <ResourceDictionary Source="Theme/Styles/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
    
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="100"/>
@@ -97,21 +35,25 @@
         <!-- select parth source -->
         <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="1" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource SelectSourceFolderButton_txt}" />
-            <Button Style="{StaticResource Flat_Button}" Margin="3" Name="btnOpenFile" Click="OpenFolderSource_Click" Content="..." />
+
+            <Button Margin="3" Name="btnOpenFile" Click="OpenFolderSource_Click" Content="..." />
             <TextBlock Text="{Binding OpenFolderSrc, Mode=TwoWay}" />
+
         </StackPanel>
         
         <!-- select parth target -->
         <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="2" VerticalAlignment="Center">
             <TextBox Text="{DynamicResource SelectDestinationFolderButton_txt}" BorderThickness="0"  />
-            <Button Style="{StaticResource Flat_Button}" Margin="3" Name="btnOpenFile2" Click="OpenFolderDest_Click" Content="..." />
+
+            <Button Style="{StaticResource FlatButton}" Margin="3" Name="btnOpenFile2" Click="OpenFolderDest_Click" Content="..." />
             <TextBox Text="{Binding OpenFolderDest, Mode=TwoWay}" BorderThickness="0"  />
+
         </StackPanel> 
 
         <StackPanel Margin="20" Grid.Row="3"  HorizontalAlignment="Left" Orientation="Horizontal">
             <TextBlock Text="{DynamicResource SaveFormat_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
             <ComboBox x:Name="saveTypeComboBox"
-                Style="{StaticResource Flat_ComboBox}" 
+                Style="{StaticResource FlatComboBox}" 
                       Width="100" Grid.Row="3" 
                       VerticalAlignment="Center"
                       SelectedIndex="0"
