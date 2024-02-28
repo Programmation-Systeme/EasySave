@@ -22,6 +22,8 @@ namespace EasySaveClasses.ViewModelNS
 
     public class EditSave
     {
+        private MainViewModel _mainViewModel;
+
         private Config _config;
         public Config Config
         {
@@ -29,8 +31,9 @@ namespace EasySaveClasses.ViewModelNS
             set { _config = value;}
         }
 
-        public EditSave()
+        public EditSave(MainViewModel mainViewModel)
         {
+            _mainViewModel = mainViewModel;
             _config = new Config();
         }
 
@@ -84,7 +87,7 @@ namespace EasySaveClasses.ViewModelNS
         /// </summary>
         /// <param name="sourceDir">The source directory to copy from.</param>
         /// <param name="destDir">The destination directory to copy to.</param>
-        public ResultUpdate Update(string sourceDir, string destDir, int saveType, ref int totalEncryptionTime, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
+        public ResultUpdate Update(string sourceDir, string destDir, int saveType, ref int totalEncryptionTime,string currentSaveName, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
         {
             try
             {
@@ -111,6 +114,8 @@ namespace EasySaveClasses.ViewModelNS
                     sourceFilesNames.Add(sourceFile.Name);
                 }
 
+                List<string> othersCurrentRunningSaves = _mainViewModel.CurrentRunningSaves.Where(saveName => saveName != currentSaveName).ToList();
+
                 // Deleting every file that is not in source directory or for encrypted files, those whose source file hash has changed (cleaning of the destination file)
                 foreach (FileInfo destFile in destFiles)
                 {
@@ -133,17 +138,27 @@ namespace EasySaveClasses.ViewModelNS
                     }
                 }
 
-                //temp
-                List<string> tempExtPriority = [".xlsx"];
-                //
+                List<string> priorityExtensionsList = Config.ReadExtensionsFromJson(true).ToList();
 
                 // Get a list of all files from destination directory, filtered by the priorities of extensions defined in configuration.
-                List<FileInfo> filteredSourceFiles = GetFilteredFilesByPriority(sourceFiles, tempExtPriority);
+                List<FileInfo> filteredSourceFiles = GetFilteredFilesByPriority(sourceFiles, priorityExtensionsList);
 
                 // Copy files from source folder to destination folder
                 int i = 0;
                 foreach (FileInfo sourceFile in filteredSourceFiles)
                 {
+                    int fileSizeInKiloBytes = GetFileSizeInKiloBytes(sourceFile);
+                    // If file larger than maximum size, pause all other work in progress until the file transfer is complete
+                    if (fileSizeInKiloBytes > _mainViewModel.MaxFileSize)
+                    {
+                        // Sleep to avoid inter-thread blocking
+                        Thread.Sleep(500);
+                        // Pause all other saves to prioritize this one
+                        foreach (string otherCurrentRunningSave in othersCurrentRunningSaves)
+                        {
+                            _mainViewModel.PauseSave(otherCurrentRunningSave);
+                        }
+                    }
                     i++;
                     if (Wait_AbortThread(manualEvent, cancelEvent)) return new ResultUpdate { Success = false, Progression = i * 30/ sourceFiles.Length };
 
@@ -163,6 +178,16 @@ namespace EasySaveClasses.ViewModelNS
                     else
                     {
                         return new ResultUpdate { Success = false, Progression = i * 30 / sourceFiles.Length };  
+                    }
+
+                    // End of transfer, end of pause 
+                    if (fileSizeInKiloBytes > _mainViewModel.MaxFileSize)
+                    {
+                        //Resume of all other works running (end of prioritization)
+                        foreach (string otherCurrentRunningSave in othersCurrentRunningSaves)
+                        {
+                            _mainViewModel.ResumeSave(otherCurrentRunningSave);
+                        }
                     }
                 }
                 destDirInfo = new DirectoryInfo(destDir);
@@ -184,7 +209,7 @@ namespace EasySaveClasses.ViewModelNS
                     y++;
                     if (Wait_AbortThread(manualEvent, cancelEvent)) return new ResultUpdate { Success = false, Progression = 30 + y * 70 / sourceFiles.Length };
                     string destSubDirPath = Path.Combine(destDir, sourceSubDir.Name);
-                    Update(sourceSubDir.FullName, destSubDirPath, saveType, ref totalEncryptionTime, manualEvent, cancelEvent); ;
+                    Update(sourceSubDir.FullName, destSubDirPath, saveType, ref totalEncryptionTime, currentSaveName, manualEvent, cancelEvent); ;
                 }
                 return new ResultUpdate { Success = true, Progression = 100 };
             }
@@ -273,61 +298,60 @@ namespace EasySaveClasses.ViewModelNS
         /// <param name="listFilesPath">Files that need to be filtered by extension before encryption</param>
         private void EncryptFiles(List<string> listFilesPath, ref int totalEncryptionTime)
         {
-            ObservableCollection<string> observableCollection = Config.ReadExtensionsForEncryptionFromJson(false);
+            List<string> extensionsList = Config.ReadExtensionsFromJson(false).ToList();
 
-            // Conversion of ObservableCollection<string> in List<string>
-            List<string> listExt = new List<string>(observableCollection);
-
-            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../EasySaveClasses/ViewModelNS/Config.json");
-            if (File.Exists(configPath))
+            if (extensionsList.Count > 0)
             {
-                List<string> filteredFilesToEncrypt = listFilesPath.Where(file => listExt.Any(ext => IsFileWithExtension(file, '.' + ext))).ToList();
-                string CryptoSoftPath = "../../../../../CryptoSoft/CryptoSoft/bin/Debug/net8.0";
-                string FilteredFilesPath = "";
-                foreach (string fileCrypt in filteredFilesToEncrypt)
+                List<string> filteredFilesToEncrypt = listFilesPath.Where(file => extensionsList.Any(ext => IsFileWithExtension(file, '.' + ext))).ToList();
+                if(filteredFilesToEncrypt.Count > 0)
                 {
-                    // Build command arguments for CryptoSoft, consisting of file paths to encrypt.
-                    FilteredFilesPath += fileCrypt + " ";
-
-                    string hashFileName = fileCrypt + ".hash";
-                    // If the hash file already exists, temporary removal of the "hidden" attribute to allow writing to the file.
-                    if (File.Exists(hashFileName))
+                    string CryptoSoftPath = "../../../../../CryptoSoft/CryptoSoft/bin/Debug/net8.0";
+                    string FilteredFilesPath = "";
+                    foreach (string fileCrypt in filteredFilesToEncrypt)
                     {
-                        File.SetAttributes(hashFileName, File.GetAttributes(hashFileName) & ~FileAttributes.Hidden);
+                        // Build command arguments for CryptoSoft, consisting of file paths to encrypt.
+                        FilteredFilesPath += fileCrypt + " ";
+
+                        string hashFileName = fileCrypt + ".hash";
+                        // If the hash file already exists, temporary removal of the "hidden" attribute to allow writing to the file.
+                        if (File.Exists(hashFileName))
+                        {
+                            File.SetAttributes(hashFileName, File.GetAttributes(hashFileName) & ~FileAttributes.Hidden);
+                        }
+                        // Writing the hash from the source file to the hash file
+                        File.WriteAllText(hashFileName, CalculateFileHash(fileCrypt));
+                        // Added the "hidden" attribute to the file in order to hide it by default in the folder
+                        File.SetAttributes(hashFileName, File.GetAttributes(fileCrypt + ".hash") | FileAttributes.Hidden);
                     }
-                    // Writing the hash from the source file to the hash file
-                    File.WriteAllText(hashFileName, CalculateFileHash(fileCrypt));
-                    // Added the "hidden" attribute to the file in order to hide it by default in the folder
-                    File.SetAttributes(hashFileName, File.GetAttributes(fileCrypt + ".hash") | FileAttributes.Hidden);
-                }
 
-                string command = "/c cd " + CryptoSoftPath + " && CryptoSoft.exe -e " + FilteredFilesPath;
-                Process process = new();
-                process.StartInfo.FileName = "cmd.exe";
-                process.StartInfo.Arguments = command;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
-                // Read response from process
-                string output = process.StandardOutput.ReadToEnd();
-                string error = process.StandardError.ReadToEnd();
-                process.WaitForExit();
-                // The result returned by CryptoSoft is as follows: fileName:encryptionTime;fileName2:encryptionTime2;...
-                // It is therefore necessary to split the result (by ';') and treat each of the value pairs.
-                string[] everyFileEncryptionTime = output.Trim().Split(';');
-                foreach(string fileEncryptionTime in everyFileEncryptionTime)
-                {
-                    if(fileEncryptionTime != "")
+                    string command = "/c cd " + CryptoSoftPath + " && CryptoSoft.exe -e " + FilteredFilesPath;
+                    Process process = new();
+                    process.StartInfo.FileName = "cmd.exe";
+                    process.StartInfo.Arguments = command;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.StartInfo.CreateNoWindow = true;
+                    process.Start();
+                    // Read response from process
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+                    // The result returned by CryptoSoft is as follows: fileName:encryptionTime;fileName2:encryptionTime2;...
+                    // It is therefore necessary to split the result (by ';') and treat each of the value pairs.
+                    string[] everyFileEncryptionTime = output.Trim().Split(';');
+                    foreach (string fileEncryptionTime in everyFileEncryptionTime)
                     {
-                        // This string contains file name and file encryption time
-                        string[] splitedFileEncryptionTime = fileEncryptionTime.Split(':');
-                        // Get the encrypted file name
-                        string sourceFileName = splitedFileEncryptionTime[0];
-                        // Get the file encryption time
-                        int encryptionTime = int.Parse(splitedFileEncryptionTime[1]);
-                        // Adding the file encryption time to the total encryption time
-                        totalEncryptionTime += encryptionTime;
+                        if (fileEncryptionTime != "")
+                        {
+                            // This string contains file name and file encryption time
+                            string[] splitedFileEncryptionTime = fileEncryptionTime.Split(':');
+                            // Get the encrypted file name
+                            string sourceFileName = splitedFileEncryptionTime[0];
+                            // Get the file encryption time
+                            int encryptionTime = int.Parse(splitedFileEncryptionTime[1]);
+                            // Adding the file encryption time to the total encryption time
+                            totalEncryptionTime += encryptionTime;
+                        }
                     }
                 }
             }
@@ -357,5 +381,9 @@ namespace EasySaveClasses.ViewModelNS
             return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
         }
 
+        private int GetFileSizeInKiloBytes(FileInfo fileInfo)
+        {
+            return (int)(fileInfo.Length / 1024);
+        }
     }
 }

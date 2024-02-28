@@ -179,6 +179,18 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private int _maxFileSize;
+        public int MaxFileSize
+        {
+            get { return _maxFileSize; }
+            set
+            {
+                _maxFileSize = value;
+                OnPropertyChanged(nameof(MaxFileSize));
+                _editSave.Config.ChangeMaxFileSize(_maxFileSize);
+            }
+        }
+
         /// <summary>
         /// Constructor initializes necessary properties and loads data.
         /// </summary>
@@ -189,7 +201,7 @@ namespace EasySaveClasses.ViewModelNS
             CurrentRunningSaves = [];
             AllSavesNames = [];
             _model = new Model();
-            _editSave = new EditSave();
+            _editSave = new EditSave(this);
 
             string cheminDossier = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/");
             if (!Directory.Exists(cheminDossier))
@@ -203,10 +215,11 @@ namespace EasySaveClasses.ViewModelNS
 
             _editSave.Delete("ee");
 
-            _extensionCrypt = _editSave.Config.ReadExtensionsForEncryptionFromJson(false);
+            _extensionCrypt = _editSave.Config.ReadExtensionsFromJson(false);
             _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged; // Abonnement initial
-            _priorityExtension = _editSave.Config.ReadExtensionsForEncryptionFromJson(true);
+            _priorityExtension = _editSave.Config.ReadExtensionsFromJson(true);
             _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged; // Abonnement initial
+            _maxFileSize = _editSave.Config.GetMaxFileSizeFromJson();
         }
         /// <summary>
         /// Handles changes to the ExtensionCrypt collection.
@@ -274,7 +287,7 @@ namespace EasySaveClasses.ViewModelNS
             Stopwatch stopwatch = new();
             int totalEncryptionTime = 0;
             stopwatch.Start();
-            ResultUpdate res = _editSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, ref totalEncryptionTime, manualEvent, cancelEvent);
+            ResultUpdate res = _editSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, ref totalEncryptionTime, save.Name, manualEvent, cancelEvent);
             stopwatch.Stop();
             save.EncryptionTime = totalEncryptionTime;
             syncContext.Post(state =>
@@ -321,7 +334,7 @@ namespace EasySaveClasses.ViewModelNS
         {
             ManualResetEvent manualReset;
             threadsManualResetEvent.TryGetValue(saveName, out manualReset);
-            manualReset.Reset();
+            if (manualReset != null) { manualReset.Reset(); }
         }
 
         /// <summary>

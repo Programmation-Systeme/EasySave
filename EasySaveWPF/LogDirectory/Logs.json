@@ -412,5 +412,428 @@
     "DirSize": 104864180.0,
     "DirTransferTime": 10933.0,
     "EncryptingTime": 630
+  },
+  {
+    "Timestamp": "28/02/2024 14:18:20",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-9-21-41",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 13.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 14:18:21",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-18-15",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 1.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 14:18:59",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-18-15",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 902.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 14:22:43",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-9-21-41",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 16899.0,
+    "EncryptingTime": 757
+  },
+  {
+    "Timestamp": "28/02/2024 14:23:03",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-18-15",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 1384.0,
+    "EncryptingTime": 419
+  },
+  {
+    "Timestamp": "28/02/2024 14:27:47",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-26-30",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 52378.0,
+    "EncryptingTime": 896
+  },
+  {
+    "Timestamp": "28/02/2024 14:27:48",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-26-38",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 61833.0,
+    "EncryptingTime": 878
+  },
+  {
+    "Timestamp": "28/02/2024 14:35:29",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 53922.0,
+    "EncryptingTime": 721
+  },
+  {
+    "Timestamp": "28/02/2024 14:35:29",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 53947.0,
+    "EncryptingTime": 710
+  },
+  {
+    "Timestamp": "28/02/2024 14:35:48",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 1433.0,
+    "EncryptingTime": 477
+  },
+  {
+    "Timestamp": "28/02/2024 14:35:51",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 1334.0,
+    "EncryptingTime": 464
+  },
+  {
+    "Timestamp": "28/02/2024 14:41:43",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 41985.0,
+    "EncryptingTime": 897
+  },
+  {
+    "Timestamp": "28/02/2024 14:41:43",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 112652.0,
+    "EncryptingTime": 774
+  },
+  {
+    "Timestamp": "28/02/2024 14:43:24",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 3911.0,
+    "EncryptingTime": 1036
+  },
+  {
+    "Timestamp": "28/02/2024 14:43:24",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 6802.0,
+    "EncryptingTime": 1019
+  },
+  {
+    "Timestamp": "28/02/2024 14:44:23",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 18328.0,
+    "EncryptingTime": 628
+  },
+  {
+    "Timestamp": "28/02/2024 14:44:24",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 18326.0,
+    "EncryptingTime": 619
+  },
+  {
+    "Timestamp": "28/02/2024 14:45:42",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 3741.0,
+    "EncryptingTime": 586
+  },
+  {
+    "Timestamp": "28/02/2024 14:45:42",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 3756.0,
+    "EncryptingTime": 608
+  },
+  {
+    "Timestamp": "28/02/2024 14:50:28",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 3089.0,
+    "EncryptingTime": 633
+  },
+  {
+    "Timestamp": "28/02/2024 14:50:29",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 3119.0,
+    "EncryptingTime": 642
+  },
+  {
+    "Timestamp": "28/02/2024 14:51:50",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 2909.0,
+    "EncryptingTime": 509
+  },
+  {
+    "Timestamp": "28/02/2024 14:51:50",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 3030.0,
+    "EncryptingTime": 501
+  },
+  {
+    "Timestamp": "28/02/2024 14:51:58",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 2781.0,
+    "EncryptingTime": 459
+  },
+  {
+    "Timestamp": "28/02/2024 14:51:58",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 2778.0,
+    "EncryptingTime": 485
+  },
+  {
+    "Timestamp": "28/02/2024 14:52:05",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 3248.0,
+    "EncryptingTime": 484
+  },
+  {
+    "Timestamp": "28/02/2024 14:52:05",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 3291.0,
+    "EncryptingTime": 519
+  },
+  {
+    "Timestamp": "28/02/2024 19:35:19",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 2810.0,
+    "EncryptingTime": 545
+  },
+  {
+    "Timestamp": "28/02/2024 19:37:08",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 17468.0,
+    "EncryptingTime": 747
+  },
+  {
+    "Timestamp": "28/02/2024 19:37:52",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 2727.0,
+    "EncryptingTime": 522
+  },
+  {
+    "Timestamp": "28/02/2024 19:38:23",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-7-38-17",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 2384.0,
+    "EncryptingTime": 478
+  },
+  {
+    "Timestamp": "28/02/2024 19:39:45",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-7-38-17",
+    "DirSize": 104864180.0,
+    "DirTransferTime": 1438.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 19:40:15",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-7-38-17",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 1440.0,
+    "EncryptingTime": 1
+  },
+  {
+    "Timestamp": "28/02/2024 19:41:35",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 3499.0,
+    "EncryptingTime": 507
+  },
+  {
+    "Timestamp": "28/02/2024 19:41:35",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 3490.0,
+    "EncryptingTime": 500
+  },
+  {
+    "Timestamp": "28/02/2024 20:40:19",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-7-38-17",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 2394.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 20:40:21",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 4061.0,
+    "EncryptingTime": 730
+  },
+  {
+    "Timestamp": "28/02/2024 20:40:21",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 4115.0,
+    "EncryptingTime": 705
+  },
+  {
+    "Timestamp": "28/02/2024 20:48:10",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-7-38-17",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 27463.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 20:48:12",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 29752.0,
+    "EncryptingTime": 705
+  },
+  {
+    "Timestamp": "28/02/2024 20:48:12",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 29779.0,
+    "EncryptingTime": 707
+  },
+  {
+    "Timestamp": "28/02/2024 20:50:34",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-7-38-17",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 25180.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 20:50:35",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 26152.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 20:50:35",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 26384.0,
+    "EncryptingTime": 585
+  },
+  {
+    "Timestamp": "28/02/2024 20:51:42",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-7-38-17",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 1335.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 20:51:43",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-33",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 1531.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 20:51:44",
+    "Name": "test_easysave",
+    "SourcePath": "C:\\Users\\testa\\Documents\\test_easysave",
+    "TargetPath": "C:\\Users\\testa\\Documents\\test_easysave-02-28-2024-2-29-23",
+    "DirSize": 104864140.0,
+    "DirTransferTime": 2603.0,
+    "EncryptingTime": 539
   }
 ]
