@@ -8,7 +8,7 @@ public class XmlLog : ILog
 {
     private static readonly string XmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/Logs.xml");
 
-    public string AddLog(string sourcePath, string targetPath, float transferTime)
+    public string AddLog(string sourcePath, string targetPath, float transferTime, int encryptingTime)
     {
         var logEntry = new LogEntry
         {
@@ -16,8 +16,9 @@ public class XmlLog : ILog
             Name = Path.GetFileName(sourcePath),
             SourcePath = sourcePath,
             TargetPath = targetPath,
-            CryptingTime = new Random().Next(1, 9999),
-            DirSize = EasySaveClasses.ViewModelNS.ILog.CalculateDirectorySize(new DirectoryInfo(sourcePath)),
+            //EncryptingTime = new Random().Next(1, 9999),
+            EncryptingTime = encryptingTime,
+            DirSize = ILog.CalculateDirectorySize(new DirectoryInfo(sourcePath)),
             DirTransferTime = transferTime
         };
 

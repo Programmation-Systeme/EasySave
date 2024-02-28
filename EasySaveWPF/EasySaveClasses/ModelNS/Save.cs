@@ -24,6 +24,7 @@ namespace EasySaveClasses.ModelNS
         private int _nbFilesLeftToDo;
         private int _progression;
         private int _saveType;
+        private int _encryptingTime;
 
         // Properties for accessing the private fields of Save class
 
@@ -80,6 +81,12 @@ namespace EasySaveClasses.ModelNS
         /// </summary>
         [JsonProperty(nameof(SaveType))]
         public int SaveType { get => _saveType; set => _saveType = value; }
+
+        /// <summary>
+        /// Encrypting time of the save
+        /// </summary>
+        [JsonProperty(nameof(EncryptionTime))]
+        public int EncryptionTime { get => _encryptingTime; set => _encryptingTime = value; }
 
         /// <summary>
         /// Constructor required and used for deserialization
