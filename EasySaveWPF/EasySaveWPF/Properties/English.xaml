@@ -3,16 +3,19 @@
 
     <sys:String x:Key="AddButton_txt">Add</sys:String>
     <sys:String x:Key="CreateSave_txt">Create a backup</sys:String>
-    <sys:String x:Key="CreateMenuItem_txt">Create</sys:String>
+    <sys:String x:Key="CreateRadioButton_txt">Create</sys:String>
     <sys:String x:Key="DeleteButton_txt">Delete</sys:String>
     <sys:String x:Key="ExecuteButton_txt">Execute</sys:String>
-    <sys:String x:Key="HomeMenuItem_txt">Home</sys:String>
+    <sys:String x:Key="ExecuteRadioButton_txt">Execution</sys:String>
+    <sys:String x:Key="HomeRadioButton_txt">Home</sys:String>
     <sys:String x:Key="LanguageMenuItem_txt">Language</sys:String>
     <sys:String x:Key="LogFormatMenuItem_txt">Log format</sys:String>
     <sys:String x:Key="SelectDestinationFolderButton_txt">Select destination folder</sys:String>
-    <sys:String x:Key="SaveFormat_txt">Backup format</sys:String>
+    <sys:String x:Key="SaveFormat_txt">Save format</sys:String>
+    <sys:String x:Key="FullSave_txt">Full</sys:String>
+    <sys:String x:Key="DifferentialSave_txt">Differential</sys:String>
     <sys:String x:Key="SelectSourceFolderButton_txt">Select source folder</sys:String>
-    <sys:String x:Key="SettingsMenuItem_txt">Settings</sys:String>
+    <sys:String x:Key="SettingsRadioButton_txt">Settings</sys:String>
     <sys:String x:Key="MaxFileSize_txt">Maximum file size (in KB)</sys:String>
     <sys:String x:Key="FileInformation_txt">File settings</sys:String>
     <sys:String x:Key="BusinessSoftwareName_txt">Business software name</sys:String>

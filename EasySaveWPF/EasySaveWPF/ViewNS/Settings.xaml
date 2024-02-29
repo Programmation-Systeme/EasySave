@@ -11,7 +11,6 @@
 
     <!-- Resource Dictionary: Defines styles and resources used within the page -->
     <Page.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Theme/SettingTextStyle.xaml" />
@@ -22,9 +21,6 @@
                 <ResourceDictionary Source="Theme/Styles/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-            <!-- Style for ComboBox: Custom flat design style for ComboBox controls -->
-       
     </Page.Resources>
 
     <!-- Scrollable Content: Allows the content of the page to be scrollable -->
@@ -126,11 +122,10 @@
                     <TextBox Width="200" Text="{Binding MaxFileSize}"/>
             </StackPanel>
 
-            <!-- Duplicate "Information fichier" Section: This seems to be a repetition, possibly for a different setting -->
+            <!-- Priority File Extensions Section: Allows managing priority file extensions -->
             <TextBlock Text="{DynamicResource PriorizedExtensions_txt}" 
                        Style="{DynamicResource SettingTextStyle}"/>
 
-            <!-- Priority File Extensions Section: Allows managing priority file extensions -->
             <StackPanel Orientation="Vertical">
                 <!-- Dynamic list for priority file extensions -->
                 <ItemsControl Width="600" x:Name="ItemsControl2"  ItemsSource="{Binding PriorityExtension}">
