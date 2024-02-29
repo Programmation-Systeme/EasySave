@@ -302,12 +302,9 @@ namespace EasySaveClasses.ViewModelNS
         public void getSocketDataList()
         {
             // Send the socket with the saves
-            string[] AllSavesNames = new string[] { "default" };
-
-            foreach (string saveName in AllSavesNames)
-            {
-                _allSocketSavesNames.Add(SocketClientSet.ourDataList);
-            }
+            SocketClientSet.dataUpdatedEvent.WaitOne();
+            _allSocketSavesNames.Add(SocketClientSet.ourDataList);
+            
         }
 
         /// <summary>

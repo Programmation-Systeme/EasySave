@@ -10,6 +10,7 @@ namespace EasySaveClasses.ViewModelNS
     {
         public static event EventHandler<string> DataReceived;
         public static string ourDataList = "default";
+        public static ManualResetEvent dataUpdatedEvent = new ManualResetEvent(false);
 
 
         public static void LaunchClient(string choice)
@@ -26,7 +27,7 @@ namespace EasySaveClasses.ViewModelNS
                 while (true)
                 {
                     Console.WriteLine("Select an option (type 'exit' to quit): ");
-                    string selectedOption = "ok";
+                    string selectedOption = "populate";
 
                     if (selectedOption.ToLower() == "exit")
                     {
@@ -37,6 +38,8 @@ namespace EasySaveClasses.ViewModelNS
                 }
             }
         }
+
+        private static object verrou = new object();
 
         private static void ReceiveOptions(TcpClient client)
         {
@@ -50,9 +53,13 @@ namespace EasySaveClasses.ViewModelNS
                     string received = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
                     string outputs = JsonConvert.DeserializeObject<string>(received);
-                    ourDataList = outputs;
+                    lock (verrou)
+                    {
+                        OnDataReceived(outputs);
+                        dataUpdatedEvent.Set();
+                    }
 
-                    OnDataReceived(outputs);
+                    Thread.Sleep(500);
                 }
             }
             catch (Exception e)
@@ -77,6 +84,8 @@ namespace EasySaveClasses.ViewModelNS
 
         public static void OnDataReceived(string outputs)
         {
+            ourDataList = outputs;
+
             if (outputs != null)
             {
                 DataReceived?.Invoke(null, outputs);
