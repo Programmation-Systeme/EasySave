@@ -5,9 +5,7 @@ using System.Windows.Input;
 using System.Diagnostics;
 using System.Security.AccessControl;
 using static System.Net.Mime.MediaTypeNames;
-using static EasySaveClasses.ViewModelNS.EditSave;
 using System.Formats.Asn1;
-using System.Collections.Generic;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -49,32 +47,8 @@ namespace EasySaveClasses.ViewModelNS
                 OnPropertyChanged(nameof(AllSavesNames));
             }
         }
-
-        private ObservableCollection<string> _priorityExtension;
-        public ObservableCollection<string> PriorityExtension
-        {
-            get { return _priorityExtension; }
-            set
-            {
-                _priorityExtension = value;
-                OnPropertyChanged(nameof(PriorityExtension));
-                if (_priorityExtension != null)
-                    _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged;
-            }
-        }
-
         private ObservableCollection<string> _extensionCrypt;
-        public ObservableCollection<string> ExtensionCrypt
-        {
-            get { return _extensionCrypt; }
-            set
-            {
-                _extensionCrypt = value;
-                OnPropertyChanged(nameof(ExtensionCrypt));
-                if (_extensionCrypt != null)
-                    _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged;
-            }
-        }
+
 
         private string _errorText;
         /// <summary>
@@ -183,111 +157,9 @@ namespace EasySaveClasses.ViewModelNS
             {
                 Directory.CreateDirectory(cheminDossier);
             }
-            LogManager.Instance.LogStrategyType = "Json";
 
             List<string> saveList = _model.GetSavesNamesList();
-            foreach (string save in saveList) { AllSavesNames.Add(save); }
-
-            _extensionCrypt = EditSave.ReadExtensionsForEncryptionFromJson();
-            _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged; // Abonnement initial
-            _priorityExtension = EditSave.ReadExtensionsForEncryptionFromJson();
-            _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged; // Abonnement initial
-            
-            
-        }
-        /// <summary>
-        /// Handles changes to the ExtensionCrypt collection.
-        /// This method is automatically called when the ExtensionCrypt collection changes.
-        /// </summary>
-        /// <param name="sender">The object that triggered the event (in this case, the ExtensionCrypt collection).</param>
-        /// <param name="e">Details about the modification to the collection.</param>
-        private void ExtensionCrypt_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            // Check if an item was added to the collection
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                // Perform an action for each new item added
-                foreach (var newItem in e.NewItems)
-                {
-                    // Add the extension (you may need to adjust this line to suit your needs)
-                    EditSave.InsertExtensions("." + newItem.ToString());
-                }
-            }
-            // Check if an item was removed from the collection
-            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                // Perform an action for each removed item
-                foreach (var oldItem in e.OldItems)
-                {
-                    // Remove the extension or perform another action
-                    EditSave.RemoveExtension("." + oldItem.ToString());
-                }
-            }
-            // You can also handle other action types here (Replace, Move, Reset) if necessary
-        }
-
-        private void PriorityExtension_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            // Check if an item was added to the collection
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                // Perform an action for each new item added
-                foreach (var newItem in e.NewItems)
-                {
-                    // Add the extension (you may need to adjust this line to suit your needs)
-                    EditSave.InsertExtensions("." + newItem.ToString());
-                }
-            }
-            // Check if an item was removed from the collection
-            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                // Perform an action for each removed item
-                foreach (var oldItem in e.OldItems)
-                {
-                    // Remove the extension or perform another action
-                    EditSave.RemoveExtension("." + oldItem.ToString());
-                }
-            }
-        }
-
-        /// <summary>
-        /// Executes the work of saving a file.
-        /// </summary>
-        /// <param name="save">The save object containing details of the save operation.</param>
-        /// <param name="syncContext">The synchronization context for UI updates.</param>
-        /// <param name="time">The time for which to sleep the thread.</param>
-        private void ExecuteWork(Save save, SynchronizationContext syncContext, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
-        {
-            Stopwatch stopwatch = new();
-            int totalEncryptionTime = 0;
-            stopwatch.Start();
-            ResultUpdate res = EditSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, ref totalEncryptionTime, manualEvent, cancelEvent);
-            stopwatch.Stop();
-            save.EncryptionTime = totalEncryptionTime;
-            syncContext.Post(state =>
-            {
-                if (res.Success)
-                {
-                    save.State = "END";
-                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds, save.EncryptionTime);
-                    CurrentRunningSaves.Remove(save.Name);
-                    save.Progression = res.Progression;
-                    Save.Serialize(_model.Datas);
-                }
-                else
-                {
-                    save.State = "ABORTED";
-                    ErrorText = "ABORT SAVE";
-                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds, save.EncryptionTime);
-                    CurrentRunningSaves.Remove(save.Name);
-                    save.Progression = res.Progression;
-                    Save.Serialize(_model.Datas);
-                }
-            }, null);
-
-            threadsManualResetEvent.Remove(save.Name);
-            threadsDictionary.Remove(save.Name);
-            threadsCancelEvent.Remove(save.Name);
+            foreach (string save in saveList) { AllSavesNames.Add(save); }            
         }
 
         /// <summary>
@@ -336,32 +208,6 @@ namespace EasySaveClasses.ViewModelNS
 
 
         /// <summary>
-        /// Executes corresponding threads.
-        /// </summary>
-        /// <param name="list">List of selected items.</param>
-        public void SendSaveToClient(List<string> list)
-        {
-            foreach (string selectedItemName in list)
-            {
-                Save? selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
-                if (selectedSave != null)
-                {
-                    selectedSave.State = "ACTIVATE";
-                    Thread SocketServerThread = new(() => SocketServerCall(selectedSave));
-                    SocketServerThread.Start();
-                }
-            }
-        }
-        private void SocketServerCall(Save save)
-        {
-            while (true)
-            {
-                // Send the socket with the saves
-                SocketSeverSet.LaunchServer(save.Name);
-            }
-        }
-
-        /// <summary>
         /// Executes save operation for selected items.
         /// </summary>
         /// <param name="list">List of selected items.</param>
@@ -394,8 +240,8 @@ namespace EasySaveClasses.ViewModelNS
                         threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
 
                         // Creation of a new thread for the current save
-                        Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
-                        //Thread SocketServerThread = new(() => SocketServerCall(selectedSave));
+                        Thread SocketServerThread = new(() => SocketClientCall(selectedSave));
+                        SocketServerThread.Start();
 
                         string str = selectedSave.Name;
                         if (IsBusinessSoftwareRunning())
@@ -403,15 +249,11 @@ namespace EasySaveClasses.ViewModelNS
                             PauseSave(str);
                         }
 
-                        threadsDictionary.Add(selectedSave.Name, newWork);
-                        newWork.Start();
-                        //SocketServerThread.Start();
 
                     }
                     // If the source folder no longer exists, delete the backup
                     else
                     {
-                        EditSave.Delete(selectedSave.TargetFolderPath);
                         _model.Datas.Remove(selectedSave);
                         Save.Serialize(_model.Datas);
                         AllSavesNames.Remove(selectedSave.Name);
@@ -419,6 +261,21 @@ namespace EasySaveClasses.ViewModelNS
                         ErrorText = selectedSave.Name + " : Source path doesn't exist anymore (" + selectedSave.SourceFolderPath + ")";
                     }
                 }
+            }
+        }
+
+        public void LaunchSocketClient()
+        {
+            Thread SocketServerThread = new(() => SocketClientCall(selectedSave));
+
+        }
+
+        private void SocketClientCall(Save save)
+        {
+            while (true)
+            {
+                // Send the socket with the saves
+                SocketClientSet.LaunchClient(save.Name);
             }
         }
 
@@ -439,7 +296,6 @@ namespace EasySaveClasses.ViewModelNS
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
-                    EditSave.Delete(selectedSave.TargetFolderPath);
                     _model.Datas.Remove(selectedSave);
                     Save.Serialize(_model.Datas);
                     AllSavesNames.Remove(selectedSave.Name);

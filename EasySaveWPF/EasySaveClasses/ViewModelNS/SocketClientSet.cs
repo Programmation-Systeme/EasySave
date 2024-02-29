@@ -8,7 +8,7 @@ namespace EasySaveClasses.ViewModelNS
     public class SocketClientSet
     {
         // Define an event for when data is received
-        public event EventHandler<string[]> DataReceived;
+        public event EventHandler<string> DataReceived;
 
         /// <summary>
         /// Launches the client, connects to the server, sends user choice, and receives response.
@@ -57,7 +57,7 @@ namespace EasySaveClasses.ViewModelNS
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     string received = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
-                    string[] outputs = JsonConvert.DeserializeObject<string[]>(received);
+                    string outputs = JsonConvert.DeserializeObject<string>(received);
                     OnDataReceived(outputs); // Raise event when data is received
                 }
             }
@@ -82,9 +82,12 @@ namespace EasySaveClasses.ViewModelNS
         }
 
         // Helper method to raise the event
-        protected virtual void OnDataReceived(string[] outputs)
+        protected virtual void OnDataReceived(string outputs)
         {
-            DataReceived?.Invoke(this, outputs);
+            if (outputs != null)
+            {
+                DataReceived?.Invoke(this, outputs);
+            }
         }
     }
 }

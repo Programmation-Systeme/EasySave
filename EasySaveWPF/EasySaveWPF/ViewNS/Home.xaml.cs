@@ -48,6 +48,7 @@ namespace EasySaveWPF.ViewNS
             foreach (string element in ItemSelecteds.SelectedItems)
             { list.Add(element); }
 
+            _mainViewModel.SendSaveToClient(list);
             _mainViewModel.ExecuteSave_Click(list);
             _mainWindow.Frame.Navigate(_execution);
             _mainWindow.ExecRadioButton.IsChecked = true;
