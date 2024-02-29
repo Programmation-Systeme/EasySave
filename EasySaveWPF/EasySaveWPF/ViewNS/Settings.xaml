@@ -11,7 +11,6 @@
 
     <!-- Resource Dictionary: Defines styles and resources used within the page -->
     <Page.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Theme/SettingTextStyle.xaml" />
@@ -19,13 +18,9 @@
                 <ResourceDictionary Source="Theme/FlatCombobox.xaml" />
                 <ResourceDictionary Source="Theme/ModernButton.xaml" />
 
-
                 <ResourceDictionary Source="Theme/Styles/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-            <!-- Style for ComboBox: Custom flat design style for ComboBox controls -->
-       
     </Page.Resources>
 
     <!-- Scrollable Content: Allows the content of the page to be scrollable -->
@@ -34,7 +29,7 @@
             <!-- Vertical StackPanel for organizing child elements vertically -->
 
             <!-- Settings Title -->
-            <TextBlock Text="{DynamicResource SettingsMenuItem_txt}"
+            <Label Content="{DynamicResource SettingsMenuItem_txt}"
                        Foreground="#87CEFA" 
                        FontSize="28" 
                        HorizontalAlignment="Left" 
@@ -60,7 +55,7 @@
             <!-- Log Format ComboBox: Allows user to select the format of the log files -->
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
                 <TextBlock Text="{DynamicResource LogFormatMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-                <ComboBox SelectionChanged="ComboBox_LogFormatChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
+                <ComboBox SelectionChanged="ComboBox_LogFormatChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center">
 
                     <ComboBoxItem Content="Json"/>
                     <ComboBoxItem Content="XML"/>
@@ -68,7 +63,7 @@
             </StackPanel>
 
             <!-- File Extensions Title: Section for managing file extensions -->
-        <TextBlock Text="File Extensions" 
+        <TextBlock Text="{DynamicResource EncryptedExtensions_txt}" 
                     Style="{DynamicResource SettingTextStyle}"/>
 
             <!-- File Extensions Management Section: Lists currently managed extensions and allows for addition -->
@@ -86,7 +81,7 @@
                                 <TextBlock Text="{Binding}" Grid.Column="0"/>
                                 <!-- Button to remove a file extension -->
                                 <Button Content="X" 
-                                        Click="DeleteItem_Click" 
+                                        Click="DeleteCrypt_Click" 
                                         Grid.Column="1" 
                                         HorizontalAlignment="Right"
                                         Style="{DynamicResource FlatButton}"/>
@@ -106,35 +101,34 @@
             </StackPanel>
 
             <!-- Business Software Title: Section for specifying business-related software -->
-            <TextBlock Text="Logiciel metier" 
+            <TextBlock Text="{DynamicResource BusinessSoftware_txt}" 
                        Style="{DynamicResource SettingTextStyle}"/>
 
             <!-- Business Software Input Section: Allows for the specification of business software name -->
             <StackPanel Margin="0,10,0,0" Width="600" Orientation="Horizontal">
-                <TextBlock Text="Nom du logiciel metier"  Width="300"/>
+                <TextBlock Text="{DynamicResource BusinessSoftwareName_txt}"  Width="300"/>
                 <!-- Input for the name of the business software -->
-                <TextBox  Width="300"/>
+                <TextBox  Width="200" Text="{Binding BusinessSoftware}"/>
             </StackPanel>
 
             <!-- File Information Title: Section for specifying file-related settings -->
-            <TextBlock Text="Information fichier" 
+            <TextBlock Text="{DynamicResource FileInformation_txt}" 
                        Style="{DynamicResource SettingTextStyle}"/>
 
             <!-- Maximum File Size Input Section: Allows for specifying the maximum file size -->
             <StackPanel Margin="0,10,0,0" Width="600" Orientation="Horizontal">
-                <TextBlock Text="Taille fichier max"  Width="300"/>
+                <TextBlock Text="{DynamicResource MaxFileSize_txt}"  Width="300"/>
                 <!-- Input for maximum file size -->
-                <TextBox Width="300"/>
+                    <TextBox Width="200" Text="{Binding MaxFileSize}"/>
             </StackPanel>
 
-            <!-- Duplicate "Information fichier" Section: This seems to be a repetition, possibly for a different setting -->
-            <TextBlock Text="Information fichier" 
+            <!-- Priority File Extensions Section: Allows managing priority file extensions -->
+            <TextBlock Text="{DynamicResource PriorizedExtensions_txt}" 
                        Style="{DynamicResource SettingTextStyle}"/>
 
-            <!-- Priority File Extensions Section: Allows managing priority file extensions -->
             <StackPanel Orientation="Vertical">
                 <!-- Dynamic list for priority file extensions -->
-                <ItemsControl Width="600" x:Name="ItemsControl2"  ItemsSource="{Binding ExtensionCrypt}">
+                <ItemsControl Width="600" x:Name="ItemsControl2"  ItemsSource="{Binding PriorityExtension}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -146,7 +140,7 @@
                                 <TextBlock Text="{Binding}" Grid.Column="0"/>
                                 <!-- Button to remove a priority file extension -->
                                 <Button Content="X" 
-                                        Click="DeleteItem_Click" 
+                                        Click="DeletePriority_Click" 
                                         Grid.Column="1" 
                                         HorizontalAlignment="Right"
                                         Style="{DynamicResource FlatButton}"/>

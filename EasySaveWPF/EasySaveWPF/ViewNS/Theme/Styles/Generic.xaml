@@ -15,8 +15,8 @@
         <ResourceDictionary Source="RadioButton.xaml" />
         <ResourceDictionary Source="ScrollViewer.xaml" />
         <ResourceDictionary Source="TabControl.xaml" />
-        <ResourceDictionary Source="TextBlock.xaml" />
-        <ResourceDictionary Source="TextBox.xaml" />
+        <!-- <ResourceDictionary Source="TextBlock.xaml" /> -->
+        <!--<ResourceDictionary Source="TextBox.xaml" /> -->
         <ResourceDictionary Source="ToggleButton.xaml" />
         <ResourceDictionary Source="TreeView.xaml" />
         <ResourceDictionary Source="GroupBox.xaml" />

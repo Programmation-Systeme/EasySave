@@ -27,6 +27,7 @@ namespace EasySaveClasses.ViewModelNS
         /// Model object allowing the link with the application data.
         /// </summary>
         private readonly Model _model;
+        private readonly EditSave _editSave;
 
         static readonly Mutex mutex = new();
 
@@ -143,6 +144,28 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private string _businessSoftware = "CalculatorApp";
+        public string BusinessSoftware
+        {
+            get { return _businessSoftware; }
+            set
+            {
+                _businessSoftware = value;
+                OnPropertyChanged(nameof(BusinessSoftware));
+            }
+        }
+
+        private long _maxSizeFile = 50000000;
+        public long MaxSizeFile
+        {
+            get { return _maxSizeFile; }
+            set
+            {
+                _maxSizeFile = value;
+                OnPropertyChanged(nameof(MaxSizeFile));
+            }
+        }
+
         private ObservableCollection<string> _currentRunningSaves;
         /// <summary>
         /// Collection of saves being run now.
@@ -168,6 +191,18 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
+        private int _maxFileSize;
+        public int MaxFileSize
+        {
+            get { return _maxFileSize; }
+            set
+            {
+                _maxFileSize = value;
+                OnPropertyChanged(nameof(MaxFileSize));
+                _editSave.Config.ChangeMaxFileSize(_maxFileSize);
+            }
+        }
+
         /// <summary>
         /// Constructor initializes necessary properties and loads data.
         /// </summary>
@@ -178,6 +213,8 @@ namespace EasySaveClasses.ViewModelNS
             CurrentRunningSaves = [];
             AllSavesNames = [];
             _model = new Model();
+            _editSave = new EditSave(this);
+
             string cheminDossier = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/");
             if (!Directory.Exists(cheminDossier))
             {
@@ -188,12 +225,13 @@ namespace EasySaveClasses.ViewModelNS
             List<string> saveList = _model.GetSavesNamesList();
             foreach (string save in saveList) { AllSavesNames.Add(save); }
 
-            _extensionCrypt = EditSave.ReadExtensionsForEncryptionFromJson();
+            _editSave.Delete("ee");
+
+            _extensionCrypt = _editSave.Config.ReadExtensionsFromJson(false);
             _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged; // Abonnement initial
-            _priorityExtension = EditSave.ReadExtensionsForEncryptionFromJson();
+            _priorityExtension = _editSave.Config.ReadExtensionsFromJson(true);
             _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged; // Abonnement initial
-            
-            
+            _maxFileSize = _editSave.Config.GetMaxFileSizeFromJson();
         }
         /// <summary>
         /// Handles changes to the ExtensionCrypt collection.
@@ -210,7 +248,7 @@ namespace EasySaveClasses.ViewModelNS
                 foreach (var newItem in e.NewItems)
                 {
                     // Add the extension (you may need to adjust this line to suit your needs)
-                    EditSave.InsertExtensions("." + newItem.ToString());
+                    _editSave.Config.InsertExtensions("." + newItem.ToString(), false);
                 }
             }
             // Check if an item was removed from the collection
@@ -220,7 +258,7 @@ namespace EasySaveClasses.ViewModelNS
                 foreach (var oldItem in e.OldItems)
                 {
                     // Remove the extension or perform another action
-                    EditSave.RemoveExtension("." + oldItem.ToString());
+                    _editSave.Config.RemoveExtension("." + oldItem.ToString(), false);
                 }
             }
             // You can also handle other action types here (Replace, Move, Reset) if necessary
@@ -235,7 +273,7 @@ namespace EasySaveClasses.ViewModelNS
                 foreach (var newItem in e.NewItems)
                 {
                     // Add the extension (you may need to adjust this line to suit your needs)
-                    EditSave.InsertExtensions("." + newItem.ToString());
+                    _editSave.Config.InsertExtensions("." + newItem.ToString(), true);
                 }
             }
             // Check if an item was removed from the collection
@@ -245,7 +283,7 @@ namespace EasySaveClasses.ViewModelNS
                 foreach (var oldItem in e.OldItems)
                 {
                     // Remove the extension or perform another action
-                    EditSave.RemoveExtension("." + oldItem.ToString());
+                    _editSave.Config.RemoveExtension("." + oldItem.ToString(), true);
                 }
             }
         }
@@ -261,7 +299,7 @@ namespace EasySaveClasses.ViewModelNS
             Stopwatch stopwatch = new();
             int totalEncryptionTime = 0;
             stopwatch.Start();
-            ResultUpdate res = EditSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, ref totalEncryptionTime, manualEvent, cancelEvent);
+            ResultUpdate res = _editSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, ref totalEncryptionTime, save.Name, manualEvent, cancelEvent);
             stopwatch.Stop();
             save.EncryptionTime = totalEncryptionTime;
             syncContext.Post(state =>
@@ -308,7 +346,7 @@ namespace EasySaveClasses.ViewModelNS
         {
             ManualResetEvent manualReset;
             threadsManualResetEvent.TryGetValue(saveName, out manualReset);
-            manualReset.Reset();
+            if (manualReset != null) { manualReset.Reset(); }
         }
 
         /// <summary>
@@ -318,7 +356,7 @@ namespace EasySaveClasses.ViewModelNS
         public void ResumeSave(string saveName) 
         {
             threadsManualResetEvent.TryGetValue(saveName, out ManualResetEvent manualReset);
-            manualReset.Set();
+            if (manualReset != null) { manualReset.Set(); }
         }
         /// <summary>
         /// Adds a new save operation.
@@ -411,7 +449,7 @@ namespace EasySaveClasses.ViewModelNS
                     // If the source folder no longer exists, delete the backup
                     else
                     {
-                        EditSave.Delete(selectedSave.TargetFolderPath);
+                        _editSave.Delete(selectedSave.TargetFolderPath);
                         _model.Datas.Remove(selectedSave);
                         Save.Serialize(_model.Datas);
                         AllSavesNames.Remove(selectedSave.Name);
@@ -439,7 +477,7 @@ namespace EasySaveClasses.ViewModelNS
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
-                    EditSave.Delete(selectedSave.TargetFolderPath);
+                    _editSave.Delete(selectedSave.TargetFolderPath);
                     _model.Datas.Remove(selectedSave);
                     Save.Serialize(_model.Datas);
                     AllSavesNames.Remove(selectedSave.Name);
@@ -453,7 +491,7 @@ namespace EasySaveClasses.ViewModelNS
         private bool IsBusinessSoftwareRunning()
         {
             // Name of the business process
-            string businessSoftwareProcessName = "Notepad.exe";
+            string businessSoftwareProcessName = _businessSoftware;
 
             // Check if the process is running
             Process[] processes = Process.GetProcessesByName(businessSoftwareProcessName);

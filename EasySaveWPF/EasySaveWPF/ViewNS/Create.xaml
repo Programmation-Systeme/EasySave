@@ -8,8 +8,6 @@
       Height="600" d:DesignWidth="920"
       Title="Create">
     <Page.Resources>
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Theme/FlatButton.xaml" />
@@ -19,54 +17,42 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-   
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="260"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{DynamicResource CreateSave_txt}" Foreground="#87CEFA" FontSize="28" HorizontalAlignment="Left" Margin="0,0,0,10"/>
 
-        <!-- select parth source -->
-        <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="1" VerticalAlignment="Center">
+    <StackPanel>
+        <TextBlock Text="{DynamicResource CreateSave_txt}" Foreground="#87CEFA" FontSize="28" HorizontalAlignment="Left" Margin="0,0,0,10"/>
+
+        <!-- Select path source selection section -->
+        <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource SelectSourceFolderButton_txt}" />
-
             <Button Margin="3" Name="btnOpenFile" Click="OpenFolderSource_Click" Content="..." />
             <TextBlock Text="{Binding OpenFolderSrc, Mode=TwoWay}" />
-
         </StackPanel>
         
-        <!-- select parth target -->
-        <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="2" VerticalAlignment="Center">
+        <!-- Path target selection section -->
+        <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Center">
             <TextBox Text="{DynamicResource SelectDestinationFolderButton_txt}" BorderThickness="0"  />
-
-            <Button Style="{StaticResource FlatButton}" Margin="3" Name="btnOpenFile2" Click="OpenFolderDest_Click" Content="..." />
+            <Button Margin="3" Name="btnOpenFile2" Click="OpenFolderDest_Click" Content="..." />
             <TextBox Text="{Binding OpenFolderDest, Mode=TwoWay}" BorderThickness="0"  />
-
         </StackPanel> 
 
-        <StackPanel Margin="20" Grid.Row="3"  HorizontalAlignment="Left" Orientation="Horizontal">
+        
+        <StackPanel Margin="20" HorizontalAlignment="Left" Orientation="Horizontal">
             <TextBlock Text="{DynamicResource SaveFormat_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
             <ComboBox x:Name="saveTypeComboBox"
-                Style="{StaticResource FlatComboBox}" 
-                      Width="100" Grid.Row="3" 
+                      Width="100"
                       VerticalAlignment="Center"
                       SelectedIndex="0"
                       SelectionChanged="SaveTypeComboBox_SelectionChanged">
-                <ComboBoxItem Content="Complète"/>
-                <ComboBoxItem Content="Différentiel"/>
+                <ComboBoxItem Content="{DynamicResource FullSave_txt}"/>
+                <ComboBoxItem Content="{DynamicResource DifferentialSave_txt}"/>
             </ComboBox>
         </StackPanel>
 
         <!-- Boutons en bas -->
-        <StackPanel  Margin="20" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+        <StackPanel  Margin="20" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
             <Button Style="{DynamicResource ModernButton}" Content="{DynamicResource AddButton_txt}" Name="btnAddSave" Click="btnAddSave_Click" Margin="5"/>
         </StackPanel>
-        <TextBlock x:Name="ErrorCreation" Grid.Row="5" Foreground="Red" HorizontalAlignment="Center"/>
-    </Grid>
+        <TextBlock x:Name="ErrorCreation" Foreground="Red" HorizontalAlignment="Center"/>
+    </StackPanel>
 </Page>

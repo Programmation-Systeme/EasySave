@@ -1,9 +1,10 @@
-[
-  {
-    "ExtensionCryptage": [
-      ".txt",
-      ".pdf",
-      ".ll"
-    ]
-  }
-]
+{
+  "ExtensionCryptage": [
+    ".pdf",
+    ".txt"
+  ],
+  "ExtensionPriority": [
+    ".xlsx"
+  ],
+  "MaxFileSize": 3
+}
