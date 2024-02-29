@@ -66,7 +66,7 @@ namespace EasySaveWPF.ViewNS
         {
             if (ItemSelecteds.SelectedItem != null)
             {
-                _mainViewModel.CurrentRunningSaves.Remove((string)ItemSelecteds.SelectedItem);
+                _mainViewModel.AllSocketSavesNames.Clear();
             }
         }
 
