@@ -5,9 +5,7 @@ using System.Windows.Input;
 using System.Diagnostics;
 using System.Security.AccessControl;
 using static System.Net.Mime.MediaTypeNames;
-using static EasySaveClasses.ViewModelNS.EditSave;
 using System.Formats.Asn1;
-using System.Collections.Generic;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -27,7 +25,6 @@ namespace EasySaveClasses.ViewModelNS
         /// Model object allowing the link with the application data.
         /// </summary>
         private readonly Model _model;
-        private readonly EditSave _editSave;
 
         static readonly Mutex mutex = new();
 
@@ -40,6 +37,17 @@ namespace EasySaveClasses.ViewModelNS
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private ObservableCollection<string> _allSocketSavesNames;
+        public ObservableCollection<string> AllSocketSavesNames
+        {
+            get { return _allSocketSavesNames; }
+            set
+            {
+                _allSocketSavesNames = value;
+                OnPropertyChanged(nameof(AllSocketSavesNames));
+            }
+        }
+
         private ObservableCollection<string> _allSavesNames;
         public ObservableCollection<string> AllSavesNames
         {
@@ -50,32 +58,8 @@ namespace EasySaveClasses.ViewModelNS
                 OnPropertyChanged(nameof(AllSavesNames));
             }
         }
-
-        private ObservableCollection<string> _priorityExtension;
-        public ObservableCollection<string> PriorityExtension
-        {
-            get { return _priorityExtension; }
-            set
-            {
-                _priorityExtension = value;
-                OnPropertyChanged(nameof(PriorityExtension));
-                if (_priorityExtension != null)
-                    _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged;
-            }
-        }
-
         private ObservableCollection<string> _extensionCrypt;
-        public ObservableCollection<string> ExtensionCrypt
-        {
-            get { return _extensionCrypt; }
-            set
-            {
-                _extensionCrypt = value;
-                OnPropertyChanged(nameof(ExtensionCrypt));
-                if (_extensionCrypt != null)
-                    _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged;
-            }
-        }
+
 
         private string _errorText;
         /// <summary>
@@ -129,7 +113,6 @@ namespace EasySaveClasses.ViewModelNS
                 OnPropertyChanged(nameof(OpenFolderDest));
             }
         }
-
         private int _saveType;
 
         /// <summary>
@@ -141,28 +124,6 @@ namespace EasySaveClasses.ViewModelNS
             set
             {
                 _saveType = value;
-            }
-        }
-
-        private string _businessSoftware = "CalculatorApp";
-        public string BusinessSoftware
-        {
-            get { return _businessSoftware; }
-            set
-            {
-                _businessSoftware = value;
-                OnPropertyChanged(nameof(BusinessSoftware));
-            }
-        }
-
-        private long _maxSizeFile = 50000000;
-        public long MaxSizeFile
-        {
-            get { return _maxSizeFile; }
-            set
-            {
-                _maxSizeFile = value;
-                OnPropertyChanged(nameof(MaxSizeFile));
             }
         }
 
@@ -191,141 +152,32 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        private int _maxFileSize;
-        public int MaxFileSize
-        {
-            get { return _maxFileSize; }
-            set
-            {
-                _maxFileSize = value;
-                OnPropertyChanged(nameof(MaxFileSize));
-                _editSave.Config.ChangeMaxFileSize(_maxFileSize);
-            }
-        }
-
         /// <summary>
         /// Constructor initializes necessary properties and loads data.
         /// </summary>
         /// 
         public MainViewModel()
         {
+
             SaveType = 1;
             CurrentRunningSaves = [];
-            AllSavesNames = [];
-            _model = new Model();
-            _editSave = new EditSave(this);
+            _allSocketSavesNames = new ObservableCollection<string>(){};
 
+            Thread SocketServerThread = new(() => SocketClientCall("launch"));
+            SocketServerThread.Start();
+            getSocketDataList();
+
+
+
+            _model = new Model();
             string cheminDossier = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/");
             if (!Directory.Exists(cheminDossier))
             {
                 Directory.CreateDirectory(cheminDossier);
             }
-            LogManager.Instance.LogStrategyType = "Json";
 
             List<string> saveList = _model.GetSavesNamesList();
-            foreach (string save in saveList) { AllSavesNames.Add(save); }
-
-            _editSave.Delete("ee");
-
-            _extensionCrypt = _editSave.Config.ReadExtensionsFromJson(false);
-            _extensionCrypt.CollectionChanged += ExtensionCrypt_CollectionChanged; // Abonnement initial
-            _priorityExtension = _editSave.Config.ReadExtensionsFromJson(true);
-            _priorityExtension.CollectionChanged += PriorityExtension_CollectionChanged; // Abonnement initial
-            _maxFileSize = _editSave.Config.GetMaxFileSizeFromJson();
-        }
-        /// <summary>
-        /// Handles changes to the ExtensionCrypt collection.
-        /// This method is automatically called when the ExtensionCrypt collection changes.
-        /// </summary>
-        /// <param name="sender">The object that triggered the event (in this case, the ExtensionCrypt collection).</param>
-        /// <param name="e">Details about the modification to the collection.</param>
-        private void ExtensionCrypt_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            // Check if an item was added to the collection
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                // Perform an action for each new item added
-                foreach (var newItem in e.NewItems)
-                {
-                    // Add the extension (you may need to adjust this line to suit your needs)
-                    _editSave.Config.InsertExtensions("." + newItem.ToString(), false);
-                }
-            }
-            // Check if an item was removed from the collection
-            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                // Perform an action for each removed item
-                foreach (var oldItem in e.OldItems)
-                {
-                    // Remove the extension or perform another action
-                    _editSave.Config.RemoveExtension("." + oldItem.ToString(), false);
-                }
-            }
-            // You can also handle other action types here (Replace, Move, Reset) if necessary
-        }
-
-        private void PriorityExtension_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            // Check if an item was added to the collection
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                // Perform an action for each new item added
-                foreach (var newItem in e.NewItems)
-                {
-                    // Add the extension (you may need to adjust this line to suit your needs)
-                    _editSave.Config.InsertExtensions("." + newItem.ToString(), true);
-                }
-            }
-            // Check if an item was removed from the collection
-            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                // Perform an action for each removed item
-                foreach (var oldItem in e.OldItems)
-                {
-                    // Remove the extension or perform another action
-                    _editSave.Config.RemoveExtension("." + oldItem.ToString(), true);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Executes the work of saving a file.
-        /// </summary>
-        /// <param name="save">The save object containing details of the save operation.</param>
-        /// <param name="syncContext">The synchronization context for UI updates.</param>
-        /// <param name="time">The time for which to sleep the thread.</param>
-        private void ExecuteWork(Save save, SynchronizationContext syncContext, ManualResetEvent manualEvent, CancellationTokenSource cancelEvent)
-        {
-            Stopwatch stopwatch = new();
-            int totalEncryptionTime = 0;
-            stopwatch.Start();
-            ResultUpdate res = _editSave.Update(save.SourceFolderPath, save.TargetFolderPath, save.SaveType, ref totalEncryptionTime, save.Name, manualEvent, cancelEvent);
-            stopwatch.Stop();
-            save.EncryptionTime = totalEncryptionTime;
-            syncContext.Post(state =>
-            {
-                if (res.Success)
-                {
-                    save.State = "END";
-                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds, save.EncryptionTime);
-                    CurrentRunningSaves.Remove(save.Name);
-                    save.Progression = res.Progression;
-                    Save.Serialize(_model.Datas);
-                }
-                else
-                {
-                    save.State = "ABORTED";
-                    ErrorText = "ABORT SAVE";
-                    ErrorText = LogManager.Instance.AddLog(save.SourceFolderPath, save.TargetFolderPath, stopwatch.ElapsedMilliseconds, save.EncryptionTime);
-                    CurrentRunningSaves.Remove(save.Name);
-                    save.Progression = res.Progression;
-                    Save.Serialize(_model.Datas);
-                }
-            }, null);
-
-            threadsManualResetEvent.Remove(save.Name);
-            threadsDictionary.Remove(save.Name);
-            threadsCancelEvent.Remove(save.Name);
+            //foreach (string save in saveList) { AllSavesNames.Add(save); }            
         }
 
         /// <summary>
@@ -346,7 +198,7 @@ namespace EasySaveClasses.ViewModelNS
         {
             ManualResetEvent manualReset;
             threadsManualResetEvent.TryGetValue(saveName, out manualReset);
-            if (manualReset != null) { manualReset.Reset(); }
+            manualReset.Reset();
         }
 
         /// <summary>
@@ -356,7 +208,7 @@ namespace EasySaveClasses.ViewModelNS
         public void ResumeSave(string saveName) 
         {
             threadsManualResetEvent.TryGetValue(saveName, out ManualResetEvent manualReset);
-            if (manualReset != null) { manualReset.Set(); }
+            manualReset.Set();
         }
         /// <summary>
         /// Adds a new save operation.
@@ -372,32 +224,6 @@ namespace EasySaveClasses.ViewModelNS
             AllSavesNames.Add(save.Name);
         }
 
-
-        /// <summary>
-        /// Executes corresponding threads.
-        /// </summary>
-        /// <param name="list">List of selected items.</param>
-        public void SendSaveToClient(List<string> list)
-        {
-            foreach (string selectedItemName in list)
-            {
-                Save? selectedSave = _model.Datas.FirstOrDefault(item => item.Name == selectedItemName);
-                if (selectedSave != null)
-                {
-                    selectedSave.State = "ACTIVATE";
-                    Thread SocketServerThread = new(() => SocketServerCall(selectedSave));
-                    SocketServerThread.Start();
-                }
-            }
-        }
-        private void SocketServerCall(Save save)
-        {
-            while (true)
-            {
-                // Send the socket with the saves
-                SocketSeverSet.LaunchServer(save.Name);
-            }
-        }
 
         /// <summary>
         /// Executes save operation for selected items.
@@ -432,8 +258,8 @@ namespace EasySaveClasses.ViewModelNS
                         threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
 
                         // Creation of a new thread for the current save
-                        Thread newWork = new(() => ExecuteWork(selectedSave, _syncContext, manualEvent, cancelEvent));
-                        //Thread SocketServerThread = new(() => SocketServerCall(selectedSave));
+                        //Thread SocketServerThread = new(() => SocketClientCall(selectedSave));
+                        //SocketServerThread.Start();
 
                         string str = selectedSave.Name;
                         if (IsBusinessSoftwareRunning())
@@ -441,15 +267,11 @@ namespace EasySaveClasses.ViewModelNS
                             PauseSave(str);
                         }
 
-                        threadsDictionary.Add(selectedSave.Name, newWork);
-                        newWork.Start();
-                        //SocketServerThread.Start();
 
                     }
                     // If the source folder no longer exists, delete the backup
                     else
                     {
-                        _editSave.Delete(selectedSave.TargetFolderPath);
                         _model.Datas.Remove(selectedSave);
                         Save.Serialize(_model.Datas);
                         AllSavesNames.Remove(selectedSave.Name);
@@ -458,6 +280,31 @@ namespace EasySaveClasses.ViewModelNS
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// SOCKET CLIENT
+        /// </summary>
+        public void LaunchSocketClient(string choice)
+        {
+            Thread SocketServerThread = new(() => SocketClientCall(choice));
+        }
+
+        private void SocketClientCall(string choice)
+        {
+            while (true)
+            {
+                // Send the socket with the saves
+                SocketClientSet.LaunchClient(choice);
+            }
+        }
+
+        public void getSocketDataList()
+        {
+            // Send the socket with the saves
+            SocketClientSet.dataUpdatedEvent.WaitOne();
+            _allSocketSavesNames.Add(SocketClientSet.ourDataList);
+            
         }
 
         /// <summary>
@@ -477,7 +324,6 @@ namespace EasySaveClasses.ViewModelNS
                 // Check if the item is found (it might be null if no match is found)
                 if (selectedSave != null)
                 {
-                    _editSave.Delete(selectedSave.TargetFolderPath);
                     _model.Datas.Remove(selectedSave);
                     Save.Serialize(_model.Datas);
                     AllSavesNames.Remove(selectedSave.Name);
@@ -491,7 +337,7 @@ namespace EasySaveClasses.ViewModelNS
         private bool IsBusinessSoftwareRunning()
         {
             // Name of the business process
-            string businessSoftwareProcessName = _businessSoftware;
+            string businessSoftwareProcessName = "Notepad.exe";
 
             // Check if the process is running
             Process[] processes = Process.GetProcessesByName(businessSoftwareProcessName);
