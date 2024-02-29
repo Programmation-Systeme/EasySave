@@ -67,7 +67,7 @@
             </StackPanel>
 
             <!-- File Extensions Title: Section for managing file extensions -->
-        <TextBlock Text="File Extensions" 
+        <TextBlock Text="{DynamicResource EncryptedExtensions_txt}" 
                     Style="{DynamicResource SettingTextStyle}"/>
 
             <!-- File Extensions Management Section: Lists currently managed extensions and allows for addition -->
@@ -105,29 +105,29 @@
             </StackPanel>
 
             <!-- Business Software Title: Section for specifying business-related software -->
-            <TextBlock Text="Logiciel metier" 
+            <TextBlock Text="{DynamicResource BusinessSoftware_txt}" 
                        Style="{DynamicResource SettingTextStyle}"/>
 
             <!-- Business Software Input Section: Allows for the specification of business software name -->
             <StackPanel Margin="0,10,0,0" Width="600" Orientation="Horizontal">
-                <TextBlock Text="Nom du logiciel metier"  Width="300"/>
+                <TextBlock Text="{DynamicResource BusinessSoftwareName_txt}"  Width="300"/>
                 <!-- Input for the name of the business software -->
                 <TextBox  Width="200" Text="{Binding BusinessSoftware}"/>
             </StackPanel>
 
             <!-- File Information Title: Section for specifying file-related settings -->
-            <TextBlock Text="Information fichier" 
+            <TextBlock Text="{DynamicResource FileInformation_txt}" 
                        Style="{DynamicResource SettingTextStyle}"/>
 
             <!-- Maximum File Size Input Section: Allows for specifying the maximum file size -->
             <StackPanel Margin="0,10,0,0" Width="600" Orientation="Horizontal">
-                <TextBlock Text="Taille fichier max"  Width="300"/>
+                <TextBlock Text="{DynamicResource MaxFileSize_txt}"  Width="300"/>
                 <!-- Input for maximum file size -->
                     <TextBox Width="200" Text="{Binding MaxFileSize}"/>
             </StackPanel>
 
             <!-- Duplicate "Information fichier" Section: This seems to be a repetition, possibly for a different setting -->
-            <TextBlock Text="Information fichier" 
+            <TextBlock Text="{DynamicResource PriorizedExtensions_txt}" 
                        Style="{DynamicResource SettingTextStyle}"/>
 
             <!-- Priority File Extensions Section: Allows managing priority file extensions -->

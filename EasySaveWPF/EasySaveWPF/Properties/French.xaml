@@ -13,4 +13,10 @@
     <sys:String x:Key="SaveFormat_txt">Format des sauvegardes</sys:String>
     <sys:String x:Key="SelectSourceFolderButton_txt">Sélectionner le dossier source</sys:String>
     <sys:String x:Key="SettingsMenuItem_txt">Options</sys:String>
+    <sys:String x:Key="MaxFileSize_txt">Taille de fichier maximale (en Ko)</sys:String>
+    <sys:String x:Key="FileInformation_txt">Paramètres fichiers</sys:String>
+    <sys:String x:Key="BusinessSoftwareName_txt">Nom du logiciel metier</sys:String>
+    <sys:String x:Key="BusinessSoftware_txt">Logiciel metier</sys:String>
+    <sys:String x:Key="PriorizedExtensions_txt">Extensions priorisées</sys:String>
+    <sys:String x:Key="EncryptedExtensions_txt">Extensions à chiffrer</sys:String>
 </ResourceDictionary>

@@ -13,4 +13,10 @@
     <sys:String x:Key="SaveFormat_txt">Backup format</sys:String>
     <sys:String x:Key="SelectSourceFolderButton_txt">Select source folder</sys:String>
     <sys:String x:Key="SettingsMenuItem_txt">Settings</sys:String>
+    <sys:String x:Key="MaxFileSize_txt">Maximum file size (in KB)</sys:String>
+    <sys:String x:Key="FileInformation_txt">File settings</sys:String>
+    <sys:String x:Key="BusinessSoftwareName_txt">Business software name</sys:String>
+    <sys:String x:Key="BusinessSoftware_txt">Business software</sys:String>
+    <sys:String x:Key="PriorizedExtensions_txt">Priorized extensions</sys:String>
+    <sys:String x:Key="EncryptedExtensions_txt">Extensions to encrypt</sys:String>
 </ResourceDictionary>
