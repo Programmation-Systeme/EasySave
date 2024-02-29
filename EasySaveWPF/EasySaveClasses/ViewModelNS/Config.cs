@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EasySaveClasses.ViewModelNS
 {
@@ -17,8 +18,9 @@ namespace EasySaveClasses.ViewModelNS
         /// <summary>
         /// Read the extensions to encrypt from the json configuration file and return the list of extensions.
         /// </summary>
+        /// <param name="IsPriority">True if we want to get priority extensions, False if we want to get encryption extensions</param>
         /// <returns>The list of extensions</returns>
-        public ObservableCollection<string> ReadExtensionsForEncryptionFromJson(bool IsPriority)
+        public ObservableCollection<string> ReadExtensionsFromJson(bool IsPriority)
         {
             ObservableCollection<string> listExt = [];
             if (File.Exists(configPath))
@@ -59,7 +61,7 @@ namespace EasySaveClasses.ViewModelNS
 
             dynamic configuration = JsonConvert.DeserializeObject(json);
 
-            // Verify if "ExtensionCryptage" exist in the Json
+            // Verify if it exists in the Json
             if (configuration[whichExtension] == null)
             {
                 configuration[whichExtension] = new JArray();
@@ -68,10 +70,10 @@ namespace EasySaveClasses.ViewModelNS
             // Add the new extension
             configuration[whichExtension].Add(newExt);
 
-            string nouveauJson = JsonConvert.SerializeObject(configuration, Formatting.Indented);
+            string newJson = JsonConvert.SerializeObject(configuration, Formatting.Indented);
 
             // Write the new Json file with the new changements
-            File.WriteAllText(configPath, nouveauJson);
+            File.WriteAllText(configPath, newJson);
         }
 
         public void RemoveExtension(string itemToRemove, bool IsPriority)
@@ -101,6 +103,34 @@ namespace EasySaveClasses.ViewModelNS
             File.WriteAllText(configPath, updatedJsonString);
         }
 
+        public void ChangeMaxFileSize(int newMaxFileSize)
+        {
+            string configJsonContent = File.ReadAllText(configPath);
+            // Deserializing the existing JSON in a JObject object
+            dynamic configuration = JsonConvert.DeserializeObject(configJsonContent);
 
+            configuration["MaxFileSize"] = newMaxFileSize;
+
+            // Serialization of the JObject object in JSON
+            string updatedJson = JsonConvert.SerializeObject(configuration, Formatting.Indented);
+
+            // Writing the updated JSON to the configuration file
+            File.WriteAllText(configPath, updatedJson);
+        }
+
+        public int GetMaxFileSizeFromJson()
+        {
+            if (File.Exists(configPath))
+            {
+                string configJsonContent = File.ReadAllText(configPath);
+
+                dynamic configuration = JsonConvert.DeserializeObject(configJsonContent);
+                string maxFileSizeFromJson = configuration["MaxFileSize"];
+                int parsedMaxFileSizeFromJson = 0;
+                int.TryParse(maxFileSizeFromJson, out parsedMaxFileSizeFromJson);
+                return parsedMaxFileSizeFromJson;
+            }
+            return 0;
+        }
     }
 }

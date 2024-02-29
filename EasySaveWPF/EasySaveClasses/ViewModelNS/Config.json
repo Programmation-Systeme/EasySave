@@ -1,11 +1,10 @@
 {
   "ExtensionCryptage": [
     ".pdf",
-    ".sos"
+    ".txt"
   ],
   "ExtensionPriority": [
-    ".txt",
-    ".ds",
-    ".hihi"
-  ]
+    ".xlsx"
+  ],
+  "MaxFileSize": 3
 }
