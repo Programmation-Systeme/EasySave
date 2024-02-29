@@ -33,7 +33,7 @@
             <!-- Vertical StackPanel for organizing child elements vertically -->
 
             <!-- Settings Title -->
-            <TextBlock Text="{DynamicResource SettingsMenuItem_txt}"
+            <Label Content="{DynamicResource SettingsMenuItem_txt}"
                        Foreground="#87CEFA" 
                        FontSize="28" 
                        HorizontalAlignment="Left" 
@@ -59,7 +59,7 @@
             <!-- Log Format ComboBox: Allows user to select the format of the log files -->
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="20">
                 <TextBlock Text="{DynamicResource LogFormatMenuItem_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
-                <ComboBox SelectionChanged="ComboBox_LogFormatChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center" Style="{DynamicResource Flat_ComboBox}">
+                <ComboBox SelectionChanged="ComboBox_LogFormatChanged" SelectedIndex="0" Width="100" VerticalAlignment="Center">
 
                     <ComboBoxItem Content="Json"/>
                     <ComboBoxItem Content="XML"/>
@@ -112,7 +112,7 @@
             <StackPanel Margin="0,10,0,0" Width="600" Orientation="Horizontal">
                 <TextBlock Text="Nom du logiciel metier"  Width="300"/>
                 <!-- Input for the name of the business software -->
-                <TextBox  Width="300" Text="{Binding BusinessSoftware}"/>
+                <TextBox  Width="200" Text="{Binding BusinessSoftware}"/>
             </StackPanel>
 
             <!-- File Information Title: Section for specifying file-related settings -->
@@ -123,7 +123,7 @@
             <StackPanel Margin="0,10,0,0" Width="600" Orientation="Horizontal">
                 <TextBlock Text="Taille fichier max"  Width="300"/>
                 <!-- Input for maximum file size -->
-                <TextBox Width="300"/>
+                <TextBox Width="200"/>
             </StackPanel>
 
             <!-- Duplicate "Information fichier" Section: This seems to be a repetition, possibly for a different setting -->

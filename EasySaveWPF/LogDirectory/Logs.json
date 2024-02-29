@@ -412,5 +412,41 @@
     "DirSize": 104864180.0,
     "DirTransferTime": 10933.0,
     "EncryptingTime": 630
+  },
+  {
+    "Timestamp": "27/02/2024 20:09:58",
+    "Name": "jij",
+    "SourcePath": "C:\\Users\\Elisée\\Downloads\\jij",
+    "TargetPath": "C:\\Users\\Elisée\\Downloads\\jij-02-27-2024-7-59-22",
+    "DirSize": 209715200.0,
+    "DirTransferTime": 1242.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "27/02/2024 20:10:02",
+    "Name": "jij",
+    "SourcePath": "C:\\Users\\Elisée\\Downloads\\jij",
+    "TargetPath": "C:\\Users\\Elisée\\Downloads\\jij-02-27-2024-7-59-22",
+    "DirSize": 209715200.0,
+    "DirTransferTime": 1752.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "27/02/2024 20:10:07",
+    "Name": "jij",
+    "SourcePath": "C:\\Users\\Elisée\\Downloads\\jij",
+    "TargetPath": "C:\\Users\\Elisée\\Downloads\\jij-02-27-2024-7-59-22",
+    "DirSize": 209715200.0,
+    "DirTransferTime": 819.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "27/02/2024 20:10:15",
+    "Name": "jij",
+    "SourcePath": "C:\\Users\\Elisée\\Downloads\\jij",
+    "TargetPath": "C:\\Users\\Elisée\\Downloads\\jij-02-27-2024-7-59-22",
+    "DirSize": 209715200.0,
+    "DirTransferTime": 801.0,
+    "EncryptingTime": 0
   }
 ]
