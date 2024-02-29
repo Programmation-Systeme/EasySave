@@ -32,7 +32,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="Label.AccentHeader40" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="Foreground" Value="{StaticResource Accent.ForegroundBrush}" />
         <Setter Property="FontSize" Value="40" />
