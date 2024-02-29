@@ -385,5 +385,194 @@
     "DirSize": 104864180.0,
     "DirTransferTime": 3941.0,
     "EncryptingTime": 728
+  },
+  {
+    "Timestamp": "28/02/2024 10:25:40",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 109.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 10:25:47",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 101.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 10:49:03",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 123.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 10:55:29",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 88.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 10:56:55",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 100.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 10:57:34",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 93.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 10:59:50",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 114.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 11:01:37",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 107.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 11:03:31",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 80.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 11:06:55",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-11-06-08",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 90.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 11:07:50",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 75.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 11:11:47",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-11-06-08",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 76.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "28/02/2024 11:38:46",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 121.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "29/02/2024 00:03:25",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 72.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "29/02/2024 00:03:29",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-11-06-08",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 44.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "29/02/2024 00:03:32",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 55.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "29/02/2024 00:03:37",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-11-06-08",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 68.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "29/02/2024 12:55:19",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 89.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "29/02/2024 13:03:17",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-10-25-34",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 71.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "29/02/2024 16:48:16",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-11-06-08",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 59.0,
+    "EncryptingTime": 0
+  },
+  {
+    "Timestamp": "29/02/2024 17:10:46",
+    "Name": "fold1",
+    "SourcePath": "C:\\Users\\Wassim\\Downloads\\folders\\fold1",
+    "TargetPath": "C:\\Users\\Wassim\\Downloads\\folders\\fold2\\fold1-02-28-2024-11-06-08",
+    "DirSize": 50309630.0,
+    "DirTransferTime": 62.0,
+    "EncryptingTime": 0
   }
 ]

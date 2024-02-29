@@ -37,6 +37,17 @@ namespace EasySaveClasses.ViewModelNS
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private ObservableCollection<string> _allSocketSavesNames;
+        public ObservableCollection<string> AllSocketSavesNames
+        {
+            get { return _allSocketSavesNames; }
+            set
+            {
+                _allSocketSavesNames = value;
+                OnPropertyChanged(nameof(AllSocketSavesNames));
+            }
+        }
+
         private ObservableCollection<string> _allSavesNames;
         public ObservableCollection<string> AllSavesNames
         {
@@ -102,7 +113,6 @@ namespace EasySaveClasses.ViewModelNS
                 OnPropertyChanged(nameof(OpenFolderDest));
             }
         }
-
         private int _saveType;
 
         /// <summary>
@@ -148,9 +158,17 @@ namespace EasySaveClasses.ViewModelNS
         /// 
         public MainViewModel()
         {
+
             SaveType = 1;
             CurrentRunningSaves = [];
-            AllSavesNames = [];
+            _allSocketSavesNames = new ObservableCollection<string>(){};
+
+            Thread SocketServerThread = new(() => SocketClientCall("launch"));
+            SocketServerThread.Start();
+            getSocketDataList();
+
+
+
             _model = new Model();
             string cheminDossier = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../LogDirectory/");
             if (!Directory.Exists(cheminDossier))
@@ -159,7 +177,7 @@ namespace EasySaveClasses.ViewModelNS
             }
 
             List<string> saveList = _model.GetSavesNamesList();
-            foreach (string save in saveList) { AllSavesNames.Add(save); }            
+            //foreach (string save in saveList) { AllSavesNames.Add(save); }            
         }
 
         /// <summary>
@@ -240,8 +258,8 @@ namespace EasySaveClasses.ViewModelNS
                         threadsCancelEvent.Add(selectedSave.Name, cancelEvent);
 
                         // Creation of a new thread for the current save
-                        Thread SocketServerThread = new(() => SocketClientCall(selectedSave));
-                        SocketServerThread.Start();
+                        //Thread SocketServerThread = new(() => SocketClientCall(selectedSave));
+                        //SocketServerThread.Start();
 
                         string str = selectedSave.Name;
                         if (IsBusinessSoftwareRunning())
@@ -264,18 +282,31 @@ namespace EasySaveClasses.ViewModelNS
             }
         }
 
-        public void LaunchSocketClient()
+        /// <summary>
+        /// SOCKET CLIENT
+        /// </summary>
+        public void LaunchSocketClient(string choice)
         {
-            Thread SocketServerThread = new(() => SocketClientCall(selectedSave));
-
+            Thread SocketServerThread = new(() => SocketClientCall(choice));
         }
 
-        private void SocketClientCall(Save save)
+        private void SocketClientCall(string choice)
         {
             while (true)
             {
                 // Send the socket with the saves
-                SocketClientSet.LaunchClient(save.Name);
+                SocketClientSet.LaunchClient(choice);
+            }
+        }
+
+        public void getSocketDataList()
+        {
+            // Send the socket with the saves
+            string[] AllSavesNames = new string[] { "default" };
+
+            foreach (string saveName in AllSavesNames)
+            {
+                _allSocketSavesNames.Add(SocketClientSet.ourDataList);
             }
         }
 

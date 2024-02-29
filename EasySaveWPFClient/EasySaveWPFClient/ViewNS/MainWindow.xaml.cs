@@ -16,6 +16,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using System.Net.Sockets;
 
 namespace EasySaveWPF.ViewNS
 {
@@ -25,22 +26,30 @@ namespace EasySaveWPF.ViewNS
     public partial class MainWindow : Window
     {
         public MainViewModel _mainViewModel;
+        public string _socketDataList;
+
         public MainWindow()
         {
             InitializeComponent();
             LoadLanguage_En();
             _mainViewModel = new MainViewModel();
+            DataContext = _mainViewModel;
             Dispatcher mainDispatcher = Dispatcher.CurrentDispatcher;
             Play.Content = "▶";
-
+            _mainViewModel.LaunchSocketClient("1");
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentSave.SelectedItem != null)
+            if (ItemSelecteds.SelectedItem != null)
             {
                 // Cast de l'élément sélectionné en ListBoxItem
-                ListBoxItem selectedItem = CurrentSave.ItemContainerGenerator.ContainerFromItem(CurrentSave.SelectedItem) as ListBoxItem;
+                ListBoxItem selectedItem = ItemSelecteds.ItemContainerGenerator.ContainerFromItem(ItemSelecteds.SelectedItem) as ListBoxItem;
+                if (selectedItem != null)
+                {
+                    _mainViewModel.LaunchSocketClient(selectedItem.ToString());
+                }
+
                 if (selectedItem.Foreground == Brushes.Red)
                 {
                     selectedItem.Foreground = Brushes.Black;
@@ -55,9 +64,9 @@ namespace EasySaveWPF.ViewNS
         }
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentSave.SelectedItem != null)
+            if (ItemSelecteds.SelectedItem != null)
             {
-                _mainViewModel.CurrentRunningSaves.Remove((string)CurrentSave.SelectedItem);
+                _mainViewModel.CurrentRunningSaves.Remove((string)ItemSelecteds.SelectedItem);
             }
         }
 
@@ -92,6 +101,5 @@ namespace EasySaveWPF.ViewNS
         {
             LoadLanguage_Fr();
         }
-        
     }
 }

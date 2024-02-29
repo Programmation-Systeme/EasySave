@@ -9,6 +9,8 @@ namespace EasySaveClasses.ViewModelNS
     public static class SocketClientSet
     {
         public static event EventHandler<string> DataReceived;
+        public static string ourDataList = "default";
+
 
         public static void LaunchClient(string choice)
         {
@@ -24,7 +26,7 @@ namespace EasySaveClasses.ViewModelNS
                 while (true)
                 {
                     Console.WriteLine("Select an option (type 'exit' to quit): ");
-                    string selectedOption = Console.ReadLine();
+                    string selectedOption = "ok";
 
                     if (selectedOption.ToLower() == "exit")
                     {
@@ -48,6 +50,8 @@ namespace EasySaveClasses.ViewModelNS
                     string received = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
                     string outputs = JsonConvert.DeserializeObject<string>(received);
+                    ourDataList = outputs;
+
                     OnDataReceived(outputs);
                 }
             }
