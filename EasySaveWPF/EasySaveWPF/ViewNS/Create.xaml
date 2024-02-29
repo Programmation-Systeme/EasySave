@@ -8,8 +8,6 @@
       Height="600" d:DesignWidth="920"
       Title="Create">
     <Page.Resources>
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Theme/FlatButton.xaml" />
@@ -24,22 +22,21 @@
     <StackPanel>
         <TextBlock Text="{DynamicResource CreateSave_txt}" Foreground="#87CEFA" FontSize="28" HorizontalAlignment="Left" Margin="0,0,0,10"/>
 
-        <!-- select parth source -->
+        <!-- Select path source selection section -->
         <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource SelectSourceFolderButton_txt}" />
-
             <Button Margin="3" Name="btnOpenFile" Click="OpenFolderSource_Click" Content="..." />
             <TextBlock Text="{Binding OpenFolderSrc, Mode=TwoWay}" />
-
         </StackPanel>
         
-        <!-- select parth target -->
+        <!-- Path target selection section -->
         <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Center">
             <TextBox Text="{DynamicResource SelectDestinationFolderButton_txt}" BorderThickness="0"  />
             <Button Margin="3" Name="btnOpenFile2" Click="OpenFolderDest_Click" Content="..." />
             <TextBox Text="{Binding OpenFolderDest, Mode=TwoWay}" BorderThickness="0"  />
         </StackPanel> 
 
+        
         <StackPanel Margin="20" HorizontalAlignment="Left" Orientation="Horizontal">
             <TextBlock Text="{DynamicResource SaveFormat_txt}" Margin="0,0,5,0"  VerticalAlignment="Center" />
             <ComboBox x:Name="saveTypeComboBox"
@@ -47,8 +44,8 @@
                       VerticalAlignment="Center"
                       SelectedIndex="0"
                       SelectionChanged="SaveTypeComboBox_SelectionChanged">
-                <ComboBoxItem Content="Complète"/>
-                <ComboBoxItem Content="Différentiel"/>
+                <ComboBoxItem Content="{DynamicResource FullSave_txt}"/>
+                <ComboBoxItem Content="{DynamicResource DifferentialSave_txt}"/>
             </ComboBox>
         </StackPanel>
 

@@ -35,7 +35,7 @@
             Margin="20,0,0,0"/>
 
         <StackPanel Grid.Row="1" Grid.Column="0">
-            <RadioButton Content="{DynamicResource HomeMenuItem_txt}"
+            <RadioButton Content="{DynamicResource HomeRadioButton_txt}"
                     Height="50"
                     Foreground="black"
                     FontSize="14"
@@ -43,21 +43,21 @@
                     IsChecked="True"
                              Click="RadioButtonHome_Click"
                 />
-            <RadioButton Content="{DynamicResource CreateMenuItem_txt}"
+            <RadioButton Content="{DynamicResource CreateRadioButton_txt}"
                     Height="50"
                     Foreground="black"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
                              Click="RadioButtonCreate_Click"
                 />
-            <RadioButton Content="{DynamicResource SettingsMenuItem_txt}"
+            <RadioButton Content="{DynamicResource SettingsRadioButton_txt}"
                     Height="50"
                     Foreground="black"
                     FontSize="14"
                     Style="{StaticResource MenuButtonTheme}"
                              Click="RadioButtonSetting_Click"
                 />
-            <RadioButton Content="{DynamicResource ExecuteButton_txt}"
+            <RadioButton Content="{DynamicResource ExecuteRadioButton_txt}"
                     Height="50" Name="ExecRadioButton"
                     Foreground="black"
                     FontSize="14"

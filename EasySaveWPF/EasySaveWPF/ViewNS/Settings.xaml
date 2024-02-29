@@ -122,11 +122,10 @@
                     <TextBox Width="200" Text="{Binding MaxFileSize}"/>
             </StackPanel>
 
-            <!-- Duplicate "Information fichier" Section: This seems to be a repetition, possibly for a different setting -->
+            <!-- Priority File Extensions Section: Allows managing priority file extensions -->
             <TextBlock Text="{DynamicResource PriorizedExtensions_txt}" 
                        Style="{DynamicResource SettingTextStyle}"/>
 
-            <!-- Priority File Extensions Section: Allows managing priority file extensions -->
             <StackPanel Orientation="Vertical">
                 <!-- Dynamic list for priority file extensions -->
                 <ItemsControl Width="600" x:Name="ItemsControl2"  ItemsSource="{Binding PriorityExtension}">
